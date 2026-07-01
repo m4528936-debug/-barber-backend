@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>General Barber Shop | آرایشگاه مردانه VIP کرج</title>
+<meta name="description" content="آرایشگاه مردانه لوکس General در کرج. نوبت‌دهی آنلاین، کارمندان حرفه‌ای، خدمات VIP">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dim: #8B6914;
+    --black: #0A0A0A;
+    --dark: #111111;
+    --dark2: #1A1A1A;
+    --dark3: #222222;
+    --gray: #888888;
+    --gray-light: #BBBBBB;
+    --white: #F5F0E8;
+    --white-pure: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Vazirmatn', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    transition: padding 0.3s;
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 0.75rem;
+    text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .nav-logo-text { font-size: 1rem; font-weight: 700; color: var(--white); letter-spacing: 0.05em; }
+  .nav-logo-text span { color: var(--gold); }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--gray-light); font-size: 0.875rem; text-decoration: none;
+    transition: color 0.2s; font-weight: 400;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    color: var(--black); font-weight: 700; font-size: 0.875rem;
+    padding: 0.6rem 1.5rem; border-radius: 2rem; text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+    font-family: 'Vazirmatn', sans-serif;
+  }
+  .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .nav-hamburger span { width: 24px; height: 2px; background: var(--white); border-radius: 1px; transition: 0.3s; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 70% at 20% 50%, rgba(201,168,76,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 20%, rgba(201,168,76,0.04) 0%, transparent 50%);
+  }
+
+  .hero-lines {
+    position: absolute; inset: 0; overflow: hidden; opacity: 0.03;
+  }
+  .hero-lines::before {
+    content: '';
+    position: absolute;
+    width: 1px; height: 100%;
+    background: var(--gold);
+    right: 30%; top: 0;
+  }
+  .hero-lines::after {
+    content: '';
+    position: absolute;
+    width: 1px; height: 100%;
+    background: var(--gold);
+    right: 60%; top: 0;
+  }
+
+  .hero-content {
+    position: relative; z-index: 1;
+    max-width: 620px;
+    animation: fadeUp 0.9s ease both;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 32px; height: 1px; background: var(--gold);
+  }
+
+  .hero-title {
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: var(--white-pure);
+  }
+  .hero-title span {
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem; color: var(--gray); line-height: 1.8;
+    margin-bottom: 2.5rem; font-weight: 300; max-width: 480px;
+  }
+
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    color: var(--black); font-weight: 700; font-size: 1rem;
+    padding: 0.9rem 2rem; border-radius: 3rem; text-decoration: none;
+    transition: all 0.25s; font-family: 'Vazirmatn', sans-serif;
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.3); }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent;
+    color: var(--white); font-weight: 500; font-size: 1rem;
+    padding: 0.9rem 2rem; border-radius: 3rem; text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: all 0.25s; font-family: 'Vazirmatn', sans-serif; cursor: pointer;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .stat-item {}
+  .stat-num {
+    font-size: 1.8rem; font-weight: 900; color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.78rem; color: var(--gray); margin-top: 0.3rem; font-weight: 400; }
+
+  .hero-visual {
+    position: absolute; left: 4rem; top: 50%;
+    transform: translateY(-50%);
+    width: 380px; height: 480px;
+    animation: fadeLeft 1s ease 0.3s both;
+  }
+
+  .hero-card {
+    position: relative;
+    width: 100%; height: 100%;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 1.5rem;
+    background: var(--dark2);
+    overflow: hidden;
+  }
+
+  .hero-card-inner {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(160deg, rgba(201,168,76,0.08) 0%, transparent 50%),
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(201,168,76,0.015) 20px,
+        rgba(201,168,76,0.015) 21px
+      );
+  }
+
+  .hero-card-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(10,10,10,0.95) 60%, transparent);
+  }
+
+  .hero-card-tag {
+    display: inline-block;
+    background: rgba(201,168,76,0.15);
+    color: var(--gold);
+    font-size: 0.7rem; font-weight: 600;
+    padding: 0.3rem 0.75rem; border-radius: 2rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid rgba(201,168,76,0.25);
+  }
+
+  .hero-card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .hero-card-sub { font-size: 0.8rem; color: var(--gray); }
+
+  .hero-scissors {
+    position: absolute; top: 2rem; right: 2rem;
+    font-size: 4rem; opacity: 0.08;
+    transform: rotate(-30deg);
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 6rem 4rem; }
+  .section-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .section-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
+  .section-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800;
+    color: var(--white-pure); line-height: 1.2; margin-bottom: 1rem;
+  }
+  .section-title span { color: var(--gold); }
+  .section-sub { font-size: 1rem; color: var(--gray); line-height: 1.8; max-width: 520px; }
+
+  /* ── SERVICES ── */
+  .services { background: var(--dark); }
+  .services-header { text-align: center; margin-bottom: 3.5rem; }
+  .services-header .section-sub { margin: 0 auto; }
+
+  .services-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem; max-width: 1100px; margin: 0 auto;
+  }
+
+  .service-card {
+    background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 1.2rem; padding: 2rem;
+    transition: all 0.3s; cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .service-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-4px); }
+  .service-card:hover::before { opacity: 1; }
+
+  .service-icon {
+    width: 52px; height: 52px;
+    background: rgba(201,168,76,0.1);
+    border-radius: 0.75rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; margin-bottom: 1.25rem;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .service-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .service-desc { font-size: 0.83rem; color: var(--gray); line-height: 1.7; margin-bottom: 1.25rem; }
+  .service-price {
+    font-size: 1rem; font-weight: 700; color: var(--gold);
+  }
+  .service-duration {
+    font-size: 0.75rem; color: var(--gray); margin-top: 0.25rem;
+  }
+  .service-badge {
+    position: absolute; top: 1rem; left: 1rem;
+    background: var(--gold); color: var(--black);
+    font-size: 0.65rem; font-weight: 700;
+    padding: 0.2rem 0.6rem; border-radius: 2rem;
+  }
+
+  /* ── TEAM ── */
+  .team { background: var(--black); }
+  .team-inner { max-width: 900px; margin: 0 auto; }
+  .team-header { margin-bottom: 3rem; }
+
+  .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+  .team-card {
+    background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 1.2rem; padding: 2rem;
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    transition: border-color 0.3s;
+  }
+  .team-card:hover { border-color: rgba(201,168,76,0.25); }
+
+  .team-avatar {
+    width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--dark3), var(--gold-dim));
+    border: 2px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+  }
+
+  .team-info {}
+  .team-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .team-role { font-size: 0.78rem; color: var(--gold); font-weight: 600; margin-bottom: 0.75rem; }
+  .team-stats { display: flex; gap: 1.25rem; }
+  .team-stat { font-size: 0.75rem; color: var(--gray); }
+  .team-stat strong { color: var(--white); font-weight: 600; }
+
+  .team-rating {
+    display: flex; align-items: center; gap: 0.3rem;
+    margin-top: 0.75rem;
+  }
+  .stars { color: var(--gold); font-size: 0.8rem; }
+  .rating-num { font-size: 0.8rem; color: var(--gray-light); font-weight: 600; }
+
+  /* ── HOW IT WORKS ── */
+  .how { background: var(--dark); }
+  .how-inner { max-width: 960px; margin: 0 auto; }
+  .how-header { text-align: center; margin-bottom: 4rem; }
+
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1rem; position: relative;
+  }
+  .steps-grid::before {
+    content: '';
+    position: absolute; top: 2rem; right: 12.5%; left: 12.5%;
+    height: 1px; background: linear-gradient(to left, transparent, var(--gold-dim) 50%, transparent);
+    z-index: 0;
+  }
+
+  .step-item { text-align: center; position: relative; z-index: 1; }
+  .step-num {
+    width: 4rem; height: 4rem; border-radius: 50%;
+    background: var(--dark2);
+    border: 1px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.2rem; font-weight: 900; color: var(--gold);
+    position: relative;
+  }
+  .step-num::after {
+    content: '';
+    position: absolute; inset: -4px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 70%);
+  }
+  .step-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .step-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.7; }
+
+  /* ── REVIEWS ── */
+  .reviews { background: var(--black); }
+  .reviews-header { text-align: center; margin-bottom: 3rem; }
+
+  .reviews-summary {
+    display: flex; align-items: center; justify-content: center;
+    gap: 3rem; margin-bottom: 3rem;
+    padding: 2rem; background: var(--dark2);
+    border-radius: 1.2rem; max-width: 600px; margin-left: auto; margin-right: auto;
+    border: 1px solid rgba(201,168,76,0.1);
+  }
+  .review-big-score {
+    font-size: 4rem; font-weight: 900; color: var(--gold); line-height: 1;
+  }
+  .review-big-stars { font-size: 1.5rem; color: var(--gold); margin-top: 0.25rem; }
+  .review-big-count { font-size: 0.85rem; color: var(--gray); margin-top: 0.25rem; }
+  .review-bars { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+  .review-bar-row { display: flex; align-items: center; gap: 0.75rem; }
+  .review-bar-label { font-size: 0.75rem; color: var(--gray); width: 1.5rem; text-align: center; }
+  .review-bar-track { flex: 1; height: 6px; background: var(--dark3); border-radius: 3px; }
+  .review-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(to left, var(--gold), var(--gold-dim)); }
+
+  .reviews-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem; max-width: 1000px; margin: 0 auto;
+  }
+
+  .review-card {
+    background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 1rem; padding: 1.5rem;
+    transition: border-color 0.3s;
+  }
+  .review-card:hover { border-color: rgba(201,168,76,0.2); }
+
+  .review-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+  .review-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--dark3), var(--gold-dim));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; font-weight: 700;
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--gold);
+  }
+  .review-name { font-size: 0.9rem; font-weight: 600; }
+  .review-date { font-size: 0.72rem; color: var(--gray); }
+  .review-stars { font-size: 0.75rem; color: var(--gold); margin-top: 0.15rem; }
+  .review-text { font-size: 0.83rem; color: var(--gray-light); line-height: 1.7; }
+  .review-service {
+    display: inline-block; margin-top: 0.75rem;
+    background: rgba(201,168,76,0.08);
+    color: var(--gold); font-size: 0.7rem; font-weight: 600;
+    padding: 0.2rem 0.6rem; border-radius: 2rem;
+    border: 1px solid rgba(201,168,76,0.15);
+  }
+
+  /* ── GALLERY ── */
+  .gallery { background: var(--dark); }
+  .gallery-header { text-align: center; margin-bottom: 3rem; }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 200px);
+    gap: 1rem; max-width: 1000px; margin: 0 auto;
+  }
+  .gallery-item {
+    background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 1rem; overflow: hidden;
+    position: relative; cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .gallery-item:hover { transform: scale(1.02); }
+  .gallery-item:first-child { grid-column: span 2; grid-row: span 2; }
+
+  .gallery-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, var(--dark2), var(--dark3));
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.5rem;
+  }
+  .gallery-placeholder-icon { font-size: 2rem; opacity: 0.3; }
+  .gallery-placeholder-text { font-size: 0.75rem; color: var(--gray); }
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 60%);
+    display: flex; align-items: flex-end; padding: 1rem;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-label { font-size: 0.8rem; font-weight: 600; color: var(--white); }
+
+  /* ── BOOKING CTA ── */
+  .booking-cta {
+    background: var(--black);
+    text-align: center;
+  }
+  .booking-cta-inner {
+    max-width: 700px; margin: 0 auto;
+    background: linear-gradient(135deg, var(--dark2), var(--dark3));
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 2rem; padding: 4rem 3rem;
+    position: relative; overflow: hidden;
+  }
+  .booking-cta-inner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 60%);
+  }
+  .booking-cta-inner > * { position: relative; z-index: 1; }
+  .booking-cta-title { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 900; margin-bottom: 1rem; }
+  .booking-cta-sub { font-size: 1rem; color: var(--gray); margin-bottom: 2rem; line-height: 1.7; }
+  .booking-cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  .qr-hint {
+    display: flex; align-items: center; gap: 0.75rem; justify-content: center;
+    margin-top: 2rem; padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .qr-box {
+    width: 56px; height: 56px;
+    background: var(--white-pure); border-radius: 0.5rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+  }
+  .qr-text { font-size: 0.82rem; color: var(--gray); text-align: right; line-height: 1.6; }
+  .qr-text strong { color: var(--white); display: block; margin-bottom: 0.1rem; }
+
+  /* ── TRUST BAR ── */
+  .trust-bar {
+    background: var(--dark2);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 1.5rem 4rem;
+    display: flex; align-items: center; justify-content: center;
+    gap: 4rem; flex-wrap: wrap;
+  }
+  .trust-item {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.83rem; color: var(--gray-light);
+  }
+  .trust-item span:first-child { color: var(--gold); font-size: 1.1rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 3rem 4rem 2rem;
+  }
+  .footer-inner {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 3rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+  }
+  .footer-brand {}
+  .footer-logo { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.75rem; }
+  .footer-logo span { color: var(--gold); }
+  .footer-tagline { font-size: 0.82rem; color: var(--gray); line-height: 1.7; max-width: 240px; }
+
+  .footer-links h4 { font-size: 0.8rem; font-weight: 700; color: var(--gold); margin-bottom: 1rem; letter-spacing: 0.08em; }
+  .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-links a { font-size: 0.82rem; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--white); }
+
+  .footer-contact h4 { font-size: 0.8rem; font-weight: 700; color: var(--gold); margin-bottom: 1rem; letter-spacing: 0.08em; }
+  .contact-item { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem; }
+  .contact-item span:first-child { font-size: 0.9rem; }
+  .contact-item span:last-child { font-size: 0.82rem; color: var(--gray-light); }
+
+  .footer-bottom {
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-copy { font-size: 0.75rem; color: var(--gray); }
+  .footer-socials { display: flex; gap: 0.75rem; }
+  .social-btn {
+    width: 34px; height: 34px;
+    background: var(--dark3); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none; font-size: 0.9rem;
+    transition: background 0.2s;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .social-btn:hover { background: rgba(201,168,76,0.15); }
+
+  /* ── MOBILE NAV MENU ── */
+  .mobile-menu {
+    display: none; position: fixed; inset: 0; z-index: 99;
+    background: rgba(10,10,10,0.98);
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 2rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-size: 1.5rem; font-weight: 600; color: var(--white);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--gold); }
+  .mobile-menu-close {
+    position: absolute; top: 1.5rem; left: 1.5rem;
+    font-size: 1.5rem; color: var(--gray); cursor: pointer; background: none; border: none;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeLeft {
+    from { opacity: 0; transform: translate(-20px, -50%); }
+    to { opacity: 1; transform: translate(0, -50%); }
+  }
+
+  .animate-up {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .animate-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .nav-hamburger { display: flex; }
+
+    .hero { padding: 7rem 1.5rem 3rem; flex-direction: column; min-height: auto; }
+    .hero-visual { display: none; }
+    .hero-title { font-size: 2.4rem; }
+    .hero-stats { gap: 1.5rem; }
+
+    section { padding: 4rem 1.5rem; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid::before { display: none; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gallery-item:first-child { grid-column: span 2; grid-row: span 1; height: 200px; }
+    .trust-bar { padding: 1.5rem; gap: 1.5rem; }
+    footer { padding: 2.5rem 1.5rem 1.5rem; }
+    .footer-inner { gap: 2rem; }
+    .booking-cta-inner { padding: 3rem 1.5rem; }
+  }
+
+  @media (max-width: 500px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .gallery-item:first-child { grid-column: span 1; }
+    .hero-stats { flex-wrap: wrap; gap: 1.2rem; }
+    .reviews-summary { flex-direction: column; gap: 1.5rem; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">✂️</div>
+    <span class="nav-logo-text">General <span>Barber</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">سرویس‌ها</a></li>
+    <li><a href="#team">تیم ما</a></li>
+    <li><a href="#gallery">گالری</a></li>
+    <li><a href="#reviews">نظرات</a></li>
+    <li><a href="#contact">تماس</a></li>
+  </ul>
+  <a href="#booking" class="nav-cta">رزرو نوبت</a>
+  <div class="nav-hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="toggleMenu()">✕</button>
+  <a href="#services" onclick="toggleMenu()">سرویس‌ها</a>
+  <a href="#team" onclick="toggleMenu()">تیم ما</a>
+  <a href="#gallery" onclick="toggleMenu()">گالری</a>
+  <a href="#reviews" onclick="toggleMenu()">نظرات</a>
+  <a href="#booking" onclick="toggleMenu()" style="color:var(--gold)">رزرو نوبت ✂️</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">آرایشگاه مردانه لوکس · کرج</div>
+    <h1 class="hero-title">
+      تجربه‌ای متفاوت<br>از <span>ظاهر شما</span>
+    </h1>
+    <p class="hero-subtitle">
+      در General Barber Shop، هر جلسه یک تجربه VIP است. کارمندان حرفه‌ای، محیط لوکس و نتیجه‌ای که از آینه لذت ببرید.
+    </p>
+    <div class="hero-actions">
+      <a href="#booking" class="btn-primary">✂️ رزرو آنلاین</a>
+      <a href="#services" class="btn-secondary">مشاهده سرویس‌ها ←</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">+۱۲۰۰</div>
+        <div class="stat-label">مشتری راضی</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">۴.۹</div>
+        <div class="stat-label">امتیاز میانگین</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">+۵۰۰۰</div>
+        <div class="stat-label">سرویس انجام‌شده</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="hero-card-inner"></div>
+      <div class="hero-scissors">✂</div>
+      <div class="hero-card-content">
+        <div class="hero-card-tag">⭐ محبوب‌ترین</div>
+        <div class="hero-card-title">کوتاهی + اصلاح ریش</div>
+        <div class="hero-card-sub">از ۳۵۰,۰۰۰ تومان · ۴۵ دقیقه</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span>✅</span><span>پرداخت امن آنلاین</span></div>
+  <div class="trust-item"><span>🔔</span><span>یادآوری SMS و واتساپ</span></div>
+  <div class="trust-item"><span>⭐</span><span>تضمین رضایت مشتری</span></div>
+  <div class="trust-item"><span>📍</span><span>کرج، البرز</span></div>
+  <div class="trust-item"><span>🕐</span><span>رزرو ۲۴ ساعته</span></div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header animate-up">
+    <div class="section-eyebrow">سرویس‌های ما</div>
+    <h2 class="section-title">هر چیزی که <span>نیاز دارید</span></h2>
+    <p class="section-sub">از کوتاهی کلاسیک تا خدمات پوست — همه با کیفیت VIP</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card animate-up">
+      <div class="service-badge">پرطرفدار</div>
+      <div class="service-icon">✂️</div>
+      <div class="service-name">کوتاهی مو</div>
+      <div class="service-desc">کوتاهی حرفه‌ای با تکنیک‌های روز دنیا، فید، تیپر و انواع استایل‌های مدرن</div>
+      <div class="service-price">از ۳۵۰,۰۰۰ تومان</div>
+      <div class="service-duration">⏱ ۳۰–۴۵ دقیقه</div>
+    </div>
+    <div class="service-card animate-up">
+      <div class="service-icon">🪒</div>
+      <div class="service-name">اصلاح ریش</div>
+      <div class="service-desc">شکل‌دهی و اصلاح ریش با تیغ کلاسیک، حوله داغ و روغن‌های مراقبتی لوکس</div>
+      <div class="service-price">از ۳۰۰,۰۰۰ تومان</div>
+      <div class="service-duration">⏱ ۲۰–۳۰ دقیقه</div>
+    </div>
+    <div class="service-card animate-up">
+      <div class="service-icon">🎨</div>
+      <div class="service-name">رنگ مو</div>
+      <div class="service-desc">رنگ‌آمیزی حرفه‌ای با برندهای درجه یک، هایلایت، بالیاژ و رنگ کامل</div>
+      <div class="service-price">از ۵۵۰,۰۰۰ تومان</div>
+      <div class="service-duration">⏱ ۶۰–۱۲۰ دقیقه</div>
+    </div>
+    <div class="service-card animate-up">
+      <div class="service-icon">〰️</div>
+      <div class="service-name">فر مو</div>
+      <div class="service-desc">انواع فر کراتینه، پرم و موج‌دار کردن با تکنیک‌های حرارتی و شیمیایی</div>
+      <div class="service-price">از ۸۰۰,۰۰۰ تومان</div>
+      <div class="service-duration">⏱ ۹۰–۱۵۰ دقیقه</div>
+    </div>
+    <div class="service-card animate-up">
+      <div class="service-icon">💆</div>
+      <div class="service-name">خدمات پوست</div>
+      <div class="service-desc">فیشیال مردانه، پاکسازی عمیق، ماسک و مراقبت از پوست صورت</div>
+      <div class="service-price">از ۴۵۰,۰۰۰ تومان</div>
+      <div class="service-duration">⏱ ۴۵–۶۰ دقیقه</div>
+    </div>
+    <div class="service-card animate-up">
+      <div class="service-icon">👑</div>
+      <div class="service-name">پکیج VIP کامل</div>
+      <div class="service-desc">کوتاهی + اصلاح ریش + خدمات پوست + ماساژ سر — تجربه کامل لوکس</div>
+      <div class="service-price">از ۱,۲۰۰,۰۰۰ تومان</div>
+      <div class="service-duration">⏱ ۱۲۰ دقیقه</div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team" id="team">
+  <div class="team-inner">
+    <div class="team-header animate-up">
+      <div class="section-eyebrow">تیم ما</div>
+      <h2 class="section-title">متخصصان <span>حرفه‌ای</span></h2>
+      <p class="section-sub">هر کارمند ما سال‌ها تجربه در آرایشگری مردانه دارد</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card animate-up">
+        <div class="team-avatar">👤</div>
+        <div class="team-info">
+          <div class="team-name">علی محمدی</div>
+          <div class="team-role">ارشد آرایشگر · متخصص کوتاهی و رنگ</div>
+          <div class="team-stats">
+            <div class="team-stat"><strong>+۸۰۰</strong> سرویس</div>
+            <div class="team-stat"><strong>۵ سال</strong> تجربه</div>
+          </div>
+          <div class="team-rating">
+            <span class="stars">★★★★★</span>
+            <span class="rating-num">۴.۹</span>
+          </div>
+        </div>
+      </div>
+      <div class="team-card animate-up">
+        <div class="team-avatar">👤</div>
+        <div class="team-info">
+          <div class="team-name">رضا احمدی</div>
+          <div class="team-role">آرایشگر · متخصص ریش و پوست</div>
+          <div class="team-stats">
+            <div class="team-stat"><strong>+۶۰۰</strong> سرویس</div>
+            <div class="team-stat"><strong>۳ سال</strong> تجربه</div>
+          </div>
+          <div class="team-rating">
+            <span class="stars">★★★★★</span>
+            <span class="rating-num">۴.۸</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="how-inner">
+    <div class="how-header animate-up">
+      <div class="section-eyebrow">نحوه کار</div>
+      <h2 class="section-title">رزرو در <span>۴ قدم ساده</span></h2>
+      <p class="section-sub">بدون تماس تلفنی، بدون انتظار — فقط از گوشیت رزرو کن</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-item animate-up">
+        <div class="step-num">۱</div>
+        <div class="step-title">انتخاب سرویس</div>
+        <div class="step-desc">از لیست سرویس‌ها، خدمات مورد نظرت رو انتخاب کن</div>
+      </div>
+      <div class="step-item animate-up">
+        <div class="step-num">۲</div>
+        <div class="step-title">انتخاب کارمند</div>
+        <div class="step-desc">متخصص مورد علاقه‌ات رو با دیدن پروفایل و امتیازش انتخاب کن</div>
+      </div>
+      <div class="step-item animate-up">
+        <div class="step-num">۳</div>
+        <div class="step-title">پرداخت آنلاین</div>
+        <div class="step-desc">پرداخت امن آنلاین — نوبتت رو تضمین کن</div>
+      </div>
+      <div class="step-item animate-up">
+        <div class="step-num">۴</div>
+        <div class="step-title">بیا و لذت ببر</div>
+        <div class="step-desc">یادآوری SMS می‌گیری، بیا و از تجربه VIP لذت ببر</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="gallery-header animate-up">
+    <div class="section-eyebrow">گالری کارها</div>
+    <h2 class="section-title">نتایج <span>واقعی</span></h2>
+    <p class="section-sub">قبل و بعد از سرویس‌های ما — ارسال‌شده توسط مشتریان</p>
+  </div>
+  <div class="gallery-grid animate-up">
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <div class="gallery-placeholder-icon">📸</div>
+        <div class="gallery-placeholder-text">کوتاهی + فید</div>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-label">کوتاهی فید کلاسیک</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <div class="gallery-placeholder-icon">📸</div>
+        <div class="gallery-placeholder-text">اصلاح ریش</div>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-label">ریش کلاسیک</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <div class="gallery-placeholder-icon">📸</div>
+        <div class="gallery-placeholder-text">رنگ مو</div>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-label">هایلایت</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <div class="gallery-placeholder-icon">📸</div>
+        <div class="gallery-placeholder-text">پکیج VIP</div>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-label">پکیج کامل VIP</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <div class="gallery-placeholder-icon">📸</div>
+        <div class="gallery-placeholder-text">استایل مدرن</div>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-label">استایل مدرن</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="reviews-header animate-up">
+    <div class="section-eyebrow">نظرات مشتریان</div>
+    <h2 class="section-title">مشتریان ما <span>چی می‌گن؟</span></h2>
+  </div>
+
+  <div class="reviews-summary animate-up">
+    <div>
+      <div class="review-big-score">۴.۹</div>
+      <div class="review-big-stars">★★★★★</div>
+      <div class="review-big-count">بر اساس ۲۸۰+ نظر</div>
+    </div>
+    <div class="review-bars">
+      <div class="review-bar-row">
+        <span class="review-bar-label">۵</span>
+        <div class="review-bar-track"><div class="review-bar-fill" style="width:88%"></div></div>
+      </div>
+      <div class="review-bar-row">
+        <span class="review-bar-label">۴</span>
+        <div class="review-bar-track"><div class="review-bar-fill" style="width:9%"></div></div>
+      </div>
+      <div class="review-bar-row">
+        <span class="review-bar-label">۳</span>
+        <div class="review-bar-track"><div class="review-bar-fill" style="width:2%"></div></div>
+      </div>
+      <div class="review-bar-row">
+        <span class="review-bar-label">۲</span>
+        <div class="review-bar-track"><div class="review-bar-fill" style="width:1%"></div></div>
+      </div>
+      <div class="review-bar-row">
+        <span class="review-bar-label">۱</span>
+        <div class="review-bar-track"><div class="review-bar-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reviews-grid">
+    <div class="review-card animate-up">
+      <div class="review-header">
+        <div class="review-avatar">م</div>
+        <div>
+          <div class="review-name">محمد رضایی</div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-date">۱۵ آبان ۱۴۰۳</div>
+        </div>
+      </div>
+      <p class="review-text">بهترین آرایشگاه کرج! کارمندان واقعاً حرفه‌ای هستن. محیط لوکس و خدمات فوق‌العاده. حتماً بازمی‌گردم.</p>
+      <span class="review-service">کوتاهی + اصلاح ریش</span>
+    </div>
+    <div class="review-card animate-up">
+      <div class="review-header">
+        <div class="review-avatar">ا</div>
+        <div>
+          <div class="review-name">امیر حسینی</div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-date">۲ آذر ۱۴۰۳</div>
+        </div>
+      </div>
+      <p class="review-text">رزرو آنلاین خیلی راحته. نوبت گرفتم، پرداخت کردم و رفتم. هیچ معطلی نداشتم. رضا آقا واقعاً استاده.</p>
+      <span class="review-service">پکیج VIP کامل</span>
+    </div>
+    <div class="review-card animate-up">
+      <div class="review-header">
+        <div class="review-avatar">س</div>
+        <div>
+          <div class="review-name">سینا کریمی</div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-date">۱۸ آذر ۱۴۰۳</div>
+        </div>
+      </div>
+      <p class="review-text">رنگم رو اینجا زدم. نتیجه دقیقاً همون چیزی بود که می‌خواستم. محیط آرایشگاه خیلی خوشگل و مجهزه.</p>
+      <span class="review-service">رنگ مو - هایلایت</span>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING CTA -->
+<section class="booking-cta" id="booking">
+  <div class="booking-cta-inner animate-up">
+    <div class="section-eyebrow" style="justify-content:center">آماده‌ای؟</div>
+    <h2 class="booking-cta-title">نوبتت رو همین الان <span style="color:var(--gold)">رزرو کن</span></h2>
+    <p class="booking-cta-sub">
+      فقط چند کلیک تا تجربه یه آرایشگاه واقعاً VIP.<br>
+      پرداخت آنلاین · یادآوری خودکار · بدون معطلی
+    </p>
+    <div class="booking-cta-actions">
+      <a href="#" class="btn-primary">✂️ رزرو آنلاین</a>
+      <a href="tel:09120000000" class="btn-secondary">📞 تماس با ما</a>
+    </div>
+    <div class="qr-hint">
+      <div class="qr-box">📱</div>
+      <div class="qr-text">
+        <strong>رزرو از طریق QR Code</strong>
+        کد را اسکن کن و مستقیم رزرو کن
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">General <span>Barber</span> Shop</div>
+      <p class="footer-tagline">آرایشگاه مردانه لوکس VIP در کرج — جایی که ظاهرت اهمیت داره.</p>
+    </div>
+    <div class="footer-links">
+      <h4>سرویس‌ها</h4>
+      <ul>
+        <li><a href="#services">کوتاهی مو</a></li>
+        <li><a href="#services">اصلاح ریش</a></li>
+        <li><a href="#services">رنگ مو</a></li>
+        <li><a href="#services">خدمات پوست</a></li>
+        <li><a href="#services">پکیج VIP</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>دسترسی سریع</h4>
+      <ul>
+        <li><a href="#team">تیم ما</a></li>
+        <li><a href="#gallery">گالری</a></li>
+        <li><a href="#reviews">نظرات</a></li>
+        <li><a href="#booking">رزرو نوبت</a></li>
+      </ul>
+    </div>
+    <div class="footer-contact" id="contact-section">
+      <h4>تماس با ما</h4>
+      <div class="contact-item"><span>📍</span><span>کرج، البرز</span></div>
+      <div class="contact-item"><span>📞</span><span>۰۹۱۲-۰۰۰-۰۰۰۰</span></div>
+      <div class="contact-item"><span>🕐</span><span>شنبه تا پنج‌شنبه، ۹ صبح تا ۱۰ شب</span></div>
+      <div class="contact-item"><span>📱</span><span>واتساپ: ۰۹۱۲-۰۰۰-۰۰۰۰</span></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© ۱۴۰۳ General Barber Shop — تمام حقوق محفوظ است</span>
+    <div class="footer-socials">
+      <a href="#" class="social-btn">📸</a>
+      <a href="#" class="social-btn">💬</a>
+      <a href="#" class="social-btn">📱</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.animate-up').forEach(el => observer.observe(el));
+
+  // Nav shrink on scroll
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    if (window.scrollY > 60) {
+      nav.style.padding = '0.75rem 4rem';
+    } else {
+      nav.style.padding = '1.2rem 4rem';
+    }
+  });
+
+  // Mobile menu
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+</script>
+<script src="api.js"></script>
+<script src="chatbot-widget.js"></script>
+</body>
+</html>

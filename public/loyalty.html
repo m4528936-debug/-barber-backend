@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>امتیاز و وفاداری | General Barber Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A84C;--gold-light:#E8C97A;--gold-dim:#8B6914;
+  --black:#0A0A0A;--dark:#111111;--dark2:#1A1A1A;--dark3:#222222;
+  --gray:#888888;--gray-light:#BBBBBB;--white:#F5F0E8;
+  --green:#4CAF50;--red:#E53935;--blue:#2196F3;
+  --bronze:#CD7F32;--silver:#A8A9AD;--platinum:#E5E4E2;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Vazirmatn',sans-serif;background:var(--black);color:var(--white);min-height:100vh;}
+
+/* ── TOPBAR ── */
+.topbar{
+  background:rgba(10,10,10,0.95);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(201,168,76,0.1);
+  padding:1rem 1.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.topbar-logo{font-size:1rem;font-weight:800;}
+.topbar-logo span{color:var(--gold);}
+.topbar-back{display:flex;align-items:center;gap:0.5rem;color:var(--gray);font-size:0.82rem;
+  text-decoration:none;transition:color 0.2s;background:none;border:none;cursor:pointer;font-family:'Vazirmatn',sans-serif;}
+.topbar-back:hover{color:var(--gold);}
+.topbar-wallet{display:flex;align-items:center;gap:0.5rem;background:rgba(201,168,76,0.1);
+  border:1px solid rgba(201,168,76,0.2);border-radius:2rem;padding:0.4rem 1rem;font-size:0.82rem;font-weight:700;color:var(--gold);}
+
+/* ── HERO ── */
+.hero{
+  padding:2rem 1.5rem 1rem;
+  background:linear-gradient(160deg,rgba(201,168,76,0.06) 0%,transparent 50%);
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.user-row{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;}
+.user-avatar{
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,var(--dark3),var(--gold-dim));
+  border:2px solid rgba(201,168,76,0.3);
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  position:relative;
+}
+.tier-badge-avatar{
+  position:absolute;bottom:-4px;right:-4px;
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:0.7rem;
+  border:2px solid var(--black);
+}
+.user-name{font-size:1.1rem;font-weight:800;}
+.user-since{font-size:0.75rem;color:var(--gray);margin-top:0.2rem;}
+
+/* ── TIER CARD ── */
+.tier-card{
+  border-radius:1.25rem;padding:1.5rem;margin-bottom:1.5rem;
+  position:relative;overflow:hidden;
+}
+.tier-card.bronze{background:linear-gradient(135deg,#2A1A0A,#3D2410);border:1px solid rgba(205,127,50,0.3);}
+.tier-card.silver{background:linear-gradient(135deg,#1A1A20,#2A2A35);border:1px solid rgba(168,169,173,0.3);}
+.tier-card.gold{background:linear-gradient(135deg,#1A1500,#2A2000);border:1px solid rgba(201,168,76,0.4);}
+
+.tier-label{font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.5rem;}
+.tier-label.bronze{color:var(--bronze);}
+.tier-label.silver{color:var(--silver);}
+.tier-label.gold{color:var(--gold);}
+
+.tier-name{font-size:1.6rem;font-weight:900;margin-bottom:0.25rem;}
+.tier-name.bronze{color:var(--bronze);}
+.tier-name.silver{color:var(--silver);}
+.tier-name.gold{color:var(--gold-light);}
+
+.tier-desc{font-size:0.8rem;color:var(--gray-light);margin-bottom:1.25rem;}
+
+.tier-progress-label{display:flex;justify-content:space-between;margin-bottom:0.5rem;}
+.tier-progress-label span{font-size:0.75rem;color:var(--gray-light);}
+.tier-progress-label strong{font-size:0.75rem;color:var(--gold);}
+.tier-track{height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;}
+.tier-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+.tier-fill.bronze{background:linear-gradient(to left,var(--bronze),#8B4513);}
+.tier-fill.silver{background:linear-gradient(to left,var(--silver),#888);}
+.tier-fill.gold{background:linear-gradient(to left,var(--gold-light),var(--gold));}
+
+.tier-bg-icon{position:absolute;left:-10px;top:-10px;font-size:6rem;opacity:0.05;}
+
+/* ── POINTS ── */
+.points-section{padding:1.5rem;}
+
+.points-big{
+  background:var(--dark2);border:1px solid rgba(201,168,76,0.15);
+  border-radius:1.25rem;padding:1.5rem;margin-bottom:1rem;
+  display:flex;align-items:center;gap:1.25rem;
+}
+.points-circle{
+  width:80px;height:80px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));
+  border:2px solid rgba(201,168,76,0.3);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.points-num{font-size:1.5rem;font-weight:900;color:var(--gold);line-height:1;}
+.points-unit{font-size:0.6rem;color:var(--gray);margin-top:0.1rem;}
+.points-info{}
+.points-title{font-size:1rem;font-weight:700;margin-bottom:0.25rem;}
+.points-sub{font-size:0.78rem;color:var(--gray);line-height:1.6;}
+.points-equiv{
+  display:inline-block;margin-top:0.5rem;
+  background:rgba(76,175,80,0.1);color:var(--green);
+  font-size:0.75rem;font-weight:700;padding:0.25rem 0.75rem;
+  border-radius:2rem;border:1px solid rgba(76,175,80,0.2);
+}
+
+/* ── STATS ROW ── */
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;margin-bottom:1rem;}
+.mini-stat{
+  background:var(--dark2);border:1px solid rgba(255,255,255,0.05);
+  border-radius:1rem;padding:1rem;text-align:center;
+}
+.mini-stat-val{font-size:1.2rem;font-weight:900;margin-bottom:0.25rem;}
+.mini-stat-label{font-size:0.68rem;color:var(--gray);line-height:1.4;}
+
+/* ── SECTION HEADER ── */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.875rem;}
+.section-title{font-size:0.95rem;font-weight:700;}
+.section-more{font-size:0.75rem;color:var(--gold);background:none;border:none;
+  font-family:'Vazirmatn',sans-serif;cursor:pointer;}
+
+/* ── USE POINTS ── */
+.use-points-card{
+  background:var(--dark2);border:1px solid rgba(201,168,76,0.15);
+  border-radius:1.25rem;padding:1.25rem;margin-bottom:1rem;
+}
+.use-slider-label{display:flex;justify-content:space-between;margin-bottom:0.75rem;}
+.use-slider-label span{font-size:0.8rem;color:var(--gray-light);}
+.use-slider-label strong{font-size:0.8rem;color:var(--gold);}
+input[type=range]{
+  width:100%;height:6px;border-radius:3px;
+  background:var(--dark3);outline:none;
+  -webkit-appearance:none;margin-bottom:0.75rem;cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+  background:var(--gold);cursor:pointer;border:2px solid var(--black);
+  box-shadow:0 0 8px rgba(201,168,76,0.4);
+}
+.slider-result{
+  background:var(--dark3);border-radius:0.75rem;padding:0.875rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.slider-result-label{font-size:0.8rem;color:var(--gray-light);}
+.slider-result-val{font-size:1rem;font-weight:800;color:var(--green);}
+.btn-use-points{
+  width:100%;margin-top:0.875rem;padding:0.75rem;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dim));
+  color:var(--black);font-weight:800;font-size:0.9rem;
+  border:none;border-radius:0.75rem;cursor:pointer;
+  font-family:'Vazirmatn',sans-serif;transition:opacity 0.2s;
+}
+.btn-use-points:hover{opacity:0.88;}
+
+/* ── TIERS INFO ── */
+.tiers-grid{display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1rem;}
+.tier-info-card{
+  background:var(--dark2);border-radius:1rem;padding:1rem;
+  display:flex;align-items:flex-start;gap:1rem;
+  border:1px solid rgba(255,255,255,0.05);transition:border-color 0.3s;
+}
+.tier-info-card.active-tier{border-color:rgba(201,168,76,0.3);}
+.tier-icon{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+}
+.tier-icon.bronze{background:rgba(205,127,50,0.15);border:1px solid rgba(205,127,50,0.3);}
+.tier-icon.silver{background:rgba(168,169,173,0.15);border:1px solid rgba(168,169,173,0.3);}
+.tier-icon.gold{background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);}
+.tier-info-title{font-size:0.9rem;font-weight:700;margin-bottom:0.25rem;}
+.tier-info-title.bronze{color:var(--bronze);}
+.tier-info-title.silver{color:var(--silver);}
+.tier-info-title.gold{color:var(--gold);}
+.tier-info-req{font-size:0.72rem;color:var(--gray);margin-bottom:0.5rem;}
+.tier-perks{display:flex;flex-direction:column;gap:0.3rem;}
+.perk-item{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;color:var(--gray-light);}
+.perk-item::before{content:'✓';color:var(--green);font-weight:700;font-size:0.7rem;}
+.tier-current-badge{
+  margin-right:auto;flex-shrink:0;
+  background:rgba(201,168,76,0.1);color:var(--gold);
+  font-size:0.65rem;font-weight:700;padding:0.2rem 0.5rem;
+  border-radius:2rem;border:1px solid rgba(201,168,76,0.2);
+}
+
+/* ── HISTORY ── */
+.history-list{display:flex;flex-direction:column;gap:0;margin-bottom:1rem;}
+.history-item{
+  display:flex;align-items:center;gap:0.875rem;
+  padding:0.875rem 0;border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.history-item:last-child{border-bottom:none;}
+.history-icon{
+  width:38px;height:38px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:1rem;
+}
+.history-icon.earn{background:rgba(76,175,80,0.12);border:1px solid rgba(76,175,80,0.2);}
+.history-icon.spend{background:rgba(229,57,53,0.12);border:1px solid rgba(229,57,53,0.2);}
+.history-icon.bonus{background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.2);}
+.history-info{flex:1;}
+.history-title{font-size:0.85rem;font-weight:600;}
+.history-date{font-size:0.72rem;color:var(--gray);margin-top:0.1rem;}
+.history-pts{font-size:0.9rem;font-weight:800;}
+.history-pts.plus{color:var(--green);}
+.history-pts.minus{color:var(--red);}
+
+/* ── REFERRAL ── */
+.referral-card{
+  background:linear-gradient(135deg,var(--dark2),var(--dark3));
+  border:1px solid rgba(201,168,76,0.2);border-radius:1.25rem;
+  padding:1.5rem;margin-bottom:1rem;text-align:center;
+  position:relative;overflow:hidden;
+}
+.referral-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,168,76,0.07) 0%,transparent 60%);
+}
+.referral-card>*{position:relative;z-index:1;}
+.referral-title{font-size:1rem;font-weight:800;margin-bottom:0.4rem;}
+.referral-sub{font-size:0.8rem;color:var(--gray);margin-bottom:1.25rem;line-height:1.6;}
+.referral-code-box{
+  background:var(--dark3);border:1px dashed rgba(201,168,76,0.4);
+  border-radius:0.75rem;padding:0.875rem;margin-bottom:1rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.referral-code{font-size:1.2rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;font-family:monospace;}
+.btn-copy{
+  background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.3);
+  border-radius:0.5rem;padding:0.4rem 0.875rem;font-size:0.75rem;font-weight:700;
+  cursor:pointer;font-family:'Vazirmatn',sans-serif;transition:all 0.2s;
+}
+.btn-copy:hover{background:rgba(201,168,76,0.2);}
+.referral-stats{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+.ref-stat{background:var(--dark3);border-radius:0.75rem;padding:0.75rem;text-align:center;}
+.ref-stat-val{font-size:1.2rem;font-weight:900;color:var(--gold);}
+.ref-stat-label{font-size:0.7rem;color:var(--gray);margin-top:0.2rem;}
+
+/* ── SUBSCRIPTION ── */
+.sub-cards{display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1rem;}
+.sub-card{
+  background:var(--dark2);border:1px solid rgba(255,255,255,0.06);
+  border-radius:1rem;padding:1.1rem;display:flex;align-items:center;gap:1rem;
+  transition:border-color 0.3s;cursor:pointer;
+}
+.sub-card:hover{border-color:rgba(201,168,76,0.3);}
+.sub-card.recommended{border-color:rgba(201,168,76,0.35);position:relative;}
+.sub-badge-rec{
+  position:absolute;top:-10px;right:1rem;
+  background:var(--gold);color:var(--black);
+  font-size:0.65rem;font-weight:800;padding:0.2rem 0.6rem;border-radius:2rem;
+}
+.sub-icon{width:44px;height:44px;border-radius:0.75rem;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.sub-name{font-size:0.9rem;font-weight:700;margin-bottom:0.2rem;}
+.sub-desc{font-size:0.75rem;color:var(--gray);line-height:1.5;}
+.sub-price{margin-right:auto;text-align:left;flex-shrink:0;}
+.sub-price-num{font-size:1rem;font-weight:900;color:var(--gold);}
+.sub-price-per{font-size:0.68rem;color:var(--gray);}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(17,17,17,0.97);backdrop-filter:blur(16px);
+  border-top:1px solid rgba(255,255,255,0.06);
+  display:flex;padding:0.5rem 0 calc(0.5rem + env(safe-area-inset-bottom));
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:0.25rem;
+  padding:0.4rem;background:none;border:none;cursor:pointer;
+  color:var(--gray);font-family:'Vazirmatn',sans-serif;transition:color 0.2s;
+}
+.nav-btn.active{color:var(--gold);}
+.nav-btn-icon{font-size:1.2rem;}
+.nav-btn-label{font-size:0.6rem;font-weight:600;}
+
+/* ── TAB BAR ── */
+.tab-bar{display:flex;background:var(--dark2);border-radius:0.875rem;padding:0.25rem;margin-bottom:1.25rem;}
+.tab-btn{flex:1;padding:0.5rem;border-radius:0.6rem;border:none;background:transparent;
+  color:var(--gray);font-family:'Vazirmatn',sans-serif;font-size:0.78rem;font-weight:600;
+  cursor:pointer;transition:all 0.2s;}
+.tab-btn.active{background:var(--dark3);color:var(--gold);border:1px solid rgba(201,168,76,0.2);}
+
+/* ── SCROLL CONTENT ── */
+.scroll-content{padding-bottom:80px;}
+
+/* ── ANIMATIONS ── */
+@keyframes countUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.count-anim{animation:countUp 0.6s ease both;}
+
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.shimmer-gold{
+  background:linear-gradient(90deg,var(--gold-dim),var(--gold-light),var(--gold-dim));
+  background-size:200% auto;animation:shimmer 3s linear infinite;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+  background:var(--dark2);border:1px solid rgba(201,168,76,0.3);
+  border-radius:2rem;padding:0.6rem 1.25rem;font-size:0.82rem;font-weight:600;
+  color:var(--gold);opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:100;
+  white-space:nowrap;
+}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <button class="topbar-back" onclick="history.back()">← بازگشت</button>
+  <div class="topbar-logo">General <span>Barber</span></div>
+  <div class="topbar-wallet">👛 ۱۲۰,۰۰۰</div>
+</div>
+
+<div class="scroll-content">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="user-row">
+      <div class="user-avatar">
+        👤
+        <div class="tier-badge-avatar" style="background:var(--gold);color:var(--black)">🥇</div>
+      </div>
+      <div>
+        <div class="user-name">مشتری عزیز</div>
+        <div class="user-since">عضو از فروردین ۱۴۰۲ · ۲۴ مراجعه</div>
+      </div>
+    </div>
+
+    <!-- TIER CARD -->
+    <div class="tier-card gold">
+      <div class="tier-bg-icon">👑</div>
+      <div class="tier-label gold">سطح فعلی</div>
+      <div class="tier-name gold shimmer-gold">طلایی 👑</div>
+      <div class="tier-desc">شما در بالاترین سطح وفاداری هستید — از مزایای ویژه لذت ببرید!</div>
+      <div class="tier-progress-label">
+        <span>پیشرفت در سطح طلا</span>
+        <strong>۲,۴۰۰ / ۳,۰۰۰ امتیاز</strong>
+      </div>
+      <div class="tier-track">
+        <div class="tier-fill gold" style="width:80%"></div>
+      </div>
+      <div style="margin-top:0.75rem;font-size:0.75rem;color:var(--gray-light)">
+        ۶۰۰ امتیاز دیگه تا تمدید سطح طلا برای ماه آینده
+      </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="stats-row count-anim">
+      <div class="mini-stat">
+        <div class="mini-stat-val" style="color:var(--gold)">۲,۴۰۰</div>
+        <div class="mini-stat-label">امتیاز فعلی</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-val" style="color:var(--green)">۲۴۰,۰۰۰</div>
+        <div class="mini-stat-label">ارزش امتیاز (تومان)</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-val" style="color:var(--blue)">۱۲</div>
+        <div class="mini-stat-label">دوست معرفی‌شده</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POINTS SECTION -->
+  <div class="points-section">
+
+    <!-- TAB BAR -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="showTab('points',this)">💎 امتیاز</button>
+      <button class="tab-btn" onclick="showTab('tiers',this)">🏆 سطح‌ها</button>
+      <button class="tab-btn" onclick="showTab('referral',this)">👥 معرفی</button>
+      <button class="tab-btn" onclick="showTab('subscription',this)">👑 اشتراک</button>
+    </div>
+
+    <!-- TAB: POINTS -->
+    <div id="tab-points">
+
+      <!-- امتیاز کلی -->
+      <div class="points-big">
+        <div class="points-circle">
+          <div class="points-num">۲,۴۰۰</div>
+          <div class="points-unit">امتیاز</div>
+        </div>
+        <div class="points-info">
+          <div class="points-title">امتیاز قابل استفاده</div>
+          <div class="points-sub">هر ۱۰۰ امتیاز = ۱۰,۰۰۰ تومان تخفیف<br>بدون تاریخ انقضا</div>
+          <div class="points-equiv">معادل ۲۴۰,۰۰۰ تومان تخفیف</div>
+        </div>
+      </div>
+
+      <!-- استفاده از امتیاز -->
+      <div class="section-header">
+        <span class="section-title">💳 استفاده از امتیاز</span>
+      </div>
+      <div class="use-points-card">
+        <div class="use-slider-label">
+          <span>چند امتیاز استفاده کنی؟</span>
+          <strong id="sliderVal">۵۰۰ امتیاز</strong>
+        </div>
+        <input type="range" min="100" max="2400" step="100" value="500" id="pointsSlider" oninput="updateSlider(this.value)">
+        <div class="slider-result">
+          <div>
+            <div class="slider-result-label">تخفیف دریافتی</div>
+            <div class="slider-result-val" id="discountVal">۵۰,۰۰۰ تومان</div>
+          </div>
+          <div style="text-align:left">
+            <div class="slider-result-label">امتیاز باقی‌مانده</div>
+            <div style="font-size:0.9rem;font-weight:700;color:var(--gray-light)" id="remainVal">۱,۹۰۰ امتیاز</div>
+          </div>
+        </div>
+        <button class="btn-use-points" onclick="showToast('✅ امتیاز در رزرو بعدی اعمال می‌شه!')">استفاده از امتیاز در نوبت بعدی</button>
+      </div>
+
+      <!-- تاریخچه -->
+      <div class="section-header">
+        <span class="section-title">📋 تاریخچه امتیاز</span>
+        <button class="section-more">همه ←</button>
+      </div>
+      <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;padding:0.25rem 1rem;">
+        <div class="history-list">
+          <div class="history-item">
+            <div class="history-icon earn">⭐</div>
+            <div class="history-info">
+              <div class="history-title">کوتاهی + اصلاح ریش</div>
+              <div class="history-date">۱۵ آذر ۱۴۰۳</div>
+            </div>
+            <div class="history-pts plus">+۱۰۰</div>
+          </div>
+          <div class="history-item">
+            <div class="history-icon bonus">🎁</div>
+            <div class="history-info">
+              <div class="history-title">پاداش معرفی دوست</div>
+              <div class="history-date">۱۰ آذر ۱۴۰۳</div>
+            </div>
+            <div class="history-pts plus">+۲۰۰</div>
+          </div>
+          <div class="history-item">
+            <div class="history-icon spend">💸</div>
+            <div class="history-info">
+              <div class="history-title">استفاده از امتیاز در نوبت</div>
+              <div class="history-date">۵ آذر ۱۴۰۳</div>
+            </div>
+            <div class="history-pts minus">-۳۰۰</div>
+          </div>
+          <div class="history-item">
+            <div class="history-icon earn">⭐</div>
+            <div class="history-info">
+              <div class="history-title">پکیج VIP کامل</div>
+              <div class="history-date">۱ آذر ۱۴۰۳</div>
+            </div>
+            <div class="history-pts plus">+۱۰۰</div>
+          </div>
+          <div class="history-item">
+            <div class="history-icon bonus">👑</div>
+            <div class="history-info">
+              <div class="history-title">پاداش ارتقاء به سطح طلا</div>
+              <div class="history-date">۲۰ آبان ۱۴۰۳</div>
+            </div>
+            <div class="history-pts plus">+۵۰۰</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: TIERS -->
+    <div id="tab-tiers" style="display:none">
+      <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;padding:1rem;margin-bottom:1rem;font-size:0.82rem;color:var(--gray-light);line-height:1.7;">
+        هر بار که نوبت می‌گیری <strong style="color:var(--gold)">۱۰۰ امتیاز</strong> کسب می‌کنی. با جمع‌آوری امتیاز بیشتر، به سطوح بالاتر می‌رسی و از تخفیف‌های بیشتر لذت می‌بری.
+      </div>
+
+      <div class="tiers-grid">
+        <!-- Bronze -->
+        <div class="tier-info-card">
+          <div class="tier-icon bronze">🥉</div>
+          <div style="flex:1">
+            <div class="tier-info-title bronze">برنزی</div>
+            <div class="tier-info-req">۰ تا ۹۹۹ امتیاز</div>
+            <div class="tier-perks">
+              <div class="perk-item">۵٪ تخفیف روی همه سرویس‌ها</div>
+              <div class="perk-item">دسترسی به کد معرفی</div>
+              <div class="perk-item">رزرو آنلاین</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Silver -->
+        <div class="tier-info-card">
+          <div class="tier-icon silver">🥈</div>
+          <div style="flex:1">
+            <div class="tier-info-title silver">نقره‌ای</div>
+            <div class="tier-info-req">۱,۰۰۰ تا ۱,۹۹۹ امتیاز</div>
+            <div class="tier-perks">
+              <div class="perk-item">۱۰٪ تخفیف روی همه سرویس‌ها</div>
+              <div class="perk-item">پاداش معرفی دوبرابر</div>
+              <div class="perk-item">یادآوری اختصاصی</div>
+              <div class="perk-item">اولویت در لیست انتظار</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gold -->
+        <div class="tier-info-card active-tier">
+          <div class="tier-icon gold">🥇</div>
+          <div style="flex:1">
+            <div class="tier-info-title gold">طلایی</div>
+            <div class="tier-info-req">۲,۰۰۰+ امتیاز</div>
+            <div class="tier-perks">
+              <div class="perk-item">۱۵٪ تخفیف روی همه سرویس‌ها</div>
+              <div class="perk-item">پاداش معرفی سه‌برابر</div>
+              <div class="perk-item">پکیج VIP با تخفیف ویژه</div>
+              <div class="perk-item">دسترسی زودتر به نوبت‌های خاص</div>
+              <div class="perk-item">هدیه ویژه ماهانه</div>
+            </div>
+          </div>
+          <div class="tier-current-badge">سطح شما ✓</div>
+        </div>
+      </div>
+
+      <div style="background:var(--dark2);border:1px solid rgba(201,168,76,0.1);border-radius:1rem;padding:1rem;text-align:center;">
+        <div style="font-size:0.85rem;font-weight:700;margin-bottom:0.4rem">سطح طلا تا پایان ماه آینده تضمین‌شده‌ست</div>
+        <div style="font-size:0.78rem;color:var(--gray);line-height:1.6">برای تمدید، ۶۰۰ امتیاز دیگه در ۱۳ روز آینده کسب کن</div>
+        <div style="margin-top:0.875rem;background:var(--dark3);border-radius:0.75rem;padding:0.5rem">
+          <div style="display:flex;justify-content:space-between;margin-bottom:0.4rem;font-size:0.72rem;color:var(--gray)"><span>پیشرفت تمدید</span><span style="color:var(--gold)">۲,۴۰۰ / ۳,۰۰۰</span></div>
+          <div style="height:6px;background:var(--dark2);border-radius:3px"><div style="height:100%;width:80%;border-radius:3px;background:linear-gradient(to left,var(--gold-light),var(--gold))"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: REFERRAL -->
+    <div id="tab-referral" style="display:none">
+      <div class="referral-card">
+        <div style="font-size:2rem;margin-bottom:0.5rem">🎁</div>
+        <div class="referral-title">دوستات رو دعوت کن، هر دو جایزه بگیرید!</div>
+        <div class="referral-sub">
+          وقتی دوستت با کد تو ثبت‌نام کنه و اولین نوبتش رو بگیره،<br>
+          <strong style="color:var(--gold)">تو ۲۰۰ امتیاز</strong> و <strong style="color:var(--green)">اون ۱۰۰ امتیاز</strong> هدیه می‌گیرید!
+        </div>
+        <div class="referral-code-box">
+          <div class="referral-code" id="myCode">GEN-M48X</div>
+          <button class="btn-copy" onclick="copyCode()">📋 کپی</button>
+        </div>
+        <button style="width:100%;padding:0.75rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:800;font-size:0.9rem;border:none;border-radius:0.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;margin-bottom:1rem;" onclick="shareCode()">
+          📤 اشتراک‌گذاری لینک معرفی
+        </button>
+        <div class="referral-stats">
+          <div class="ref-stat">
+            <div class="ref-stat-val">۱۲</div>
+            <div class="ref-stat-label">دوست معرفی‌شده</div>
+          </div>
+          <div class="ref-stat">
+            <div class="ref-stat-val" style="color:var(--green)">۲,۴۰۰</div>
+            <div class="ref-stat-label">امتیاز از معرفی</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <span class="section-title">📋 تاریخچه معرفی‌ها</span>
+      </div>
+      <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;padding:0.25rem 1rem;">
+        <div class="history-item">
+          <div class="history-icon bonus">👤</div>
+          <div class="history-info"><div class="history-title">دوست جدید ثبت‌نام کرد</div><div class="history-date">۱۲ آذر ۱۴۰۳</div></div>
+          <div class="history-pts plus">+۲۰۰</div>
+        </div>
+        <div class="history-item">
+          <div class="history-icon bonus">👤</div>
+          <div class="history-info"><div class="history-title">دوست جدید ثبت‌نام کرد</div><div class="history-date">۵ آذر ۱۴۰۳</div></div>
+          <div class="history-pts plus">+۲۰۰</div>
+        </div>
+        <div class="history-item">
+          <div class="history-icon bonus">👤</div>
+          <div class="history-info"><div class="history-title">دوست جدید ثبت‌نام کرد</div><div class="history-date">۲۸ آبان ۱۴۰۳</div></div>
+          <div class="history-pts plus">+۲۰۰</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: SUBSCRIPTION -->
+    <div id="tab-subscription" style="display:none">
+      <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;padding:1rem;margin-bottom:1rem;font-size:0.82rem;color:var(--gray-light);line-height:1.7;">
+        با اشتراک ماهانه، هزینه کمتری می‌پردازی و از مزایای بیشتری لذت می‌بری. نوبت‌ها قبل از دیگران برای تو رزرو می‌شن.
+      </div>
+
+      <div class="sub-cards">
+        <!-- ماهانه -->
+        <div class="sub-card" onclick="selectSub(this)">
+          <div class="sub-icon" style="background:rgba(33,150,243,0.12);border:1px solid rgba(33,150,243,0.2)">🔵</div>
+          <div>
+            <div class="sub-name">اشتراک ماهانه</div>
+            <div class="sub-desc">۳ سرویس در ماه · ۱۰٪ تخفیف · یادآوری خودکار</div>
+          </div>
+          <div class="sub-price">
+            <div class="sub-price-num">۸۰۰K</div>
+            <div class="sub-price-per">در ماه</div>
+          </div>
+        </div>
+
+        <!-- فصلی (پیشنهادی) -->
+        <div class="sub-card recommended" onclick="selectSub(this)">
+          <div class="sub-badge-rec">⭐ پیشنهادی</div>
+          <div class="sub-icon" style="background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.2)">⭐</div>
+          <div>
+            <div class="sub-name">اشتراک فصلی</div>
+            <div class="sub-desc">۳ ماه · ۱۵٪ تخفیف · اولویت رزرو · +۳۰۰ امتیاز هدیه</div>
+          </div>
+          <div class="sub-price">
+            <div class="sub-price-num">۲.۱M</div>
+            <div class="sub-price-per">سه ماه</div>
+          </div>
+        </div>
+
+        <!-- VIP -->
+        <div class="sub-card" onclick="selectSub(this)">
+          <div class="sub-icon" style="background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3)">👑</div>
+          <div>
+            <div class="sub-name">اشتراک VIP</div>
+            <div class="sub-desc">نامحدود · ۲۰٪ تخفیف · خدمات پوست رایگان ماهانه · +۵۰۰ امتیاز</div>
+          </div>
+          <div class="sub-price">
+            <div class="sub-price-num">۱.۵M</div>
+            <div class="sub-price-per">در ماه</div>
+          </div>
+        </div>
+      </div>
+
+      <button style="width:100%;padding:0.875rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:800;font-size:0.95rem;border:none;border-radius:0.875rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;" onclick="showToast('🎉 به زودی فعال‌سازی اشتراک آماده می‌شه!')">
+        فعال‌سازی اشتراک
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn" onclick="showToast('صفحه اصلی')"><div class="nav-btn-icon">🏠</div><div class="nav-btn-label">خانه</div></button>
+  <button class="nav-btn" onclick="showToast('نوبت‌های من')"><div class="nav-btn-icon">📅</div><div class="nav-btn-label">نوبت‌ها</div></button>
+  <button class="nav-btn" onclick="showToast('رزرو نوبت')"><div class="nav-btn-icon" style="font-size:1.8rem;margin-top:-12px;filter:drop-shadow(0 0 8px rgba(201,168,76,0.5))">✂️</div><div class="nav-btn-label" style="color:var(--gold)">رزرو</div></button>
+  <button class="nav-btn active"><div class="nav-btn-icon">⭐</div><div class="nav-btn-label">امتیاز</div></button>
+  <button class="nav-btn" onclick="showToast('پروفایل من')"><div class="nav-btn-icon">👤</div><div class="nav-btn-label">پروفایل</div></button>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="api.js"></script>
+<script src="chatbot-widget.js"></script>
+<script>
+let LIVE_POINTS = 2400; // fallback
+
+if (BarberAPI.isLoggedIn('customer')) {
+  loadLoyaltyData();
+} else {
+  document.querySelector('.scroll-content').insertAdjacentHTML('afterbegin',
+    `<div style="margin:1rem 1.5rem;padding:0.875rem;background:rgba(229,57,53,0.08);border:1px solid rgba(229,57,53,0.2);border-radius:0.875rem;font-size:0.8rem;color:#ff8a80;text-align:center">
+      برای دیدن امتیاز واقعیت <a href="booking.html" style="color:var(--gold);font-weight:700">وارد شو</a>
+    </div>`);
+}
+
+async function loadLoyaltyData() {
+  try {
+    const res = await BarberAPI.customer.me();
+    const c = res.data;
+    LIVE_POINTS = c.points;
+
+    document.querySelector('.user-name').textContent = c.name || 'مشتری عزیز';
+    document.querySelector('.points-num').textContent = BarberAPI.utils.formatPrice(c.points);
+    document.querySelector('.points-equiv').textContent = `معادل ${BarberAPI.utils.formatPrice(c.points * 100)} تومان تخفیف`;
+
+    const tierMap = { bronze: ['برنزی','🥉'], silver: ['نقره‌ای','🥈'], gold: ['طلایی','🥇'] };
+    const [tierName, tierIcon] = tierMap[c.tier] || tierMap.bronze;
+    const tierNameEl = document.querySelector('.tier-name');
+    if (tierNameEl) tierNameEl.textContent = `${tierName} ${tierIcon}`;
+
+    document.getElementById('pointsSlider').max = Math.max(100, c.points);
+    document.getElementById('pointsSlider').value = Math.min(500, c.points);
+    updateSlider(Math.min(500, c.points));
+
+    document.getElementById('myCode').textContent = c.referral_code;
+    window._referralCode = c.referral_code;
+
+    const refStatVal = document.querySelectorAll('.ref-stat-val');
+    if (refStatVal[0]) refStatVal[0].textContent = BarberAPI.utils.toPersianDigits(c.referrals || 0);
+    if (refStatVal[1]) refStatVal[1].textContent = BarberAPI.utils.formatPrice((c.referrals || 0) * 200);
+
+    loadPointsHistory();
+  } catch (e) { console.warn('خطا در بارگذاری امتیاز:', e.message); }
+}
+
+async function loadPointsHistory() {
+  try {
+    const res = await BarberAPI.customer.points();
+    const list = document.querySelector('#tab-points .history-list');
+    if (!list || !res.data) return;
+    if (!res.data.length) { list.innerHTML = '<p style="color:var(--gray);font-size:0.8rem;text-align:center;padding:1rem">تاریخچه‌ای وجود ندارد</p>'; return; }
+    const typeIcon = { earn: ['⭐','earn'], spend: ['💸','spend'], bonus: ['🎁','bonus'], referral: ['👥','bonus'], admin: ['⚙️','bonus'] };
+    list.innerHTML = res.data.slice(0, 8).map(tx => {
+      const [icon, cls] = typeIcon[tx.type] || typeIcon.earn;
+      return `
+        <div class="history-item">
+          <div class="history-icon ${cls}">${icon}</div>
+          <div class="history-info"><div class="history-title">${tx.description || tx.type}</div><div class="history-date">${tx.created_at?.split(' ')[0] || ''}</div></div>
+          <div class="history-pts ${tx.amount > 0 ? 'plus' : 'minus'}">${tx.amount > 0 ? '+' : ''}${BarberAPI.utils.formatPrice(tx.amount)}</div>
+        </div>`;
+    }).join('');
+  } catch (e) {}
+}
+
+function showTab(tab, btn) {
+  ['points','tiers','referral','subscription'].forEach(t => {
+    const el = document.getElementById('tab-' + t);
+    if(el) el.style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function updateSlider(val) {
+  const pts = parseInt(val);
+  const discount = pts * 100;
+  const remain = LIVE_POINTS - pts;
+  document.getElementById('sliderVal').textContent = pts.toLocaleString('fa-IR') + ' امتیاز';
+  document.getElementById('discountVal').textContent = discount.toLocaleString('fa-IR') + ' تومان';
+  document.getElementById('remainVal').textContent = remain.toLocaleString('fa-IR') + ' امتیاز';
+}
+
+function copyCode() {
+  const code = document.getElementById('myCode').textContent;
+  navigator.clipboard?.writeText(code).catch(()=>{});
+  showToast('✅ کد کپی شد: ' + code);
+}
+
+function shareCode() {
+  const code = window._referralCode || document.getElementById('myCode').textContent;
+  if(navigator.share) {
+    navigator.share({title:'General Barber Shop', text:`با کد معرفی من ${code} نوبت بگیر و ۱۰۰ امتیاز هدیه بگیر!`, url:`https://generalbarber.ir/ref/${code}`});
+  } else {
+    showToast('✅ لینک کپی شد!');
+  }
+}
+
+function selectSub(card) {
+  document.querySelectorAll('.sub-card').forEach(c => c.style.borderColor = '');
+  card.style.borderColor = 'rgba(201,168,76,0.6)';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Animate numbers on load
+window.addEventListener('load', () => {
+  const fills = document.querySelectorAll('.tier-fill, .progress-fill');
+  fills.forEach(f => {
+    const w = f.style.width;
+    f.style.width = '0%';
+    setTimeout(() => { f.style.width = w; }, 300);
+  });
+});
+</script>
+</body>
+</html>

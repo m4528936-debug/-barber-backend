@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل کارمند | General Barber Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--gold-light:#E8C97A;--gold-dim:#8B6914;--black:#0A0A0A;--dark:#111111;--dark2:#1A1A1A;--dark3:#222222;--gray:#888888;--gray-light:#BBBBBB;--white:#F5F0E8;--green:#4CAF50;--red:#E53935;--blue:#2196F3;--orange:#FF9800;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Vazirmatn',sans-serif;background:var(--black);color:var(--white);min-height:100vh;}
+
+/* LOGIN */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse 80% 80% at 50% 50%,rgba(201,168,76,0.05) 0%,transparent 70%);}
+.login-card{background:var(--dark2);border:1px solid rgba(201,168,76,0.2);border-radius:1.5rem;padding:2.5rem 2rem;width:100%;max-width:360px;text-align:center;}
+.login-logo{font-size:2rem;margin-bottom:0.5rem;}
+.login-title{font-size:1.3rem;font-weight:800;margin-bottom:0.2rem;}.login-title span{color:var(--gold);}
+.login-sub{font-size:0.8rem;color:var(--gray);margin-bottom:1.5rem;}
+.input-g{margin-bottom:0.875rem;text-align:right;}
+.input-g label{font-size:0.75rem;color:var(--gray-light);display:block;margin-bottom:0.35rem;}
+.input-g input{width:100%;padding:0.7rem 0.875rem;background:var(--dark3);border:1px solid rgba(255,255,255,0.08);border-radius:0.75rem;color:var(--white);font-family:'Vazirmatn',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s;}
+.input-g input:focus{border-color:rgba(201,168,76,0.4);}
+.btn-login{width:100%;padding:0.8rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:800;font-size:0.95rem;border:none;border-radius:0.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;margin-top:0.5rem;}
+.login-hint{font-size:0.7rem;color:var(--gray);margin-top:0.875rem;opacity:0.6;}
+
+/* APP */
+#appScreen{display:none;}
+
+/* TOPBAR */
+.topbar{background:rgba(10,10,10,0.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,0.1);padding:0.875rem 1.25rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.topbar-info{display:flex;align-items:center;gap:0.75rem;}
+.topbar-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--dark3),var(--gold-dim));border:2px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.topbar-name{font-size:0.9rem;font-weight:700;}
+.topbar-role{font-size:0.68rem;color:var(--gold);}
+.topbar-actions{display:flex;gap:0.625rem;align-items:center;}
+.notif-btn{width:36px;height:36px;background:var(--dark2);border:1px solid rgba(255,255,255,0.07);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;font-size:1rem;}
+.notif-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;background:var(--red);border-radius:50%;border:1.5px solid var(--black);}
+.btn-logout2{background:none;border:none;color:var(--gray);cursor:pointer;font-size:0.82rem;font-family:'Vazirmatn',sans-serif;padding:0.4rem 0.75rem;border-radius:0.5rem;border:1px solid rgba(255,255,255,0.07);transition:all 0.2s;}
+.btn-logout2:hover{color:var(--red);border-color:rgba(229,57,53,0.3);}
+
+/* CONTENT */
+.content{padding:1.25rem;padding-bottom:90px;}
+
+/* HERO CARD */
+.hero-card{background:linear-gradient(135deg,var(--dark2),var(--dark3));border:1px solid rgba(201,168,76,0.15);border-radius:1.25rem;padding:1.25rem;margin-bottom:1rem;position:relative;overflow:hidden;}
+.hero-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 0% 0%,rgba(201,168,76,0.07) 0%,transparent 60%);}
+.hero-card>*{position:relative;z-index:1;}
+.hero-greeting{font-size:0.78rem;color:var(--gray);margin-bottom:0.2rem;}
+.hero-name{font-size:1.2rem;font-weight:900;margin-bottom:1rem;}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;}
+.hero-stat{text-align:center;}
+.hero-stat-val{font-size:1.3rem;font-weight:900;color:var(--gold);}
+.hero-stat-label{font-size:0.65rem;color:var(--gray);margin-top:0.15rem;}
+
+/* TABS */
+.tab-bar{display:flex;background:var(--dark2);border-radius:0.875rem;padding:0.25rem;margin-bottom:1.25rem;}
+.tab-btn{flex:1;padding:0.5rem;border-radius:0.6rem;border:none;background:transparent;color:var(--gray);font-family:'Vazirmatn',sans-serif;font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.tab-btn.active{background:var(--dark3);color:var(--gold);border:1px solid rgba(201,168,76,0.2);}
+
+/* CARDS */
+.card{background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;padding:1.1rem;margin-bottom:0.875rem;}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.875rem;}
+.card-title{font-size:0.9rem;font-weight:700;}
+.card-action{font-size:0.72rem;color:var(--gold);background:none;border:none;font-family:'Vazirmatn',sans-serif;cursor:pointer;}
+
+/* APPT ITEM */
+.appt-item{display:flex;align-items:center;gap:0.75rem;padding:0.75rem;background:var(--dark3);border-radius:0.875rem;margin-bottom:0.625rem;border:1px solid rgba(255,255,255,0.04);transition:border-color 0.2s;}
+.appt-item:hover{border-color:rgba(201,168,76,0.15);}
+.appt-item:last-child{margin-bottom:0;}
+.appt-time-box{background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:0.6rem;padding:0.4rem 0.6rem;text-align:center;flex-shrink:0;min-width:52px;}
+.appt-time-val{font-size:0.82rem;font-weight:800;color:var(--gold);}
+.appt-time-dur{font-size:0.6rem;color:var(--gray);margin-top:0.1rem;}
+.appt-client{font-size:0.85rem;font-weight:700;}
+.appt-service-name{font-size:0.72rem;color:var(--gray);margin-top:0.1rem;}
+.appt-price{font-size:0.88rem;font-weight:800;color:var(--white);margin-right:auto;flex-shrink:0;}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;font-size:0.65rem;font-weight:700;padding:0.18rem 0.55rem;border-radius:2rem;}
+.badge-green{background:rgba(76,175,80,0.12);color:var(--green);border:1px solid rgba(76,175,80,0.2);}
+.badge-gold{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.2);}
+.badge-gray{background:rgba(255,255,255,0.06);color:var(--gray-light);border:1px solid rgba(255,255,255,0.1);}
+.badge-red{background:rgba(229,57,53,0.1);color:var(--red);border:1px solid rgba(229,57,53,0.2);}
+
+/* INCOME CHART */
+.mini-chart{display:flex;align-items:flex-end;gap:0.3rem;height:80px;margin-top:0.875rem;}
+.mini-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:0.25rem;}
+.mini-bar{width:100%;border-radius:0.25rem 0.25rem 0 0;background:linear-gradient(to top,var(--gold-dim),var(--gold));min-height:3px;transition:height 0.6s ease;}
+.mini-bar-label{font-size:0.58rem;color:var(--gray);}
+
+/* PROGRESS */
+.prog-wrap{margin-bottom:0.875rem;}
+.prog-wrap:last-child{margin-bottom:0;}
+.prog-header{display:flex;justify-content:space-between;margin-bottom:0.35rem;}
+.prog-label{font-size:0.78rem;color:var(--gray-light);}
+.prog-val{font-size:0.78rem;font-weight:700;color:var(--gold);}
+.prog-track{height:5px;background:var(--dark3);border-radius:3px;}
+.prog-fill{height:100%;border-radius:3px;background:linear-gradient(to left,var(--gold),var(--gold-dim));}
+
+/* REVIEW ITEM */
+.review-item{background:var(--dark3);border-radius:0.875rem;padding:0.875rem;margin-bottom:0.625rem;border:1px solid rgba(255,255,255,0.04);}
+.review-item:last-child{margin-bottom:0;}
+.review-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.4rem;}
+.review-client{font-size:0.82rem;font-weight:600;}
+.review-stars{font-size:0.72rem;color:var(--gold);}
+.review-text{font-size:0.78rem;color:var(--gray-light);line-height:1.6;}
+.review-service-tag{display:inline-block;margin-top:0.4rem;font-size:0.65rem;background:rgba(201,168,76,0.08);color:var(--gold);padding:0.15rem 0.5rem;border-radius:2rem;border:1px solid rgba(201,168,76,0.15);}
+
+/* SCHEDULE */
+.schedule-day{margin-bottom:1rem;}
+.schedule-day-label{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:0.5rem;letter-spacing:0.05em;}
+.schedule-item{display:flex;align-items:center;gap:0.75rem;padding:0.7rem;background:var(--dark3);border-radius:0.75rem;margin-bottom:0.4rem;border:1px solid rgba(255,255,255,0.04);}
+.schedule-item:last-child{margin-bottom:0;}
+.sch-time{font-size:0.75rem;font-weight:700;color:var(--gold);min-width:46px;}
+.sch-service{font-size:0.8rem;font-weight:600;}
+.sch-client{font-size:0.68rem;color:var(--gray);}
+
+/* LEAVE REQUEST */
+.leave-card{background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;padding:1.1rem;margin-bottom:0.875rem;}
+.form-group{margin-bottom:0.875rem;}
+.form-label{font-size:0.75rem;color:var(--gray-light);display:block;margin-bottom:0.35rem;}
+.form-input,.form-select,.form-textarea{width:100%;padding:0.65rem 0.875rem;background:var(--dark3);border:1px solid rgba(255,255,255,0.08);border-radius:0.6rem;color:var(--white);font-family:'Vazirmatn',sans-serif;font-size:0.82rem;outline:none;transition:border-color 0.2s;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:rgba(201,168,76,0.4);}
+.form-select option{background:var(--dark2);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+.btn-submit{width:100%;padding:0.75rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:800;font-size:0.9rem;border:none;border-radius:0.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;}
+
+/* LEAVE HISTORY */
+.leave-item{display:flex;align-items:center;gap:0.75rem;padding:0.7rem;background:var(--dark3);border-radius:0.75rem;margin-bottom:0.5rem;border:1px solid rgba(255,255,255,0.04);}
+.leave-item:last-child{margin-bottom:0;}
+.leave-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.leave-dates{font-size:0.82rem;font-weight:600;}
+.leave-reason{font-size:0.7rem;color:var(--gray);}
+
+/* INCOME PAGE */
+.income-big{text-align:center;padding:1.5rem;background:linear-gradient(135deg,var(--dark2),var(--dark3));border:1px solid rgba(201,168,76,0.15);border-radius:1.25rem;margin-bottom:1rem;position:relative;overflow:hidden;}
+.income-big::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,168,76,0.07) 0%,transparent 60%);}
+.income-big>*{position:relative;z-index:1;}
+.income-label{font-size:0.78rem;color:var(--gray);margin-bottom:0.4rem;}
+.income-val{font-size:2.2rem;font-weight:900;color:var(--gold);line-height:1;}
+.income-sub{font-size:0.75rem;color:var(--gray);margin-top:0.4rem;}
+.income-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;}
+.income-mini{background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:0.875rem;padding:0.875rem;text-align:center;}
+.income-mini-val{font-size:1.1rem;font-weight:900;margin-bottom:0.2rem;}
+.income-mini-label{font-size:0.68rem;color:var(--gray);}
+
+/* TRANSACTION LIST */
+.tx-item{display:flex;align-items:center;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.tx-item:last-child{border-bottom:none;}
+.tx-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;}
+.tx-title{font-size:0.82rem;font-weight:600;}
+.tx-date{font-size:0.7rem;color:var(--gray);}
+.tx-amount{font-size:0.88rem;font-weight:800;color:var(--green);margin-right:auto;flex-shrink:0;}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(17,17,17,0.97);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,0.06);display:flex;padding:0.5rem 0 calc(0.5rem + env(safe-area-inset-bottom));}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:0.25rem;padding:0.4rem;background:none;border:none;cursor:pointer;color:var(--gray);font-family:'Vazirmatn',sans-serif;transition:color 0.2s;}
+.nav-btn.active{color:var(--gold);}
+.nav-btn-icon{font-size:1.2rem;}
+.nav-btn-label{font-size:0.6rem;font-weight:600;}
+
+/* PROFILE */
+.profile-header{text-align:center;padding:1.5rem 1rem;background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1.25rem;margin-bottom:1rem;}
+.profile-av{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--dark3),var(--gold-dim));border:3px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 0.875rem;}
+.profile-name{font-size:1.15rem;font-weight:800;margin-bottom:0.2rem;}
+.profile-role{font-size:0.78rem;color:var(--gold);margin-bottom:0.875rem;}
+.profile-stats{display:flex;justify-content:center;gap:2rem;}
+.profile-stat-val{font-size:1.2rem;font-weight:900;color:var(--gold);}
+.profile-stat-label{font-size:0.65rem;color:var(--gray);}
+
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--dark2);border:1px solid rgba(201,168,76,0.3);border-radius:2rem;padding:0.55rem 1.1rem;font-size:0.8rem;font-weight:600;color:var(--gold);opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:200;white-space:nowrap;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">✂️</div>
+    <div class="login-title">General <span>Barber</span></div>
+    <div class="login-sub">پنل اختصاصی کارمندان</div>
+    <div class="input-g"><label>شماره موبایل</label><input type="tel" id="phoneInput" placeholder="۰۹۱۲۰۰۰۰۰۰۰" value="09120000000"></div>
+    <div class="input-g"><label>رمز عبور</label><input type="password" id="passInput" placeholder="••••••" value="123456"></div>
+    <button class="btn-login" onclick="doLogin()">ورود به پنل کارمند</button>
+    <div class="login-hint">دمو: هر شماره و رمز عبور</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appScreen">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-info">
+      <div class="topbar-avatar">✂️</div>
+      <div>
+        <div class="topbar-name">کارمند اول</div>
+        <div class="topbar-role">✂️ ارشد · کوتاهی و رنگ</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <div class="notif-btn" onclick="showToast('۲ نوتیفیکیشن جدید')">🔔<div class="notif-dot"></div></div>
+      <button class="btn-logout2" onclick="doLogout()">خروج</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- TAB: DASHBOARD -->
+    <div id="tab-home">
+      <!-- HERO -->
+      <div class="hero-card">
+        <div class="hero-greeting">امروز · ۱۷ آذر ۱۴۰۳</div>
+        <div class="hero-name">سلام! امروز ۳ نوبت داری 👋</div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="hero-stat-val">۳</div><div class="hero-stat-label">نوبت امروز</div></div>
+          <div class="hero-stat"><div class="hero-stat-val" style="color:var(--green)">۲.۱M</div><div class="hero-stat-label">درآمد امروز</div></div>
+          <div class="hero-stat"><div class="hero-stat-val" style="color:var(--orange)">۴.۹★</div><div class="hero-stat-label">امتیاز من</div></div>
+        </div>
+      </div>
+
+      <!-- TODAY APPOINTMENTS -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">📅 نوبت‌های امروز</span><button class="card-action" onclick="switchTab('schedule',this)">همه ←</button></div>
+        <div class="appt-item">
+          <div class="appt-time-box"><div class="appt-time-val">۱۰:۰۰</div><div class="appt-time-dur">۴۵ دق</div></div>
+          <div><div class="appt-client">مشتری —</div><div class="appt-service-name">کوتاهی + اصلاح ریش</div></div>
+          <div class="appt-price">۶۵۰K</div>
+          <span class="badge badge-green">✓ انجام شد</span>
+        </div>
+        <div class="appt-item">
+          <div class="appt-time-box"><div class="appt-time-val">۱۱:۳۰</div><div class="appt-time-dur">۹۰ دق</div></div>
+          <div><div class="appt-client">مشتری —</div><div class="appt-service-name">رنگ مو · هایلایت</div></div>
+          <div class="appt-price">۵۵۰K</div>
+          <span class="badge badge-green">✓ انجام شد</span>
+        </div>
+        <div class="appt-item" style="border:1px solid rgba(201,168,76,0.2)">
+          <div class="appt-time-box" style="background:rgba(201,168,76,0.15);border-color:var(--gold)"><div class="appt-time-val">۱۸:۰۰</div><div class="appt-time-dur">۳۰ دق</div></div>
+          <div><div class="appt-client">مشتری —</div><div class="appt-service-name">اصلاح ریش</div></div>
+          <div class="appt-price">۳۰۰K</div>
+          <span class="badge badge-gold">⏳ بعدی</span>
+        </div>
+      </div>
+
+      <!-- INCOME THIS WEEK -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">💰 درآمد این هفته</span><span style="font-size:0.78rem;color:var(--gray)">۲۲.۴M این ماه</span></div>
+        <div style="font-size:1.5rem;font-weight:900;color:var(--gold)">۸.۳M</div>
+        <div class="mini-chart">
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:55%"></div><div class="mini-bar-label">ش</div></div>
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:90%"></div><div class="mini-bar-label">ی</div></div>
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:40%"></div><div class="mini-bar-label">د</div></div>
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:75%"></div><div class="mini-bar-label">س</div></div>
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:100%"></div><div class="mini-bar-label">چ</div></div>
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:100%"></div><div class="mini-bar-label">پ</div></div>
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:40%"></div><div class="mini-bar-label">ج</div></div>
+        </div>
+      </div>
+
+      <!-- ALERTS -->
+      <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:0.875rem;padding:0.875rem;display:flex;gap:0.75rem;align-items:flex-start;margin-bottom:0.875rem">
+        <span style="font-size:1rem">🔔</span>
+        <div><div style="font-size:0.82rem;font-weight:700;margin-bottom:0.2rem">یادآوری</div><div style="font-size:0.75rem;color:var(--gray-light);line-height:1.6">نوبت بعدی ساعت ۱۸:۰۰ — مشتری اصلاح ریش دارد</div></div>
+      </div>
+
+      <!-- PERFORMANCE -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">📊 عملکرد این ماه</span></div>
+        <div class="prog-wrap"><div class="prog-header"><span class="prog-label">رضایت مشتریان</span><span class="prog-val">۴.۹ / ۵</span></div><div class="prog-track"><div class="prog-fill" style="width:98%"></div></div></div>
+        <div class="prog-wrap"><div class="prog-header"><span class="prog-label">تعداد نوبت (هدف: ۴۵)</span><span class="prog-val">۳۸ / ۴۵</span></div><div class="prog-track"><div class="prog-fill" style="width:84%"></div></div></div>
+        <div class="prog-wrap"><div class="prog-header"><span class="prog-label">درآمد (هدف: ۲۵M)</span><span class="prog-val">۲۲.۴M / ۲۵M</span></div><div class="prog-track"><div class="prog-fill" style="width:90%"></div></div></div>
+      </div>
+    </div>
+
+    <!-- TAB: SCHEDULE -->
+    <div id="tab-schedule" style="display:none">
+      <div class="card">
+        <div class="card-header"><span class="card-title">🗓️ برنامه هفتگی</span><span style="font-size:0.72rem;color:var(--gray)">آذر ۱۴۰۳</span></div>
+        <div class="schedule-day">
+          <div class="schedule-day-label">امروز — ۱۷ آذر</div>
+          <div class="schedule-item"><span class="sch-time">۱۰:۰۰</span><div><div class="sch-service">کوتاهی + اصلاح ریش</div><div class="sch-client">مشتری — · ۴۵ دقیقه</div></div><span class="badge badge-green" style="margin-right:auto">✓</span></div>
+          <div class="schedule-item"><span class="sch-time">۱۱:۳۰</span><div><div class="sch-service">رنگ مو</div><div class="sch-client">مشتری — · ۹۰ دقیقه</div></div><span class="badge badge-green" style="margin-right:auto">✓</span></div>
+          <div class="schedule-item" style="border:1px solid rgba(201,168,76,0.2)"><span class="sch-time" style="color:var(--gold-light)">۱۸:۰۰</span><div><div class="sch-service">اصلاح ریش</div><div class="sch-client">مشتری — · ۳۰ دقیقه</div></div><span class="badge badge-gold" style="margin-right:auto">⏳</span></div>
+        </div>
+        <div class="schedule-day">
+          <div class="schedule-day-label">فردا — ۱۸ آذر</div>
+          <div class="schedule-item"><span class="sch-time">۱۰:۳۰</span><div><div class="sch-service">کوتاهی مو</div><div class="sch-client">مشتری — · ۳۰ دقیقه</div></div><span class="badge badge-gray" style="margin-right:auto">رزرو</span></div>
+          <div class="schedule-item"><span class="sch-time">۱۴:۰۰</span><div><div class="sch-service">پکیج VIP کامل</div><div class="sch-client">مشتری — · ۱۲۰ دقیقه</div></div><span class="badge badge-gray" style="margin-right:auto">رزرو</span></div>
+          <div class="schedule-item"><span class="sch-time">۱۷:۰۰</span><div><div class="sch-service">اصلاح ریش</div><div class="sch-client">مشتری — · ۳۰ دقیقه</div></div><span class="badge badge-gray" style="margin-right:auto">رزرو</span></div>
+        </div>
+        <div class="schedule-day">
+          <div class="schedule-day-label">پس‌فردا — ۱۹ آذر</div>
+          <div class="schedule-item"><span class="sch-time">۱۱:۰۰</span><div><div class="sch-service">رنگ مو + کوتاهی</div><div class="sch-client">مشتری — · ۱۰۵ دقیقه</div></div><span class="badge badge-gray" style="margin-right:auto">رزرو</span></div>
+        </div>
+      </div>
+
+      <!-- ساعت کاری -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">⏰ ساعت کاری من</span></div>
+        <div style="display:flex;flex-direction:column;gap:0.625rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem"><span style="color:var(--gray-light)">شنبه تا چهارشنبه</span><span style="font-weight:700">۹:۰۰ — ۲۲:۰۰</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem"><span style="color:var(--gray-light)">پنج‌شنبه</span><span style="font-weight:700">۹:۰۰ — ۲۲:۰۰</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem"><span style="color:var(--gray-light)">جمعه</span><span style="color:var(--red);font-weight:700">تعطیل</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: INCOME -->
+    <div id="tab-income" style="display:none">
+      <div class="income-big">
+        <div class="income-label">درآمد این ماه</div>
+        <div class="income-val">۲۲,۴۰۰,۰۰۰</div>
+        <div class="income-sub">تومان · ۳۸ سرویس · میانگین ۵۸۹K هر سرویس</div>
+      </div>
+      <div class="income-grid">
+        <div class="income-mini"><div class="income-mini-val" style="color:var(--gold)">۸.۳M</div><div class="income-mini-label">این هفته</div></div>
+        <div class="income-mini"><div class="income-mini-val" style="color:var(--green)">۲.۱M</div><div class="income-mini-label">امروز</div></div>
+        <div class="income-mini"><div class="income-mini-val" style="color:var(--blue)">۳۸</div><div class="income-mini-label">تعداد نوبت</div></div>
+        <div class="income-mini"><div class="income-mini-val" style="color:var(--orange)">۵۸۹K</div><div class="income-mini-label">میانگین هر نوبت</div></div>
+      </div>
+
+      <!-- CHART -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">📈 درآمد ۷ روز اخیر</span></div>
+        <div class="mini-chart" style="height:100px">
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:55%"></div><div class="mini-bar-label">ش</div></div>
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:90%"></div><div class="mini-bar-label">ی</div></div>
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:40%"></div><div class="mini-bar-label">د</div></div>
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:75%"></div><div class="mini-bar-label">س</div></div>
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:100%"></div><div class="mini-bar-label">چ</div></div>
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:100%"></div><div class="mini-bar-label">پ</div></div>
+          <div class="mini-bar-wrap"><div class="mini-bar" style="height:40%"></div><div class="mini-bar-label">ج</div></div>
+        </div>
+      </div>
+
+      <!-- TRANSACTIONS -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">💳 تراکنش‌های اخیر</span></div>
+        <div class="tx-item"><div class="tx-icon" style="background:rgba(76,175,80,0.12)">✂️</div><div><div class="tx-title">کوتاهی + اصلاح ریش</div><div class="tx-date">امروز · ۱۰:۰۰</div></div><div class="tx-amount">+۶۵۰,۰۰۰</div></div>
+        <div class="tx-item"><div class="tx-icon" style="background:rgba(201,168,76,0.12)">🎨</div><div><div class="tx-title">رنگ مو · هایلایت</div><div class="tx-date">امروز · ۱۱:۳۰</div></div><div class="tx-amount">+۵۵۰,۰۰۰</div></div>
+        <div class="tx-item"><div class="tx-icon" style="background:rgba(33,150,243,0.12)">👑</div><div><div class="tx-title">پکیج VIP کامل</div><div class="tx-date">دیروز · ۱۴:۰۰</div></div><div class="tx-amount">+۱,۲۰۰,۰۰۰</div></div>
+        <div class="tx-item"><div class="tx-icon" style="background:rgba(76,175,80,0.12)">✂️</div><div><div class="tx-title">کوتاهی مو</div><div class="tx-date">دیروز · ۱۰:۳۰</div></div><div class="tx-amount">+۳۵۰,۰۰۰</div></div>
+      </div>
+
+      <button style="width:100%;padding:0.75rem;background:var(--dark2);border:1px solid rgba(255,255,255,0.1);color:var(--gray-light);border-radius:0.875rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:0.85rem;" onclick="showToast('📥 گزارش PDF آماده شد!')">📥 دریافت گزارش ماهانه PDF</button>
+    </div>
+
+    <!-- TAB: REVIEWS -->
+    <div id="tab-reviews" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem">
+        <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;padding:1rem;text-align:center">
+          <div style="font-size:2rem;font-weight:900;color:var(--gold)">۴.۹</div>
+          <div style="color:var(--gold);font-size:0.9rem">★★★★★</div>
+          <div style="font-size:0.7rem;color:var(--gray);margin-top:0.25rem">میانگین امتیاز</div>
+        </div>
+        <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;padding:1rem">
+          <div class="prog-wrap"><div class="prog-header"><span style="font-size:0.7rem;color:var(--gray)">۵★</span><span style="font-size:0.7rem;color:var(--gold)">۸۸٪</span></div><div class="prog-track"><div class="prog-fill" style="width:88%"></div></div></div>
+          <div class="prog-wrap"><div class="prog-header"><span style="font-size:0.7rem;color:var(--gray)">۴★</span><span style="font-size:0.7rem;color:var(--gold)">۹٪</span></div><div class="prog-track"><div class="prog-fill" style="width:9%"></div></div></div>
+          <div class="prog-wrap" style="margin-bottom:0"><div class="prog-header"><span style="font-size:0.7rem;color:var(--gray)">۳★</span><span style="font-size:0.7rem;color:var(--gold)">۳٪</span></div><div class="prog-track"><div class="prog-fill" style="width:3%"></div></div></div>
+        </div>
+      </div>
+      <div class="review-item">
+        <div class="review-head"><span class="review-client">مشتری —</span><span class="review-stars">★★★★★</span></div>
+        <div class="review-text">خیلی حرفه‌ای و با دقت کار می‌کنن. دقیقاً همون مدلی که می‌خواستم رو زد.</div>
+        <span class="review-service-tag">کوتاهی + اصلاح ریش</span>
+      </div>
+      <div class="review-item">
+        <div class="review-head"><span class="review-client">مشتری —</span><span class="review-stars">★★★★★</span></div>
+        <div class="review-text">بهترین رنگی که تا حالا زدم! هایلایت‌ها عالی بود.</div>
+        <span class="review-service-tag">رنگ مو · هایلایت</span>
+      </div>
+      <div class="review-item">
+        <div class="review-head"><span class="review-client">مشتری —</span><span class="review-stars">★★★★★</span></div>
+        <div class="review-text">سرعت کار و کیفیتش هر دو عالی. ممنون.</div>
+        <span class="review-service-tag">کوتاهی مو</span>
+      </div>
+      <div class="review-item">
+        <div class="review-head"><span class="review-client">مشتری —</span><span class="review-stars">★★★★☆</span></div>
+        <div class="review-text">کار خوبی بود ولی کمی دیر شروع شد.</div>
+        <span class="review-service-tag">پکیج VIP</span>
+      </div>
+    </div>
+
+    <!-- TAB: LEAVE -->
+    <div id="tab-leave" style="display:none">
+      <div class="leave-card">
+        <div class="card-title" style="margin-bottom:1rem">📋 درخواست مرخصی جدید</div>
+        <div class="form-group"><label class="form-label">نوع مرخصی</label><select class="form-select"><option>مرخصی استحقاقی</option><option>مرخصی استعلاجی</option><option>مرخصی ساعتی</option><option>روز تعطیل شخصی</option></select></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">از تاریخ</label><input class="form-input" placeholder="۱۴۰۳/۰۹/۲۵"></div>
+          <div class="form-group"><label class="form-label">تا تاریخ</label><input class="form-input" placeholder="۱۴۰۳/۰۹/۲۷"></div>
+        </div>
+        <div class="form-group"><label class="form-label">دلیل (اختیاری)</label><textarea class="form-textarea" rows="2" placeholder="دلیل مرخصی را بنویسید..."></textarea></div>
+        <button class="btn-submit" onclick="showToast('✅ درخواست مرخصی ارسال شد — منتظر تأیید مدیر')">ارسال درخواست</button>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">📋 تاریخچه مرخصی‌ها</span></div>
+        <div class="leave-item">
+          <div class="leave-icon" style="background:rgba(76,175,80,0.12)">✅</div>
+          <div style="flex:1"><div class="leave-dates">۱ تا ۳ آبان ۱۴۰۳</div><div class="leave-reason">مرخصی استحقاقی</div></div>
+          <span class="badge badge-green">تأیید شد</span>
+        </div>
+        <div class="leave-item">
+          <div class="leave-icon" style="background:rgba(201,168,76,0.12)">⏳</div>
+          <div style="flex:1"><div class="leave-dates">۲۵ تا ۲۷ آذر ۱۴۰۳</div><div class="leave-reason">مرخصی استحقاقی</div></div>
+          <span class="badge badge-gold">در انتظار</span>
+        </div>
+        <div class="leave-item">
+          <div class="leave-icon" style="background:rgba(229,57,53,0.12)">❌</div>
+          <div style="flex:1"><div class="leave-dates">۱۵ مهر ۱۴۰۳</div><div class="leave-reason">مرخصی اضطراری</div></div>
+          <span class="badge badge-red">رد شد</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: PROFILE -->
+    <div id="tab-profile" style="display:none">
+      <div class="profile-header">
+        <div class="profile-av">✂️</div>
+        <div class="profile-name">کارمند اول</div>
+        <div class="profile-role">ارشد · متخصص کوتاهی و رنگ</div>
+        <div class="profile-stats">
+          <div class="text-center"><div class="profile-stat-val">۸۰۰+</div><div class="profile-stat-label">سرویس</div></div>
+          <div class="text-center"><div class="profile-stat-val">۴.۹★</div><div class="profile-stat-label">امتیاز</div></div>
+          <div class="text-center"><div class="profile-stat-val">۵ سال</div><div class="profile-stat-label">تجربه</div></div>
+        </div>
+      </div>
+
+      <div class="leave-card">
+        <div class="card-title" style="margin-bottom:1rem">✏️ ویرایش پروفایل</div>
+        <div class="form-group"><label class="form-label">نام و نام خانوادگی</label><input class="form-input" value="کارمند اول"></div>
+        <div class="form-group"><label class="form-label">تخصص</label><input class="form-input" value="کوتاهی، رنگ، هایلایت"></div>
+        <div class="form-group"><label class="form-label">بیو</label><textarea class="form-textarea" rows="2">۵ سال تجربه در آرایشگاه مردانه. متخصص کوتاهی مدرن و رنگ.</textarea></div>
+        <button class="btn-submit" onclick="showToast('✅ پروفایل ذخیره شد!')">ذخیره تغییرات</button>
+      </div>
+
+      <!-- SERVICES I OFFER -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">💈 سرویس‌هایی که ارائه می‌دم</span></div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="font-size:0.82rem">✂️ کوتاهی مو</span><span class="badge badge-green">فعال</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="font-size:0.82rem">🎨 رنگ مو</span><span class="badge badge-green">فعال</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="font-size:0.82rem">🪒 اصلاح ریش</span><span class="badge badge-green">فعال</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0"><span style="font-size:0.82rem">💆 خدمات پوست</span><span class="badge badge-gray">غیرفعال</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="nav-home" onclick="switchTab('home',this)"><div class="nav-btn-icon">🏠</div><div class="nav-btn-label">خانه</div></button>
+    <button class="nav-btn" id="nav-schedule" onclick="switchTab('schedule',this)"><div class="nav-btn-icon">📅</div><div class="nav-btn-label">برنامه</div></button>
+    <button class="nav-btn" id="nav-income" onclick="switchTab('income',this)"><div class="nav-btn-icon">💰</div><div class="nav-btn-label">درآمد</div></button>
+    <button class="nav-btn" id="nav-reviews" onclick="switchTab('reviews',this)"><div class="nav-btn-icon">⭐</div><div class="nav-btn-label">نظرات</div></button>
+    <button class="nav-btn" id="nav-leave" onclick="switchTab('leave',this)"><div class="nav-btn-icon">📋</div><div class="nav-btn-label">مرخصی</div></button>
+    <button class="nav-btn" id="nav-profile" onclick="switchTab('profile',this)"><div class="nav-btn-icon">👤</div><div class="nav-btn-label">پروفایل</div></button>
+  </nav>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="api.js"></script>
+<script>
+async function doLogin(){
+  const phone=document.getElementById('phoneInput').value.trim();
+  const pass=document.getElementById('passInput').value.trim();
+  try{
+    const res=await BarberAPI.auth.workerLogin(phone,pass);
+    window._workerId=res.worker.id;
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('appScreen').style.display='block';
+    document.querySelector('.topbar-name').textContent=res.worker.name;
+    document.querySelector('.topbar-role').textContent='✂️ '+(res.worker.bio||'کارمند');
+    loadWorkerDashboard();
+  }catch(e){
+    showToast('❌ '+e.message);
+  }
+}
+function doLogout(){
+  BarberAPI.auth.logout('worker');
+  document.getElementById('appScreen').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+}
+function switchTab(tab,btn){
+  ['home','schedule','income','reviews','leave','profile'].forEach(t=>{
+    const el=document.getElementById('tab-'+t);
+    if(el) el.style.display=t===tab?'block':'none';
+  });
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const navBtn=document.getElementById('nav-'+tab);
+  if(navBtn) navBtn.classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(tab==='schedule') loadWorkerSchedule();
+  if(tab==='leave') loadWorkerLeaves();
+  if(tab==='income') loadWorkerIncome();
+  if(tab==='reviews') loadWorkerReviews();
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+// ── LIVE DATA ──
+async function loadWorkerIncome(){
+  try{
+    const res=await BarberAPI.workers.myStats();
+    const d=res.data;
+    const bigVal=document.querySelector('#tab-income .income-val');
+    if(bigVal) bigVal.textContent=BarberAPI.utils.formatPrice(d.month.income);
+    const sub=document.querySelector('#tab-income .income-sub');
+    if(sub) sub.textContent=`تومان · ${BarberAPI.utils.toPersianDigits(d.month.count)} سرویس · میانگین ${d.month.count?Math.round(d.month.income/d.month.count/1000):0}K هر سرویس`;
+
+    const minis=document.querySelectorAll('#tab-income .income-mini-val');
+    if(minis[0]) minis[0].textContent=(d.weekly.reduce((a,w)=>a+w.income,0)/1000000).toFixed(1)+'M';
+    if(minis[1]) minis[1].textContent=(d.today.income/1000000).toFixed(1)+'M';
+    if(minis[2]) minis[2].textContent=BarberAPI.utils.toPersianDigits(d.month.count);
+    if(minis[3]) minis[3].textContent=d.month.count?(Math.round(d.month.income/d.month.count/1000))+'K':'۰';
+
+    // weekly chart bars
+    const bars=document.querySelectorAll('#tab-income .mini-chart .mini-bar');
+    const maxIncome=Math.max(...d.weekly.map(w=>w.income),1);
+    d.weekly.forEach((w,i)=>{ if(bars[i]) bars[i].style.height=Math.round(w.income/maxIncome*100)+'%'; });
+
+    // transactions list
+    const apptRes=await BarberAPI.appointments.workerList();
+    const txWrap=document.querySelector('#tab-income .card:nth-of-type(2)');
+    if(txWrap && apptRes.data){
+      const done=apptRes.data.filter(a=>a.status==='done').slice(0,6);
+      const header=txWrap.querySelector('.card-header');
+      txWrap.innerHTML=''; txWrap.appendChild(header);
+      if(!done.length){ txWrap.insertAdjacentHTML('beforeend','<p style="color:var(--gray);font-size:0.8rem;text-align:center;padding:1rem">تراکنشی ثبت نشده</p>'); }
+      done.forEach(a=>{
+        txWrap.insertAdjacentHTML('beforeend',`
+          <div class="tx-item">
+            <div class="tx-icon" style="background:rgba(76,175,80,0.12)">✂️</div>
+            <div><div class="tx-title">${a.customer_name||a.customer_phone}</div><div class="tx-date">${a.date} · ${a.start_time}</div></div>
+            <div class="tx-amount">+${BarberAPI.utils.formatPrice(a.final_price)}</div>
+          </div>`);
+      });
+    }
+  }catch(e){console.warn('خطا در دریافت درآمد:',e.message);}
+}
+
+async function loadWorkerReviews(){
+  try{
+    const res=await BarberAPI.reviews.forWorker(req_worker_id());
+    const stats=res.stats;
+    const bigScore=document.querySelector('#tab-reviews div[style*="font-size:2rem"]');
+    if(bigScore && stats?.avg) bigScore.textContent=(Math.round(stats.avg*10)/10);
+
+    const wrap=document.querySelectorAll('#tab-reviews .review-item');
+    wrap.forEach(w=>w.remove());
+    const container=document.querySelector('#tab-reviews');
+    if(!res.data?.length){
+      container.insertAdjacentHTML('beforeend','<p style="color:var(--gray);font-size:0.82rem;text-align:center;padding:1rem">هنوز نظری ثبت نشده</p>');
+      return;
+    }
+    res.data.forEach(r=>{
+      container.insertAdjacentHTML('beforeend',`
+        <div class="review-item">
+          <div class="review-head"><span class="review-client">${r.customer_name||'مشتری'}</span><span class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span></div>
+          <div class="review-text">${r.comment||'بدون متن'}</div>
+        </div>`);
+    });
+  }catch(e){console.warn('خطا در دریافت نظرات:',e.message);}
+}
+function req_worker_id(){
+  // worker id comes from token payload via /auth/worker/me response, cached on login
+  return window._workerId;
+}
+
+async function loadWorkerDashboard(){
+  try{
+    const res=await BarberAPI.workers.myStats();
+    const d=res.data;
+    const greet=document.querySelector('.hero-name');
+    if(greet) greet.textContent=`سلام! امروز ${BarberAPI.utils.toPersianDigits(d.today.count)} نوبت داری 👋`;
+    const stats=document.querySelectorAll('.hero-stat-val');
+    if(stats[0]) stats[0].textContent=BarberAPI.utils.toPersianDigits(d.today.count);
+    if(stats[1]) stats[1].textContent=(d.today.income/1000000).toFixed(1)+'M';
+    if(stats[2]) stats[2].textContent=(d.worker.rating||0)+'★';
+
+    // today's appointments list
+    const apptRes=await BarberAPI.appointments.workerList(new Date().toISOString().split('T')[0]);
+    const list=document.querySelector('#tab-home .card .appt-item')?.parentElement;
+    if(list && apptRes.data){
+      const items=apptRes.data.map(a=>`
+        <div class="appt-item">
+          <div class="appt-time-box"><div class="appt-time-val">${a.start_time}</div><div class="appt-time-dur">${Math.round((timeToMin(a.end_time)-timeToMin(a.start_time)))} دق</div></div>
+          <div><div class="appt-client">${a.customer_name||a.customer_phone}</div><div class="appt-service-name">سرویس‌های رزروشده</div></div>
+          <div class="appt-price">${(a.final_price/1000).toFixed(0)}K</div>
+          <span class="badge ${a.status==='done'?'badge-green':'badge-gold'}">${a.status==='done'?'✓ انجام شد':'⏳ در انتظار'}</span>
+        </div>`).join('');
+      const header=list.querySelector('.card-header');
+      list.innerHTML='';
+      list.appendChild(header);
+      list.insertAdjacentHTML('beforeend',items||'<p style="color:var(--gray);font-size:0.8rem;text-align:center;padding:1rem">نوبتی برای امروز نیست</p>');
+    }
+  }catch(e){console.warn('خطا در داشبورد کارمند:',e.message);}
+}
+function timeToMin(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
+
+async function loadWorkerSchedule(){
+  try{
+    const res=await BarberAPI.workers.mySchedule();
+    console.log('برنامه کاری:',res.data);
+    // برنامه هفتگی استاتیک نگه داشته شده؛ در صورت نیاز می‌توان جایگزین کرد
+  }catch(e){}
+}
+
+async function loadWorkerLeaves(){
+  try{
+    const res=await BarberAPI.workers.myLeaves();
+    const wrap=document.querySelector('#tab-leave .card .leave-item')?.parentElement;
+    if(!wrap||!res.data) return;
+    const statusMap={pending:['⏳','badge-gold','در انتظار'],approved:['✅','badge-green','تأیید شد'],rejected:['❌','badge-red','رد شد']};
+    const header=wrap.querySelector('.card-header');
+    wrap.innerHTML='';
+    wrap.appendChild(header);
+    res.data.forEach(l=>{
+      const[icon,badgeClass,label]=statusMap[l.status]||statusMap.pending;
+      wrap.insertAdjacentHTML('beforeend',`
+        <div class="leave-item">
+          <div class="leave-icon" style="background:rgba(255,255,255,0.06)">${icon}</div>
+          <div style="flex:1"><div class="leave-dates">${l.from_date} تا ${l.to_date}</div><div class="leave-reason">${l.reason||l.type}</div></div>
+          <span class="badge ${badgeClass}">${label}</span>
+        </div>`);
+    });
+  }catch(e){}
+}
+
+// Hook leave submit button
+document.addEventListener('DOMContentLoaded',()=>{
+  const submitBtn=document.querySelector('#tab-leave .btn-submit');
+  if(submitBtn){
+    submitBtn.onclick=async ()=>{
+      const card=submitBtn.closest('.leave-card');
+      const type=card.querySelector('select').value;
+      const inputs=card.querySelectorAll('input');
+      const from_date=inputs[0].value, to_date=inputs[1].value;
+      const reason=card.querySelector('textarea').value;
+      try{
+        await BarberAPI.workers.requestLeave({from_date,to_date,type,reason});
+        showToast('✅ درخواست مرخصی ارسال شد — منتظر تأیید مدیر');
+        loadWorkerLeaves();
+      }catch(e){ showToast('❌ '+e.message); }
+    };
+  }
+});
+
+// Auto-login if token exists
+if(BarberAPI.isLoggedIn('worker')){
+  BarberAPI.auth.workerMe().then(res=>{
+    window._workerId=res.worker.id;
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('appScreen').style.display='block';
+    document.querySelector('.topbar-name').textContent=res.worker.name;
+    loadWorkerDashboard();
+  }).catch(()=>BarberAPI.auth.logout('worker'));
+}
+</script>
+</body>
+</html>

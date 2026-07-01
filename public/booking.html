@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رزرو نوبت | General Barber Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--gold-light:#E8C97A;--gold-dim:#8B6914;--black:#0A0A0A;--dark:#111111;--dark2:#1A1A1A;--dark3:#222222;--gray:#888888;--gray-light:#BBBBBB;--white:#F5F0E8;--green:#4CAF50;--red:#E53935;--blue:#2196F3;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Vazirmatn',sans-serif;background:var(--black);color:var(--white);min-height:100vh;overflow-x:hidden;}
+.topbar{background:rgba(10,10,10,0.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,0.1);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-logo{font-size:1rem;font-weight:800;}.topbar-logo span{color:var(--gold);}
+.topbar-step{font-size:0.78rem;color:var(--gray);}.topbar-step strong{color:var(--gold);}
+.steps-bar{display:flex;align-items:center;padding:1rem 1.5rem;background:var(--dark);border-bottom:1px solid rgba(255,255,255,0.04);}
+.step-dot{display:flex;flex-direction:column;align-items:center;gap:0.3rem;flex:1;}
+.step-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;border:2px solid rgba(255,255,255,0.1);color:var(--gray);background:var(--dark2);transition:all 0.3s;position:relative;z-index:1;}
+.step-circle.done{background:var(--green);border-color:var(--green);color:#fff;}
+.step-circle.active{background:var(--gold);border-color:var(--gold);color:var(--black);}
+.step-label{font-size:0.6rem;color:var(--gray);white-space:nowrap;}.step-label.active{color:var(--gold);}
+.step-line{flex:1;height:2px;background:rgba(255,255,255,0.06);margin-bottom:18px;transition:background 0.3s;}.step-line.done{background:var(--green);}
+.page{display:none;padding:1.25rem 1.5rem;padding-bottom:100px;}.page.active{display:block;}
+.sec-title{font-size:1.1rem;font-weight:800;margin-bottom:0.35rem;}
+.sec-sub{font-size:0.78rem;color:var(--gray);margin-bottom:1.25rem;line-height:1.6;}
+
+/* HAIR MODELS */
+.hair-filter{display:flex;gap:0.5rem;overflow-x:auto;padding-bottom:0.5rem;margin-bottom:1rem;scrollbar-width:none;}
+.hair-filter::-webkit-scrollbar{display:none;}
+.filter-chip{padding:0.4rem 0.875rem;border-radius:2rem;border:1px solid rgba(255,255,255,0.1);background:var(--dark2);color:var(--gray-light);font-size:0.75rem;font-weight:600;white-space:nowrap;cursor:pointer;transition:all 0.2s;font-family:'Vazirmatn',sans-serif;}
+.filter-chip.active{background:rgba(201,168,76,0.12);color:var(--gold);border-color:rgba(201,168,76,0.3);}
+.hair-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.875rem;}
+.hair-card{background:var(--dark2);border:2px solid rgba(255,255,255,0.05);border-radius:1rem;overflow:hidden;cursor:pointer;transition:all 0.3s;position:relative;}
+.hair-card:hover{border-color:rgba(201,168,76,0.3);transform:translateY(-2px);}
+.hair-card.selected{border-color:var(--gold);box-shadow:0 0 20px rgba(201,168,76,0.2);}
+.hair-card.selected::after{content:'✓';position:absolute;top:0.5rem;left:0.5rem;width:22px;height:22px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;color:var(--black);}
+.hair-3d-box{width:100%;aspect-ratio:0.85;background:linear-gradient(160deg,#0D0D0D,#1A1010);position:relative;overflow:hidden;}
+.hair-canvas{width:100%;height:100%;display:block;}
+.hair-info{padding:0.75rem;}
+.hair-name{font-size:0.85rem;font-weight:700;margin-bottom:0.25rem;}
+.hair-tags{display:flex;gap:0.3rem;flex-wrap:wrap;}
+.hair-tag{font-size:0.62rem;color:var(--gray);background:var(--dark3);padding:0.15rem 0.4rem;border-radius:0.3rem;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.94);z-index:200;display:none;align-items:flex-end;justify-content:center;padding:0;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--dark2);border:1px solid rgba(201,168,76,0.2);border-radius:1.5rem 1.5rem 0 0;width:100%;max-width:480px;overflow:hidden;max-height:95vh;}
+.modal-3d-wrap{width:100%;height:320px;background:linear-gradient(160deg,#0D0D0D,#1A1010);position:relative;}
+.modal-canvas{width:100%;height:100%;display:block;}
+.modal-ctrl-bar{position:absolute;bottom:0.75rem;left:50%;transform:translateX(-50%);display:flex;gap:0.5rem;}
+.ctrl-btn{background:rgba(10,10,10,0.8);border:1px solid rgba(255,255,255,0.1);color:var(--gray-light);padding:0.35rem 0.75rem;border-radius:2rem;font-size:0.72rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;transition:all 0.2s;backdrop-filter:blur(8px);}
+.ctrl-btn:hover{border-color:rgba(201,168,76,0.4);color:var(--gold);}
+.modal-drag{width:40px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;margin:0.75rem auto 0;}
+.modal-info{padding:1rem 1.25rem 1.5rem;}
+.modal-title{font-size:1.15rem;font-weight:800;margin-bottom:0.3rem;}
+.modal-desc{font-size:0.8rem;color:var(--gray);line-height:1.7;margin-bottom:1rem;}
+.modal-actions{display:flex;gap:0.75rem;}
+.btn-select-hair{flex:1;padding:0.75rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:800;font-size:0.9rem;border:none;border-radius:0.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;}
+.btn-close-modal{padding:0.75rem 1rem;background:var(--dark3);border:1px solid rgba(255,255,255,0.1);color:var(--gray-light);border-radius:0.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:0.85rem;}
+
+/* SERVICES */
+.service-list{display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem;}
+.service-item{background:var(--dark2);border:2px solid rgba(255,255,255,0.05);border-radius:1rem;padding:1rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:1rem;}
+.service-item:hover{border-color:rgba(201,168,76,0.2);}
+.service-item.selected{border-color:var(--gold);background:rgba(201,168,76,0.04);}
+.service-check{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.7rem;transition:all 0.2s;}
+.service-item.selected .service-check{background:var(--gold);border-color:var(--gold);color:var(--black);}
+.service-icon2{font-size:1.4rem;flex-shrink:0;}
+.service-name2{font-size:0.9rem;font-weight:700;margin-bottom:0.2rem;}
+.service-meta{display:flex;gap:0.75rem;}
+.service-price2{font-size:0.82rem;font-weight:700;color:var(--gold);}
+.service-dur{font-size:0.78rem;color:var(--gray);}
+.service-popular{font-size:0.62rem;background:rgba(201,168,76,0.1);color:var(--gold);padding:0.15rem 0.5rem;border-radius:2rem;border:1px solid rgba(201,168,76,0.2);}
+
+/* WORKER */
+.worker-list{display:grid;grid-template-columns:1fr 1fr;gap:0.875rem;margin-bottom:1.5rem;}
+.worker-item{background:var(--dark2);border:2px solid rgba(255,255,255,0.05);border-radius:1rem;padding:1.1rem;cursor:pointer;transition:all 0.3s;text-align:center;}
+.worker-item:hover{border-color:rgba(201,168,76,0.2);}
+.worker-item.selected{border-color:var(--gold);background:rgba(201,168,76,0.04);}
+.worker-av{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--dark3),var(--gold-dim));border:2px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin:0 auto 0.75rem;}
+.worker-item.selected .worker-av{border-color:var(--gold);box-shadow:0 0 12px rgba(201,168,76,0.3);}
+.worker-wname{font-size:0.88rem;font-weight:700;margin-bottom:0.2rem;}
+.worker-wrole{font-size:0.7rem;color:var(--gray);margin-bottom:0.4rem;}
+.worker-wrating{font-size:0.75rem;color:var(--gold);}
+.worker-wcount{font-size:0.68rem;color:var(--gray);}
+
+/* CALENDAR */
+.month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.month-btn{background:var(--dark2);border:1px solid rgba(255,255,255,0.08);color:var(--gray-light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.month-btn:hover{border-color:rgba(201,168,76,0.3);color:var(--gold);}
+.month-name{font-size:0.95rem;font-weight:700;}
+.cal-days-header{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;}
+.cal-day-label{text-align:center;font-size:0.65rem;color:var(--gray);padding:0.25rem 0;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-day{aspect-ratio:1;border-radius:0.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:0.78rem;border:1px solid transparent;position:relative;}
+.cal-day.empty{background:transparent;cursor:default;}
+.cal-day.past{color:rgba(255,255,255,0.2);cursor:not-allowed;background:var(--dark3);}
+.cal-day.available{background:var(--dark2);color:var(--white);}
+.cal-day.available:hover{border-color:rgba(201,168,76,0.3);color:var(--gold);}
+.cal-day.selected{background:var(--gold);color:var(--black);font-weight:800;}
+.cal-day.today{border-color:rgba(201,168,76,0.4);color:var(--gold);}
+.cal-day.full{background:rgba(229,57,53,0.08);color:rgba(255,255,255,0.25);cursor:not-allowed;}
+.cal-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);position:absolute;bottom:3px;}
+.cal-day.selected .cal-dot{background:var(--black);}
+.time-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem;}
+.time-slot{padding:0.6rem 0.25rem;text-align:center;background:var(--dark2);border:1px solid rgba(255,255,255,0.07);border-radius:0.6rem;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.time-slot:hover{border-color:rgba(201,168,76,0.3);color:var(--gold);}
+.time-slot.selected{background:rgba(201,168,76,0.12);border-color:var(--gold);color:var(--gold);}
+.time-slot.full{background:var(--dark3);color:rgba(255,255,255,0.2);cursor:not-allowed;text-decoration:line-through;}
+
+/* CONFIRM */
+.confirm-card{background:var(--dark2);border:1px solid rgba(201,168,76,0.15);border-radius:1.25rem;padding:1.25rem;margin-bottom:1rem;}
+.confirm-row{display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.confirm-row:last-child{border-bottom:none;}
+.confirm-label{font-size:0.8rem;color:var(--gray);}
+.confirm-val{font-size:0.85rem;font-weight:600;}
+.price-breakdown{background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;padding:1rem;margin-bottom:1rem;}
+.price-row{display:flex;justify-content:space-between;padding:0.4rem 0;font-size:0.82rem;}
+.price-row.total{font-size:0.95rem;font-weight:800;border-top:1px solid rgba(255,255,255,0.08);padding-top:0.75rem;margin-top:0.25rem;}
+.price-row .price-label{color:var(--gray-light);}
+.price-row .price-val{font-weight:700;}
+.price-row.total .price-val{color:var(--gold);}
+.discount-val{color:var(--green);}
+.payment-methods{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;}
+.pay-method{display:flex;align-items:center;gap:0.875rem;padding:0.875rem;background:var(--dark2);border:2px solid rgba(255,255,255,0.06);border-radius:0.875rem;cursor:pointer;transition:border-color 0.2s;}
+.pay-method.selected{border-color:var(--gold);}
+.pay-icon{font-size:1.2rem;width:36px;text-align:center;}
+.pay-name{font-size:0.85rem;font-weight:600;}
+.pay-desc{font-size:0.7rem;color:var(--gray);}
+.pay-radio{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);margin-right:auto;flex-shrink:0;transition:all 0.2s;}
+.pay-method.selected .pay-radio{border-color:var(--gold);background:var(--gold);}
+.points-toggle{background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:0.875rem;padding:0.875rem;display:flex;align-items:center;gap:0.875rem;margin-bottom:1rem;cursor:pointer;}
+.toggle-sw{width:40px;height:22px;background:var(--dark3);border-radius:11px;position:relative;transition:background 0.3s;flex-shrink:0;border:1px solid rgba(255,255,255,0.1);}
+.toggle-sw.on{background:var(--gold);border-color:var(--gold);}
+.toggle-sw::after{content:'';position:absolute;top:2px;right:2px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform 0.3s;}
+.toggle-sw.on::after{transform:translateX(-18px);}
+
+/* BOTTOM CTA */
+.bottom-cta{position:fixed;bottom:0;left:0;right:0;padding:1rem 1.5rem;padding-bottom:calc(1rem + env(safe-area-inset-bottom));background:rgba(10,10,10,0.97);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,0.06);}
+.cta-row{display:flex;gap:0.875rem;align-items:center;}
+.btn-next{flex:1;padding:0.875rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:800;font-size:1rem;border:none;border-radius:0.875rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;transition:all 0.2s;}
+.btn-next:hover{opacity:0.88;transform:translateY(-1px);}
+.btn-next:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.btn-back-cta{padding:0.875rem 1rem;background:var(--dark2);border:1px solid rgba(255,255,255,0.1);color:var(--gray-light);border-radius:0.875rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:0.9rem;transition:all 0.2s;}
+.btn-back-cta:hover{border-color:rgba(201,168,76,0.3);color:var(--gold);}
+.cta-summary{font-size:0.72rem;color:var(--gray);margin-top:0.5rem;text-align:center;}
+
+/* SUCCESS */
+.success-page{text-align:center;padding:3rem 1.5rem;}
+.success-icon{font-size:4rem;margin-bottom:1rem;animation:bounceIn 0.6s ease both;}
+@keyframes bounceIn{0%{transform:scale(0.3);opacity:0;}60%{transform:scale(1.1);}100%{transform:scale(1);opacity:1;}}
+.receipt-card{background:var(--dark2);border:1px solid rgba(201,168,76,0.2);border-radius:1.25rem;padding:1.5rem;text-align:right;margin-bottom:1.5rem;}
+.receipt-row{display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.82rem;}
+.receipt-row:last-child{border-bottom:none;}
+.receipt-row span:first-child{color:var(--gray);}
+.receipt-row span:last-child{font-weight:600;}
+.btn-home{width:100%;padding:0.875rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:800;font-size:1rem;border:none;border-radius:0.875rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;margin-bottom:0.75rem;}
+.btn-share{width:100%;padding:0.75rem;background:var(--dark2);border:1px solid rgba(255,255,255,0.1);color:var(--gray-light);border-radius:0.875rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:0.9rem;}
+
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--dark2);border:1px solid rgba(201,168,76,0.3);border-radius:2rem;padding:0.6rem 1.25rem;font-size:0.82rem;font-weight:600;color:var(--gold);opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:300;white-space:nowrap;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button onclick="history.back()" style="background:none;border:none;color:var(--gray);font-size:0.85rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;">← بازگشت</button>
+  <div class="topbar-logo">General <span>Barber</span></div>
+  <div class="topbar-step">مرحله <strong id="stepNum">۱</strong> از <strong>۴</strong></div>
+</div>
+
+<div class="steps-bar" id="stepsBar">
+  <div class="step-dot"><div class="step-circle active" id="sc1">۱</div><div class="step-label active" id="sl1">سرویس</div></div>
+  <div class="step-line" id="line1"></div>
+  <div class="step-dot"><div class="step-circle" id="sc2">۲</div><div class="step-label" id="sl2">کارمند</div></div>
+  <div class="step-line" id="line2"></div>
+  <div class="step-dot"><div class="step-circle" id="sc3">۳</div><div class="step-label" id="sl3">زمان</div></div>
+  <div class="step-line" id="line3"></div>
+  <div class="step-dot"><div class="step-circle" id="sc4">۴</div><div class="step-label" id="sl4">پرداخت</div></div>
+</div>
+
+<!-- STEP 1 -->
+<div class="page active" id="page1">
+  <div class="sec-title">✂️ مدل مو انتخاب کن</div>
+  <div class="sec-sub">روی هر مدل کلیک کن تا نمای ۳D کامل رو ببینی</div>
+  <div class="hair-filter">
+    <button class="filter-chip active" onclick="filterHair('all',this)">همه</button>
+    <button class="filter-chip" onclick="filterHair('fade',this)">فید</button>
+    <button class="filter-chip" onclick="filterHair('modern',this)">مدرن</button>
+    <button class="filter-chip" onclick="filterHair('classic',this)">کلاسیک</button>
+    <button class="filter-chip" onclick="filterHair('beard',this)">ریش</button>
+    <button class="filter-chip" onclick="filterHair('color',this)">رنگ</button>
+  </div>
+  <div class="hair-grid" id="hairGrid"></div>
+
+  <div style="margin-top:2rem">
+    <div class="sec-title">💈 سرویس انتخاب کن</div>
+    <div class="sec-sub">می‌تونی چند سرویس با هم انتخاب کنی</div>
+    <div class="service-list">
+      <div class="service-item" onclick="toggleService(this,'کوتاهی مو','350000','30')"><div class="service-check"></div><div class="service-icon2">✂️</div><div><div class="service-name2">کوتاهی مو <span class="service-popular">پرطرفدار</span></div><div class="service-meta"><span class="service-price2">۳۵۰,۰۰۰ ت</span><span class="service-dur">⏱ ۳۰-۴۵ دق</span></div></div></div>
+      <div class="service-item" onclick="toggleService(this,'اصلاح ریش','300000','20')"><div class="service-check"></div><div class="service-icon2">🪒</div><div><div class="service-name2">اصلاح ریش</div><div class="service-meta"><span class="service-price2">۳۰۰,۰۰۰ ت</span><span class="service-dur">⏱ ۲۰-۳۰ دق</span></div></div></div>
+      <div class="service-item" onclick="toggleService(this,'رنگ مو','550000','90')"><div class="service-check"></div><div class="service-icon2">🎨</div><div><div class="service-name2">رنگ مو</div><div class="service-meta"><span class="service-price2">۵۵۰,۰۰۰ ت</span><span class="service-dur">⏱ ۶۰-۹۰ دق</span></div></div></div>
+      <div class="service-item" onclick="toggleService(this,'خدمات پوست','450000','45')"><div class="service-check"></div><div class="service-icon2">💆</div><div><div class="service-name2">خدمات پوست</div><div class="service-meta"><span class="service-price2">۴۵۰,۰۰۰ ت</span><span class="service-dur">⏱ ۴۵-۶۰ دق</span></div></div></div>
+      <div class="service-item" onclick="toggleService(this,'پکیج VIP','1200000','120')"><div class="service-check"></div><div class="service-icon2">👑</div><div><div class="service-name2">پکیج VIP کامل <span class="service-popular" style="background:rgba(201,168,76,0.15)">صرفه‌جویی ۳۵٪</span></div><div class="service-meta"><span class="service-price2">۱,۲۰۰,۰۰۰ ت</span><span class="service-dur">⏱ ۱۲۰ دق</span></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2 -->
+<div class="page" id="page2">
+  <div class="sec-title">👤 انتخاب کارمند</div>
+  <div class="sec-sub">کارمند مورد نظرت رو انتخاب کن</div>
+  <div class="worker-list">
+    <div class="worker-item" onclick="selectWorker(this,'کارمند اول')"><div class="worker-av">👤</div><div class="worker-wname">کارمند اول</div><div class="worker-wrole">ارشد · کوتاهی و رنگ</div><div class="worker-wrating">★★★★★ ۴.۹</div><div class="worker-wcount">۸۰۰+ سرویس</div></div>
+    <div class="worker-item" onclick="selectWorker(this,'کارمند دوم')"><div class="worker-av">👤</div><div class="worker-wname">کارمند دوم</div><div class="worker-wrole">ریش و پوست</div><div class="worker-wrating">★★★★★ ۴.۸</div><div class="worker-wcount">۶۰۰+ سرویس</div></div>
+    <div class="worker-item" onclick="selectWorker(this,'اولین خالی')" style="grid-column:span 2;display:flex;align-items:center;gap:1rem;text-align:right;"><div class="worker-av" style="margin:0">🎲</div><div><div class="worker-wname">هر کارمند خالی</div><div class="worker-wrole">اولین نوبت خالی برات رزرو می‌شه</div></div></div>
+  </div>
+  <div id="workerReviews" style="display:none">
+    <div class="sec-title" style="font-size:0.9rem;margin-bottom:0.75rem">⭐ نظرات اخیر</div>
+    <div style="display:flex;flex-direction:column;gap:0.625rem">
+      <div style="background:var(--dark2);border-radius:0.875rem;padding:0.875rem;border:1px solid rgba(255,255,255,0.05)"><div style="display:flex;justify-content:space-between;margin-bottom:0.4rem"><span style="font-size:0.82rem;font-weight:600">مشتری</span><span style="font-size:0.75rem;color:var(--gold)">★★★★★</span></div><p style="font-size:0.78rem;color:var(--gray-light);line-height:1.6">کار خیلی دقیق و حرفه‌ای. دقیقاً همون چیزی که می‌خواستم.</p></div>
+      <div style="background:var(--dark2);border-radius:0.875rem;padding:0.875rem;border:1px solid rgba(255,255,255,0.05)"><div style="display:flex;justify-content:space-between;margin-bottom:0.4rem"><span style="font-size:0.82rem;font-weight:600">مشتری</span><span style="font-size:0.75rem;color:var(--gold)">★★★★★</span></div><p style="font-size:0.78rem;color:var(--gray-light);line-height:1.6">عالی بود. محیط لوکس و کار بی‌نقص.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="page" id="page3">
+  <div class="sec-title">📅 تاریخ انتخاب کن</div>
+  <div class="sec-sub">حداکثر ۷ روز آینده قابل رزرو است</div>
+  <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1.1rem;padding:1.1rem;margin-bottom:1.25rem;">
+    <div class="month-nav"><button class="month-btn" onclick="changeMonth(-1)">›</button><div class="month-name" id="monthName">آذر ۱۴۰۳</div><button class="month-btn" onclick="changeMonth(1)">‹</button></div>
+    <div class="cal-days-header"><div class="cal-day-label">ش</div><div class="cal-day-label">ی</div><div class="cal-day-label">د</div><div class="cal-day-label">س</div><div class="cal-day-label">چ</div><div class="cal-day-label">پ</div><div class="cal-day-label">ج</div></div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+  <div id="timeSection" style="display:none">
+    <div class="sec-title">🕐 ساعت انتخاب کن</div>
+    <div class="sec-sub" id="selectedDateLabel">—</div>
+    <div class="time-grid" id="timeGrid"></div>
+  </div>
+</div>
+
+<!-- STEP 4 -->
+<div class="page" id="page4">
+  <div class="sec-title">✅ تأیید و پرداخت</div>
+  <div class="sec-sub">جزئیات رزرو رو بررسی کن</div>
+  <div class="confirm-card">
+    <div class="confirm-row"><span class="confirm-label">سرویس</span><span class="confirm-val" id="cf-service">—</span></div>
+    <div class="confirm-row"><span class="confirm-label">مدل مو</span><span class="confirm-val" id="cf-hair">—</span></div>
+    <div class="confirm-row"><span class="confirm-label">کارمند</span><span class="confirm-val" id="cf-worker">—</span></div>
+    <div class="confirm-row"><span class="confirm-label">تاریخ</span><span class="confirm-val" id="cf-date">—</span></div>
+    <div class="confirm-row"><span class="confirm-label">ساعت</span><span class="confirm-val" id="cf-time">—</span></div>
+    <div class="confirm-row"><span class="confirm-label">مدت تقریبی</span><span class="confirm-val" id="cf-dur">—</span></div>
+  </div>
+  <div class="price-breakdown">
+    <div class="price-row"><span class="price-label">مبلغ سرویس</span><span class="price-val" id="cf-price">—</span></div>
+    <div class="price-row"><span class="price-label">تخفیف امتیاز</span><span class="price-val discount-val" id="cf-discount">—</span></div>
+    <div class="price-row total"><span class="price-label">مبلغ نهایی</span><span class="price-val" id="cf-total">—</span></div>
+  </div>
+  <div class="points-toggle" onclick="this.querySelector('.toggle-sw').classList.toggle('on');calcTotal()">
+    <div class="toggle-sw" id="pointsToggle"></div>
+    <div><div style="font-size:0.85rem;font-weight:700">استفاده از امتیاز</div><div style="font-size:0.72rem;color:var(--gray)">۲,۴۰۰ امتیاز = ۲۴۰,۰۰۰ تومان تخفیف</div></div>
+    <div style="margin-right:auto;font-size:0.85rem;font-weight:700;color:var(--green)">-۲۴۰,۰۰۰ ت</div>
+  </div>
+  <div class="sec-title" style="font-size:0.9rem;margin-bottom:0.75rem">💳 روش پرداخت</div>
+  <div class="payment-methods">
+    <div class="pay-method selected" onclick="selectPay(this)"><div class="pay-icon">💳</div><div><div class="pay-name">پرداخت آنلاین</div><div class="pay-desc">زرین‌پال · سامان‌پرداخت</div></div><div class="pay-radio"></div></div>
+    <div class="pay-method" onclick="selectPay(this)"><div class="pay-icon">👛</div><div><div class="pay-name">کیف پول</div><div class="pay-desc">موجودی: ۱۲۰,۰۰۰ تومان</div></div><div class="pay-radio"></div></div>
+    <div class="pay-method" onclick="selectPay(this)"><div class="pay-icon">💎</div><div><div class="pay-name">ترکیبی</div><div class="pay-desc">کیف پول + درگاه</div></div><div class="pay-radio"></div></div>
+  </div>
+  <div style="background:var(--dark2);border:1px solid rgba(33,150,243,0.2);border-radius:0.875rem;padding:0.875rem;font-size:0.78rem;color:#90CAF9;display:flex;gap:0.75rem">
+    <span>🔔</span><div>پس از پرداخت، یادآوری SMS و واتساپ ۲ ساعت قبل از نوبت ارسال می‌شه</div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="page" id="pageSuccess">
+  <div class="success-page">
+    <div class="success-icon">🎉</div>
+    <div style="font-size:1.5rem;font-weight:900;margin-bottom:0.5rem">نوبت رزرو شد!</div>
+    <div style="font-size:0.85rem;color:var(--gray);line-height:1.7;margin-bottom:2rem">پرداخت با موفقیت انجام شد.<br>رسید به واتساپ و SMS شما ارسال می‌شه.</div>
+    <div class="receipt-card">
+      <div class="receipt-row"><span>سرویس</span><span id="rc-service">—</span></div>
+      <div class="receipt-row"><span>کارمند</span><span id="rc-worker">—</span></div>
+      <div class="receipt-row"><span>تاریخ و ساعت</span><span id="rc-datetime">—</span></div>
+      <div class="receipt-row"><span>مبلغ پرداخت‌شده</span><span id="rc-price" style="color:var(--gold)">—</span></div>
+      <div class="receipt-row"><span>امتیاز دریافتی</span><span style="color:var(--green)">+۱۰۰ امتیاز</span></div>
+      <div class="receipt-row"><span>کد رزرو</span><span style="font-family:monospace;color:var(--gold)" id="rc-code">—</span></div>
+    </div>
+    <button class="btn-home" onclick="location.reload()">🏠 بازگشت به خانه</button>
+    <button class="btn-share" onclick="showToast('📤 لینک رسید کپی شد!')">📤 اشتراک‌گذاری رسید</button>
+  </div>
+</div>
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta" id="bottomCta">
+  <div class="cta-row">
+    <button class="btn-back-cta" id="btnBack" onclick="prevStep()" style="display:none">← برگشت</button>
+    <button class="btn-next" id="btnNext" onclick="nextStep()" disabled>ادامه ←</button>
+  </div>
+  <div class="cta-summary" id="ctaSummary">سرویس مورد نظرت رو انتخاب کن</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="hairModal">
+  <div class="modal-box">
+    <div class="modal-3d-wrap">
+      <canvas class="modal-canvas" id="modalCanvas"></canvas>
+      <div class="modal-ctrl-bar">
+        <button class="ctrl-btn" onclick="rotateView('left')">↺ چرخش</button>
+        <button class="ctrl-btn" onclick="rotateView('zoom')">🔍 زوم</button>
+        <button class="ctrl-btn" onclick="rotateView('reset')">↩ ریست</button>
+      </div>
+    </div>
+    <div class="modal-drag"></div>
+    <div class="modal-info">
+      <div class="modal-title" id="modalTitle">—</div>
+      <div class="modal-desc" id="modalDesc">—</div>
+      <div class="modal-actions">
+        <button class="btn-close-modal" onclick="closeModal()">✕ بستن</button>
+        <button class="btn-select-hair" onclick="selectHairFromModal()">✓ انتخاب این مدل</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="api.js"></script>
+<script src="chatbot-widget.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const hairStyles=[
+  {id:1,name:'فید کلاسیک',cat:'fade',tags:['فید','کوتاه','تمیز'],desc:'فید پایین با تراز بالا. خط تمیز و حرفه‌ای. مناسب همه شکل صورت.',hairColor:0x1A0A00,skinColor:0xC8956C,shape:'fade'},
+  {id:2,name:'تیپر مدرن',cat:'modern',tags:['تیپر','شیک','اداری'],desc:'تیپر جانبی با بالای بلند. استایل اداری-مدرن. محبوب‌ترین مدل سال.',hairColor:0x0D0500,skinColor:0xD4956A,shape:'taper'},
+  {id:3,name:'موج کلاسیک',cat:'classic',tags:['موج','کلاسیک','ویو'],desc:'موج‌های طبیعی با کرم موی لوکس. استایل تایم‌لس و باکلاس.',hairColor:0x110800,skinColor:0xC08060,shape:'wave'},
+  {id:4,name:'هایلایت طلایی',cat:'color',tags:['رنگ','طلایی','کنتراست'],desc:'هایلایت‌های طلایی روی تیره. کنتراست قوی و چشم‌گیر.',hairColor:0xC9A84C,skinColor:0xD4956A,shape:'highlight'},
+  {id:5,name:'کرپ فید',cat:'fade',tags:['کرپ','فید','حجم'],desc:'فید با بالای کرپ. استایل مدرن آفریکن با حجم زیاد.',hairColor:0x050505,skinColor:0x6B3A2A,shape:'curly'},
+  {id:6,name:'ریش چند روزه',cat:'beard',tags:['ریش','مردانه','شیک'],desc:'اصلاح و شکل‌دهی ریش ۳-۵ روزه با تیغ کلاسیک.',hairColor:0x111111,skinColor:0xC8956C,shape:'beard'},
+  {id:7,name:'اسلیک بک',cat:'classic',tags:['اسلیک','فرمال','ژله'],desc:'همه مو به عقب با ژل فیکس‌شده. فوق‌العاده فرمال.',hairColor:0x080808,skinColor:0xD4956A,shape:'slick'},
+  {id:8,name:'رنگ یاسی',cat:'color',tags:['رنگ','یاسی','جسور'],desc:'رنگ یاسی روشن با فید پایین. جسورانه و به‌روز.',hairColor:0x9B59B6,skinColor:0xD4956A,shape:'colorpurple'},
+];
+
+let selectedHairId=null,selectedHairName='انتخاب نشده',selectedServices=[],selectedWorker='—',selectedDate='—',selectedTime='—',selectedDur='—',totalPrice=0,currentStep=1,openHairId=null;
+
+// ── BUILD REALISTIC MALE HEAD ──
+function buildHead(scene, skinColor, hairColor, shape, scale=1) {
+  const s=scale;
+  const skin=new THREE.MeshStandardMaterial({color:skinColor,roughness:0.65,metalness:0.05});
+  const hair=new THREE.MeshStandardMaterial({color:hairColor,roughness:0.8,metalness:0.05});
+
+  // HEAD
+  const headGeo=new THREE.SphereGeometry(1*s,64,64);
+  headGeo.scale(1,1.15,0.95);
+  const head=new THREE.Mesh(headGeo,skin);
+  head.position.y=0.1*s;
+  scene.add(head);
+
+  // FACE FEATURES
+  // Forehead flatten
+  // Eyebrow ridge
+  const browGeo=new THREE.CylinderGeometry(0.05*s,0.04*s,0.65*s,8);
+  const browMat=new THREE.MeshStandardMaterial({color:skinColor,roughness:0.7});
+  const brow=new THREE.Mesh(browGeo,browMat);
+  brow.rotation.z=Math.PI/2; brow.position.set(0,0.35*s,0.88*s);
+  scene.add(brow);
+
+  // Eyes
+  const eyeWhite=new THREE.MeshStandardMaterial({color:0xF0F0F0,roughness:0.5});
+  const eyeIris=new THREE.MeshStandardMaterial({color:0x3D2B1F,roughness:0.3});
+  const eyePupil=new THREE.MeshStandardMaterial({color:0x050505});
+  [[-0.3,0.31],[0.3,0.31]].forEach(([x,y])=>{
+    const wg=new THREE.SphereGeometry(0.115*s,16,16);
+    const w=new THREE.Mesh(wg,eyeWhite);
+    w.position.set(x*s,y*s,0.88*s); w.scale.z=0.5;
+    scene.add(w);
+    const ig=new THREE.SphereGeometry(0.07*s,12,12);
+    const i2=new THREE.Mesh(ig,eyeIris);
+    i2.position.set(x*s,y*s,0.94*s); i2.scale.z=0.4;
+    scene.add(i2);
+    const pg=new THREE.SphereGeometry(0.04*s,8,8);
+    const p=new THREE.Mesh(pg,eyePupil);
+    p.position.set(x*s,y*s,0.97*s); p.scale.z=0.3;
+    scene.add(p);
+  });
+
+  // Eyebrows
+  const ebMat=new THREE.MeshStandardMaterial({color:hairColor===0xC9A84C?0x3D2B1F:hairColor,roughness:0.9});
+  [[-0.3,0.52],[0.3,0.52]].forEach(([x,y])=>{
+    const ebg=new THREE.BoxGeometry(0.22*s,0.045*s,0.04*s);
+    const eb=new THREE.Mesh(ebg,ebMat);
+    eb.position.set(x*s,y*s,0.92*s);
+    eb.rotation.z=x<0?0.12:-0.12;
+    scene.add(eb);
+  });
+
+  // Nose
+  const noseGeo=new THREE.ConeGeometry(0.08*s,0.22*s,8);
+  const nose=new THREE.Mesh(noseGeo,skin);
+  nose.rotation.x=Math.PI/2-0.3; nose.position.set(0,0.02*s,0.97*s);
+  scene.add(nose);
+  // Nostrils
+  [[-0.07,0.07],[0.07,0.07]].forEach(([x,y])=>{
+    const ng=new THREE.SphereGeometry(0.05*s,8,8);
+    const n2=new THREE.Mesh(ng,new THREE.MeshStandardMaterial({color:0x8B5E3C,roughness:0.9}));
+    n2.position.set(x*s,-0.08*s,0.96*s); n2.scale.set(1,0.7,0.5);
+    scene.add(n2);
+  });
+
+  // Mouth
+  const lipMat=new THREE.MeshStandardMaterial({color:0xA0614A,roughness:0.6});
+  const topLipGeo=new THREE.SphereGeometry(0.19*s,16,8,0,Math.PI*2,0,Math.PI*0.5);
+  const topLip=new THREE.Mesh(topLipGeo,lipMat);
+  topLip.position.set(0,-0.22*s,0.91*s); topLip.rotation.x=0.8; topLip.scale.set(1,0.35,0.5);
+  scene.add(topLip);
+  const botLipGeo=new THREE.SphereGeometry(0.2*s,16,8,0,Math.PI*2,0,Math.PI*0.5);
+  const botLip=new THREE.Mesh(botLipGeo,lipMat);
+  botLip.position.set(0,-0.3*s,0.9*s); botLip.rotation.x=2.4; botLip.scale.set(1,0.3,0.5);
+  scene.add(botLip);
+
+  // Ears
+  [[-1.02,0.05],[1.02,0.05]].forEach(([x,y])=>{
+    const eg=new THREE.SphereGeometry(0.18*s,12,12);
+    const e=new THREE.Mesh(eg,skin);
+    e.position.set(x*s,y*s,0); e.scale.set(0.45,0.7,0.4);
+    scene.add(e);
+  });
+
+  // NECK
+  const neckGeo=new THREE.CylinderGeometry(0.32*s,0.38*s,0.7*s,32);
+  const neck=new THREE.Mesh(neckGeo,skin);
+  neck.position.y=-1.0*s;
+  scene.add(neck);
+
+  // SHOULDERS
+  const shoulderMat=new THREE.MeshStandardMaterial({color:0x111111,roughness:0.9});
+  const sg=new THREE.CylinderGeometry(0.1*s,0.1*s,0.5*s,8);
+  [-1.2,1.2].forEach(x=>{
+    const sh=new THREE.Mesh(sg,shoulderMat);
+    sh.position.set(x*s,-1.6*s,0); sh.rotation.z=Math.PI/2;
+    scene.add(sh);
+  });
+  const torsoGeo=new THREE.CylinderGeometry(0.55*s,0.65*s,0.8*s,32);
+  const torso=new THREE.Mesh(torsoGeo,shoulderMat);
+  torso.position.y=-1.8*s;
+  scene.add(torso);
+
+  // ADD HAIR STYLE
+  addHairStyle(scene,hair,shape,s,hairColor);
+}
+
+function addHairStyle(scene,hairMat,shape,s,hairColor){
+  if(shape==='fade'){
+    // Dense top
+    const tg=new THREE.SphereGeometry(0.95*s,64,32,0,Math.PI*2,0,Math.PI*0.52);
+    const t=new THREE.Mesh(tg,hairMat);
+    t.position.set(0,0.95*s,0); t.scale.set(1,0.9,1);
+    scene.add(t);
+    // Side gradient strips
+    for(let i=0;i<20;i++){
+      const angle=(i/20)*Math.PI*2;
+      const h=0.15*s+i*0.001*s;
+      const fg=new THREE.BoxGeometry(0.14*s,h,0.12*s);
+      const fm=new THREE.Mesh(fg,hairMat);
+      fm.position.set(Math.cos(angle)*0.93*s,-0.15*s,Math.sin(angle)*0.93*s);
+      fm.rotation.y=-angle; scene.add(fm);
+    }
+  } else if(shape==='taper'){
+    const tg=new THREE.SphereGeometry(0.9*s,64,32,0,Math.PI*2,0,Math.PI*0.55);
+    const t=new THREE.Mesh(tg,hairMat);
+    t.position.set(-0.05*s,1.0*s,0); t.scale.set(1,1.3,1);
+    scene.add(t);
+    // Side taper
+    for(let i=0;i<12;i++){
+      const angle=(i/12)*Math.PI*2;
+      const sg2=new THREE.BoxGeometry(0.12*s,0.25*s,0.1*s);
+      const sm=new THREE.Mesh(sg2,hairMat);
+      sm.position.set(Math.cos(angle)*0.9*s,-0.1*s,Math.sin(angle)*0.9*s);
+      sm.rotation.y=-angle; scene.add(sm);
+    }
+  } else if(shape==='wave'){
+    // Base
+    const bg=new THREE.SphereGeometry(0.93*s,64,32,0,Math.PI*2,0,Math.PI*0.5);
+    scene.add(Object.assign(new THREE.Mesh(bg,hairMat),{position:new THREE.Vector3(0,0.92*s,0)}));
+    // Waves
+    for(let row=0;row<5;row++){
+      for(let i=0;i<16;i++){
+        const angle=(i/16)*Math.PI*2;
+        const wg=new THREE.SphereGeometry((0.08+Math.sin(i*2)*0.02)*s,6,6);
+        const wm=new THREE.Mesh(wg,hairMat);
+        const r=(0.88-row*0.03)*s;
+        wm.position.set(Math.cos(angle)*r,(0.7+row*0.18+Math.sin(i*1.8)*0.06)*s,Math.sin(angle)*r);
+        scene.add(wm);
+      }
+    }
+  } else if(shape==='highlight'){
+    const baseMat=new THREE.MeshStandardMaterial({color:0x0A0500,roughness:0.85});
+    const bg=new THREE.SphereGeometry(0.93*s,64,32,0,Math.PI*2,0,Math.PI*0.52);
+    scene.add(Object.assign(new THREE.Mesh(bg,baseMat),{position:new THREE.Vector3(0,0.93*s,0)}));
+    const hm=new THREE.MeshStandardMaterial({color:0xC9A84C,roughness:0.3,metalness:0.5,emissive:0x8B6914,emissiveIntensity:0.1});
+    for(let i=0;i<10;i++){
+      const hg=new THREE.BoxGeometry(0.055*s,0.6*s,0.09*s);
+      const h=new THREE.Mesh(hg,hm);
+      h.position.set((-0.45+i*0.1)*s,1.05*s,(i%2===0?-0.22:0.22)*s);
+      h.rotation.z=(Math.random()-0.5)*0.35; scene.add(h);
+    }
+  } else if(shape==='curly'){
+    for(let i=0;i<60;i++){
+      const angle=(i/60)*Math.PI*4;
+      const cg=new THREE.SphereGeometry((0.1+Math.random()*0.04)*s,8,8);
+      const cm=new THREE.Mesh(cg,hairMat);
+      const r=(0.7+Math.random()*0.2)*s;
+      cm.position.set(Math.cos(angle)*r*0.7,(0.7+Math.sin(angle*0.5)*0.3+i*0.012)*s,Math.sin(angle)*r*0.7);
+      scene.add(cm);
+    }
+  } else if(shape==='beard'){
+    // Short hair on top
+    const tg=new THREE.SphereGeometry(0.91*s,64,32,0,Math.PI*2,0,Math.PI*0.45);
+    scene.add(Object.assign(new THREE.Mesh(tg,hairMat),{position:new THREE.Vector3(0,0.88*s,0)}));
+    // Beard
+    const beardMat=new THREE.MeshStandardMaterial({color:hairColor===0x050505?0x111111:hairColor,roughness:0.9});
+    const jaw=new THREE.SphereGeometry(0.55*s,32,32,0,Math.PI*2,Math.PI*0.42,Math.PI*0.48);
+    const b=new THREE.Mesh(jaw,beardMat);
+    b.position.set(0,-0.5*s,0.35*s); b.rotation.x=0.25; scene.add(b);
+    // Mustache
+    const mg=new THREE.CapsuleGeometry ? new THREE.BoxGeometry(0.38*s,0.07*s,0.05*s) : new THREE.BoxGeometry(0.38*s,0.07*s,0.05*s);
+    const ms=new THREE.Mesh(mg,beardMat);
+    ms.position.set(0,-0.2*s,0.95*s); ms.rotation.x=0.1;
+    scene.add(ms);
+    // Chin beard extension
+    const cg2=new THREE.SphereGeometry(0.22*s,16,16);
+    const cb=new THREE.Mesh(cg2,beardMat);
+    cb.position.set(0,-0.82*s,0.6*s); cb.scale.set(1.2,0.8,0.5);
+    scene.add(cb);
+  } else if(shape==='slick'){
+    const sg=new THREE.SphereGeometry(0.93*s,64,32,0,Math.PI*2,0,Math.PI*0.48);
+    const sm=new THREE.Mesh(sg,hairMat);
+    sm.position.set(-0.06*s,0.9*s,0); sm.scale.set(1,1.0,1.35);
+    sm.rotation.x=-0.18; scene.add(sm);
+    // Gel shine strip
+    const shineMat=new THREE.MeshStandardMaterial({color:0x1A1A1A,roughness:0.1,metalness:0.4});
+    const shg=new THREE.BoxGeometry(0.5*s,0.02*s,0.9*s);
+    const sh=new THREE.Mesh(shg,shineMat);
+    sh.position.set(0,1.25*s,0.1*s); sh.rotation.x=0.15;
+    scene.add(sh);
+  } else if(shape==='colorpurple'){
+    const cg=new THREE.SphereGeometry(0.93*s,64,32,0,Math.PI*2,0,Math.PI*0.52);
+    const cm=new THREE.Mesh(cg,new THREE.MeshStandardMaterial({color:0x9B59B6,roughness:0.5,metalness:0.2,emissive:0x4A0080,emissiveIntensity:0.25}));
+    cm.position.y=0.92*s; scene.add(cm);
+    const fg=new THREE.SphereGeometry(0.88*s,32,32,0,Math.PI*2,0,Math.PI*0.28);
+    const fl=new THREE.Mesh(fg,new THREE.MeshStandardMaterial({color:0xD7BDE2,roughness:0.45,metalness:0.1}));
+    fl.position.y=1.05*s; scene.add(fl);
+    // Fade sides
+    for(let i=0;i<12;i++){
+      const angle=(i/12)*Math.PI*2;
+      const fg2=new THREE.BoxGeometry(0.1*s,0.2*s,0.09*s);
+      const fm=new THREE.Mesh(fg2,new THREE.MeshStandardMaterial({color:0x6C3483,roughness:0.7}));
+      fm.position.set(Math.cos(angle)*0.9*s,-0.08*s,Math.sin(angle)*0.9*s);
+      fm.rotation.y=-angle; scene.add(fm);
+    }
+  }
+}
+
+// ── MINI SCENE ──
+function initMiniScene(id){
+  const canvas=document.getElementById('canvas-'+id);
+  if(!canvas||canvas._init) return;
+  canvas._init=true;
+  const h=hairStyles.find(x=>x.id===id);
+  const W=canvas.offsetWidth||170,H=canvas.offsetHeight||200;
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+  renderer.setSize(W,H); renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setClearColor(0x000000,0); renderer.shadowMap.enabled=false;
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(38,W/H,0.1,100);
+  camera.position.set(0,0.4,4.5);
+  camera.lookAt(0,0.2,0);
+  // Lighting
+  scene.add(new THREE.AmbientLight(0xffffff,0.8));
+  const d=new THREE.DirectionalLight(0xfff5e0,1.4); d.position.set(2,3,3); scene.add(d);
+  const r=new THREE.DirectionalLight(0xC9A84C,0.5); r.position.set(-2,-1,-2); scene.add(r);
+  const f=new THREE.DirectionalLight(0x6699ff,0.3); f.position.set(0,-2,2); scene.add(f);
+  buildHead(scene,h.skinColor,h.hairColor,h.shape,0.55);
+  let rot=0;
+  function animate(){requestAnimationFrame(animate);rot+=0.007;scene.rotation.y=rot;renderer.render(scene,camera);}
+  animate();
+}
+
+function renderHairCards(filter='all'){
+  const grid=document.getElementById('hairGrid');
+  const items=filter==='all'?hairStyles:hairStyles.filter(h=>h.cat===filter);
+  grid.innerHTML='';
+  items.forEach(h=>{
+    const div=document.createElement('div');
+    div.className='hair-card'+(selectedHairId===h.id?' selected':'');
+    div.innerHTML=`<div class="hair-3d-box"><canvas class="hair-canvas" id="canvas-${h.id}" width="170" height="200"></canvas></div><div class="hair-info"><div class="hair-name">${h.name}</div><div class="hair-tags">${h.tags.map(t=>`<span class="hair-tag">${t}</span>`).join('')}</div></div>`;
+    div.addEventListener('click',()=>openHairModal(h.id));
+    grid.appendChild(div);
+    setTimeout(()=>initMiniScene(h.id),80);
+  });
+}
+
+function filterHair(cat,btn){
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active'); renderHairCards(cat);
+}
+
+// ── MODAL ──
+let mRenderer=null,mScene=null,mCamera=null,mRotY=0,mAnim=null;
+
+function openHairModal(id){
+  const h=hairStyles.find(x=>x.id===id);
+  if(!h) return;
+  openHairId=id;
+  document.getElementById('modalTitle').textContent=h.name;
+  document.getElementById('modalDesc').textContent=h.desc;
+  document.getElementById('hairModal').classList.add('open');
+  setTimeout(()=>initModalScene(h),60);
+}
+
+function initModalScene(h){
+  const canvas=document.getElementById('modalCanvas');
+  if(mAnim) cancelAnimationFrame(mAnim);
+  if(mRenderer) mRenderer.dispose();
+  const W=canvas.offsetWidth||window.innerWidth,H=320;
+  canvas.width=W; canvas.height=H;
+  mRenderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+  mRenderer.setSize(W,H); mRenderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  mRenderer.setClearColor(0x000000,0);
+  mScene=new THREE.Scene();
+  mCamera=new THREE.PerspectiveCamera(38,W/H,0.1,100);
+  mCamera.position.set(0,0.5,5); mCamera.lookAt(0,0.3,0);
+  mScene.add(new THREE.AmbientLight(0xffffff,0.9));
+  const d=new THREE.DirectionalLight(0xfff5e0,1.6); d.position.set(3,4,4); mScene.add(d);
+  const r=new THREE.DirectionalLight(0xC9A84C,0.6); r.position.set(-3,-2,-3); mScene.add(r);
+  const f=new THREE.DirectionalLight(0x88aaff,0.4); f.position.set(0,-3,3); mScene.add(f);
+  buildHead(mScene,h.skinColor,h.hairColor,h.shape,0.7);
+  mRotY=0;
+  function animate(){mAnim=requestAnimationFrame(animate);mRotY+=0.006;mScene.rotation.y=mRotY;mRenderer.render(mScene,mCamera);}
+  animate();
+}
+
+function rotateView(dir){
+  if(dir==='left') mRotY+=0.8;
+  else if(dir==='zoom') mCamera.position.z=mCamera.position.z>3?3:5;
+  else{mRotY=0;mCamera.position.z=5;}
+}
+
+function closeModal(){
+  document.getElementById('hairModal').classList.remove('open');
+  if(mAnim){cancelAnimationFrame(mAnim);mAnim=null;}
+}
+
+function selectHairFromModal(){
+  const h=hairStyles.find(x=>x.id===openHairId);
+  if(!h) return;
+  selectedHairId=h.id; selectedHairName=h.name;
+  closeModal(); renderHairCards(); showToast('✓ مدل "'+h.name+'" انتخاب شد'); updateCTA();
+}
+
+// ── SERVICES ──
+function toggleService(el,name,price,dur){
+  el.classList.toggle('selected');
+  el.querySelector('.service-check').textContent=el.classList.contains('selected')?'✓':'';
+  const idx=selectedServices.findIndex(s=>s.name===name);
+  if(idx>=0) selectedServices.splice(idx,1);
+  else selectedServices.push({name,price:parseInt(price),dur:parseInt(dur)});
+  updateCTA();
+}
+
+// ── WORKER ──
+function selectWorker(el,name){
+  document.querySelectorAll('.worker-item').forEach(w=>w.classList.remove('selected'));
+  el.classList.add('selected'); selectedWorker=name;
+  document.getElementById('workerReviews').style.display=name!=='اولین خالی'?'block':'none';
+  updateCTA();
+}
+
+// ── CALENDAR ──
+// ── REAL JALALI CALENDAR (from backend) ──
+let curJy = null, curJm = null;
+let calendarCache = null;
+
+async function renderCalendar(){
+  try {
+    const res = await BarberAPI.calendar.getMonth(curJy, curJm);
+    const d = res.data;
+    curJy = d.jy; curJm = d.jm;
+    calendarCache = d;
+
+    document.getElementById('monthName').textContent = d.monthName + ' ' + BarberAPI.utils.toPersianDigits(d.jy);
+    const grid = document.getElementById('calGrid'); grid.innerHTML = '';
+
+    for (let i = 0; i < d.startDayOfWeek; i++) {
+      const e = document.createElement('div'); e.className = 'cal-day empty'; grid.appendChild(e);
+    }
+
+    const maxAheadDays = 7; // matches backend setting booking_days_ahead default
+    const todayIso = new Date().toISOString().split('T')[0];
+    const maxIso = new Date(Date.now() + maxAheadDays * 86400000).toISOString().split('T')[0];
+
+    d.days.forEach(day => {
+      const div = document.createElement('div');
+      const tooFar = day.isoDate > maxIso;
+      const disabled = day.isPast || tooFar;
+      div.className = 'cal-day ' + (disabled ? 'past' : 'available') + (day.isToday ? ' today' : '');
+      div.textContent = BarberAPI.utils.toPersianDigits(day.day);
+      if (!disabled) {
+        const dot = document.createElement('div'); dot.className = 'cal-dot'; div.appendChild(dot);
+        div.addEventListener('click', () => selectDate(div, day.isoDate, `${BarberAPI.utils.toPersianDigits(day.day)} ${d.monthName} ${BarberAPI.utils.toPersianDigits(d.jy)}`));
+      }
+      grid.appendChild(div);
+    });
+  } catch (e) {
+    console.warn('تقویم واقعی لود نشد:', e.message);
+  }
+}
+
+function changeMonth(dir) {
+  if (!calendarCache) return;
+  const target = dir > 0 ? calendarCache.next : calendarCache.prev;
+  curJy = target.jy; curJm = target.jm;
+  renderCalendar();
+}
+
+async function selectDate(el, isoDate, displayStr){
+  document.querySelectorAll('.cal-day.selected').forEach(d=>d.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDate = displayStr;
+  window._isoDate = isoDate;
+  document.getElementById('selectedDateLabel').textContent = 'تاریخ: ' + displayStr;
+  document.getElementById('timeSection').style.display = 'block';
+
+  if (selectedWorkerId) {
+    try {
+      const serviceIds = selectedServices.map(s => s.id).filter(Boolean);
+      if (serviceIds.length) {
+        const res = await BarberAPI.appointments.getSlots(selectedWorkerId, isoDate, serviceIds);
+        renderLiveTimeSlots(res.slots || []);
+        updateCTA();
+        return;
+      }
+    } catch (e) { console.warn('خطا در دریافت زمان‌های خالی:', e.message); }
+  }
+  renderTimeSlots(); // fallback mock
+  updateCTA();
+}
+function renderTimeSlots(){
+  const grid=document.getElementById('timeGrid'); grid.innerHTML='';
+  const slots=['۹:۰۰','۹:۳۰','۱۰:۰۰','۱۰:۳۰','۱۱:۰۰','۱۱:۳۰','۱۲:۰۰','۱۴:۰۰','۱۴:۳۰','۱۵:۰۰','۱۵:۳۰','۱۶:۰۰','۱۶:۳۰','۱۷:۰۰','۱۷:۳۰','۱۸:۰۰'];
+  const full=['۱۰:۰۰','۱۱:۳۰','۱۴:۰۰'];
+  slots.forEach(s=>{const div=document.createElement('div');const isFull=full.includes(s);div.className='time-slot'+(isFull?' full':'');div.textContent=s;if(!isFull)div.addEventListener('click',()=>selectTime(div,s));grid.appendChild(div);});
+}
+function selectTime(el,time){document.querySelectorAll('.time-slot.selected').forEach(t=>t.classList.remove('selected'));el.classList.add('selected');selectedTime=time;updateCTA();}
+
+// ── NAVIGATION ──
+function updateCTA(){
+  const btn=document.getElementById('btnNext'),sum=document.getElementById('ctaSummary');
+  totalPrice=selectedServices.reduce((a,b)=>a+b.price,0);
+  const dur=selectedServices.reduce((a,b)=>a+b.dur,0); selectedDur=dur+' دقیقه';
+  if(currentStep===1){btn.disabled=selectedServices.length===0;sum.textContent=selectedServices.length?'مجموع: '+totalPrice.toLocaleString('fa')+' تومان · '+dur+' دقیقه':'سرویس مورد نظرت رو انتخاب کن';}
+  else if(currentStep===2){btn.disabled=selectedWorker==='—';sum.textContent=selectedWorker!=='—'?'کارمند: '+selectedWorker:'کارمند مورد نظرت رو انتخاب کن';}
+  else if(currentStep===3){btn.disabled=selectedDate==='—'||selectedTime==='—';sum.textContent=selectedDate!=='—'&&selectedTime!=='—'?selectedDate+' · '+selectedTime:'تاریخ و ساعت رو انتخاب کن';}
+  else{btn.disabled=false;sum.textContent='پرداخت امن · یادآوری خودکار';}
+}
+function nextStep(){if(currentStep===4){confirmBooking();return;}setStep(currentStep+1);}
+function prevStep(){if(currentStep>1)setStep(currentStep-1);}
+function setStep(step){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page'+step).classList.add('active');
+  currentStep=step;
+  document.getElementById('stepNum').textContent=step.toLocaleString('fa-IR');
+  document.getElementById('btnBack').style.display=step>1?'block':'none';
+  document.getElementById('btnNext').textContent=step===4?'پرداخت و تأیید ✓':'ادامه ←';
+  for(let i=1;i<=4;i++){
+    document.getElementById('sc'+i).className='step-circle'+(i<step?' done':i===step?' active':'');
+    document.getElementById('sc'+i).textContent=i<step?'✓':i.toLocaleString('fa-IR');
+    document.getElementById('sl'+i).className='step-label'+(i===step?' active':'');
+    if(i<4) document.getElementById('line'+i).className='step-line'+(i<step?' done':'');
+  }
+  if(step===3) renderCalendar();
+  if(step===4) fillConfirm();
+  updateCTA();
+}
+function fillConfirm(){
+  document.getElementById('cf-service').textContent=selectedServices.map(s=>s.name).join(' + ')||'—';
+  document.getElementById('cf-hair').textContent=selectedHairName;
+  document.getElementById('cf-worker').textContent=selectedWorker;
+  document.getElementById('cf-date').textContent=selectedDate;
+  document.getElementById('cf-time').textContent=selectedTime;
+  document.getElementById('cf-dur').textContent=selectedDur;
+  document.getElementById('cf-price').textContent=totalPrice.toLocaleString('fa')+' تومان';
+  calcTotal();
+}
+function calcTotal(){
+  const usePoints=document.getElementById('pointsToggle').classList.contains('on');
+  const discount=usePoints?240000:0;
+  document.getElementById('cf-discount').textContent=discount?'-'+discount.toLocaleString('fa')+' تومان':'—';
+  document.getElementById('cf-total').textContent=Math.max(0,totalPrice-discount).toLocaleString('fa')+' تومان';
+}
+function selectPay(el){document.querySelectorAll('.pay-method').forEach(p=>p.classList.remove('selected'));el.classList.add('selected');}
+function confirmBooking(){
+  const usePoints=document.getElementById('pointsToggle').classList.contains('on');
+  const final=Math.max(0,totalPrice-(usePoints?240000:0));
+  document.getElementById('rc-service').textContent=selectedServices.map(s=>s.name).join(' + ');
+  document.getElementById('rc-worker').textContent=selectedWorker;
+  document.getElementById('rc-datetime').textContent=selectedDate+' · '+selectedTime;
+  document.getElementById('rc-price').textContent=final.toLocaleString('fa')+' تومان';
+  document.getElementById('rc-code').textContent='GBS-'+Math.floor(Math.random()*9000+1000);
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pageSuccess').classList.add('active');
+  document.getElementById('bottomCta').style.display='none';
+  document.getElementById('stepsBar').style.display='none';
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+renderHairCards(); updateCTA();
+
+// ══════════════════════════════════════════
+// 🔌 LIVE BACKEND WIRING (api.js)
+// ══════════════════════════════════════════
+let LIVE_SERVICES = [];
+let LIVE_WORKERS = [];
+let createdAppointmentId = null;
+
+async function initLiveData() {
+  // ── auth gate ──
+  if (!BarberAPI.isLoggedIn('customer')) {
+    showOtpGate();
+    return;
+  }
+  await loadLiveServices();
+  await loadLiveWorkers();
+}
+
+// ── OTP LOGIN GATE ──
+function showOtpGate() {
+  const gate = document.createElement('div');
+  gate.id = 'otpGate';
+  gate.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.96);z-index:500;display:flex;align-items:center;justify-content:center;padding:1.5rem;';
+  gate.innerHTML = `
+    <div style="background:var(--dark2);border:1px solid rgba(201,168,76,0.2);border-radius:1.5rem;padding:2rem;width:100%;max-width:360px;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:0.5rem">✂️</div>
+      <div style="font-size:1.1rem;font-weight:800;margin-bottom:0.25rem">ورود به General <span style="color:var(--gold)">Barber</span></div>
+      <div style="font-size:0.78rem;color:var(--gray);margin-bottom:1.5rem">برای رزرو نوبت وارد شو</div>
+      <div id="otpStep1">
+        <input id="gatePhone" type="tel" placeholder="۰۹۱۲۰۰۰۰۰۰۰" style="width:100%;padding:0.75rem;background:var(--dark3);border:1px solid rgba(255,255,255,0.08);border-radius:0.75rem;color:var(--white);font-family:'Vazirmatn',sans-serif;font-size:0.9rem;outline:none;margin-bottom:0.875rem;text-align:center;direction:ltr;">
+        <button onclick="gateSendOtp()" style="width:100%;padding:0.75rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:800;border:none;border-radius:0.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:0.9rem;">ارسال کد تأیید</button>
+      </div>
+      <div id="otpStep2" style="display:none">
+        <input id="gateCode" type="text" maxlength="4" placeholder="کد ۴ رقمی" style="width:100%;padding:0.75rem;background:var(--dark3);border:1px solid rgba(255,255,255,0.08);border-radius:0.75rem;color:var(--gold);font-family:'Vazirmatn',sans-serif;font-size:1.2rem;text-align:center;outline:none;margin-bottom:0.875rem;letter-spacing:0.3em;">
+        <button onclick="gateVerifyOtp()" style="width:100%;padding:0.75rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:800;border:none;border-radius:0.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:0.9rem;">تأیید و ورود</button>
+      </div>
+      <div id="gateMsg" style="font-size:0.75rem;color:var(--red);margin-top:0.75rem;min-height:1em;"></div>
+    </div>`;
+  document.body.appendChild(gate);
+}
+
+async function gateSendOtp() {
+  const phone = document.getElementById('gatePhone').value.trim();
+  const msg = document.getElementById('gateMsg');
+  if (!/^09\d{9}$/.test(phone)) { msg.textContent = 'شماره موبایل نامعتبر است'; return; }
+  msg.style.color = 'var(--gold)'; msg.textContent = 'در حال ارسال...';
+  try {
+    const res = await BarberAPI.auth.sendOtp(phone);
+    window._gatePhone = phone;
+    document.getElementById('otpStep1').style.display = 'none';
+    document.getElementById('otpStep2').style.display = 'block';
+    msg.style.color = 'var(--green)';
+    msg.textContent = res.dev_code ? `کد تست: ${res.dev_code}` : 'کد ارسال شد';
+  } catch (e) {
+    msg.style.color = 'var(--red)';
+    msg.textContent = e.message;
+  }
+}
+
+async function gateVerifyOtp() {
+  const code = document.getElementById('gateCode').value.trim();
+  const msg = document.getElementById('gateMsg');
+  try {
+    await BarberAPI.auth.verifyOtp(window._gatePhone, code);
+    document.getElementById('otpGate').remove();
+    showToast('✅ خوش اومدی!');
+    await loadLiveServices();
+    await loadLiveWorkers();
+  } catch (e) {
+    msg.style.color = 'var(--red)';
+    msg.textContent = e.message;
+  }
+}
+
+// ── LOAD REAL SERVICES ──
+async function loadLiveServices() {
+  try {
+    const res = await BarberAPI.services.list();
+    LIVE_SERVICES = res.data || [];
+    const list = document.querySelector('.service-list');
+    if (!list || !LIVE_SERVICES.length) return;
+    list.innerHTML = '';
+    LIVE_SERVICES.forEach(s => {
+      const div = document.createElement('div');
+      div.className = 'service-item';
+      div.onclick = () => toggleServiceLive(div, s);
+      div.innerHTML = `
+        <div class="service-check"></div>
+        <div class="service-icon2">${categoryIcon(s.category)}</div>
+        <div>
+          <div class="service-name2">${s.name} ${s.is_popular ? '<span class="service-popular">پرطرفدار</span>' : ''}</div>
+          <div class="service-meta"><span class="service-price2">${BarberAPI.utils.formatPrice(s.base_price)} ت</span><span class="service-dur">⏱ ${s.duration_min} دق</span></div>
+        </div>`;
+      list.appendChild(div);
+    });
+  } catch (e) { console.warn('خطا در دریافت سرویس‌ها:', e.message); }
+}
+
+function categoryIcon(cat) {
+  return { cutting:'✂️', beard:'🪒', color:'🎨', perm:'〰️', skin:'💆', package:'👑' }[cat] || '💈';
+}
+
+function toggleServiceLive(el, service) {
+  el.classList.toggle('selected');
+  const idx = selectedServices.findIndex(s => s.name === service.name);
+  if (idx >= 0) selectedServices.splice(idx, 1);
+  else selectedServices.push({ id: service.id, name: service.name, price: service.base_price, dur: service.duration_min });
+  updateCTA();
+}
+
+// ── LOAD REAL WORKERS ──
+async function loadLiveWorkers() {
+  try {
+    const res = await BarberAPI.workers.list();
+    LIVE_WORKERS = res.data || [];
+    const list = document.querySelector('.worker-list');
+    if (!list || !LIVE_WORKERS.length) return;
+    const guestBtn = list.children[list.children.length - 1];
+    list.innerHTML = '';
+    LIVE_WORKERS.forEach(w => {
+      const div = document.createElement('div');
+      div.className = 'worker-item';
+      div.onclick = () => selectWorkerLive(div, w);
+      div.innerHTML = `
+        <div class="worker-av">✂️</div>
+        <div class="worker-wname">${w.name}</div>
+        <div class="worker-wrole">${w.bio || ''}</div>
+        <div class="worker-wrating">★★★★★ ${w.rating || '۵'}</div>
+        <div class="worker-wcount">${w.total_services || 0}+ سرویس</div>`;
+      list.appendChild(div);
+    });
+    list.appendChild(guestBtn);
+  } catch (e) { console.warn('خطا در دریافت کارمندان:', e.message); }
+}
+
+let selectedWorkerId = null;
+function selectWorkerLive(el, worker) {
+  document.querySelectorAll('.worker-item').forEach(w => w.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedWorker = worker.name;
+  selectedWorkerId = worker.id;
+  document.getElementById('workerReviews').style.display = 'block';
+  loadLiveReviews(worker.id);
+  updateCTA();
+}
+
+async function loadLiveReviews(workerId) {
+  try {
+    const res = await BarberAPI.reviews.forWorker(workerId, 1);
+    const container = document.querySelector('#workerReviews > div');
+    if (!container) return;
+    if (!res.data?.length) { container.innerHTML = '<p style="font-size:0.78rem;color:var(--gray)">هنوز نظری ثبت نشده</p>'; return; }
+    container.innerHTML = res.data.slice(0, 2).map(r => `
+      <div style="background:var(--dark2);border-radius:0.875rem;padding:0.875rem;border:1px solid rgba(255,255,255,0.05)">
+        <div style="display:flex;justify-content:space-between;margin-bottom:0.4rem"><span style="font-size:0.82rem;font-weight:600">${r.customer_name || 'مشتری'}</span><span style="font-size:0.75rem;color:var(--gold)">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span></div>
+        <p style="font-size:0.78rem;color:var(--gray-light);line-height:1.6">${r.comment || ''}</p>
+      </div>`).join('');
+  } catch (e) {}
+}
+
+function renderLiveTimeSlots(slots) {
+  const grid = document.getElementById('timeGrid');
+  grid.innerHTML = '';
+  if (!slots.length) {
+    grid.innerHTML = '<p style="font-size:0.8rem;color:var(--gray);grid-column:1/-1;text-align:center">نوبت خالی موجود نیست</p>';
+    return;
+  }
+  slots.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'time-slot';
+    div.textContent = s.time;
+    div.addEventListener('click', () => selectTime(div, s.time));
+    grid.appendChild(div);
+  });
+}
+
+// ── OVERRIDE confirmBooking TO CALL REAL API ──
+const _origConfirmBooking = confirmBooking;
+confirmBooking = async function() {
+  if (!BarberAPI.isLoggedIn('customer')) { showOtpGate(); return; }
+  if (!selectedWorkerId) { showToast('⚠️ کارمند انتخاب نشده'); return; }
+
+  const usePoints = document.getElementById('pointsToggle').classList.contains('on');
+  const payMethodEl = document.querySelector('.pay-method.selected');
+  const payMethodText = payMethodEl?.querySelector('.pay-name')?.textContent || '';
+  const payment_method = payMethodText.includes('کیف') ? 'wallet' : payMethodText.includes('ترکیب') ? 'combined' : 'online';
+
+  const btn = document.getElementById('btnNext');
+  btn.disabled = true; btn.textContent = 'در حال ثبت...';
+
+  try {
+    const payload = {
+      worker_id: selectedWorkerId,
+      date: window._isoDate || new Date().toISOString().split('T')[0],
+      start_time: selectedTime,
+      service_ids: selectedServices.map(s => s.id).filter(Boolean),
+      points_used: usePoints ? 500 : 0,
+      payment_method,
+      hair_style: selectedHairName !== 'انتخاب نشده' ? selectedHairName : null
+    };
+    const res = await BarberAPI.appointments.create(payload);
+    createdAppointmentId = res.data.id;
+
+    // For online payment, redirect to gateway BEFORE showing success screen
+    // (success screen will be shown after returning from payment via ?payment=success)
+    if (payment_method === 'online') {
+      try {
+        const pay = await BarberAPI.payments.initiate(createdAppointmentId);
+        if (pay.free) {
+          showBookingSuccess(res.data);
+          return;
+        }
+        showToast('🔗 در حال انتقال به درگاه پرداخت...');
+        localStorage.setItem('gbs_pending_booking', JSON.stringify({
+          id: createdAppointmentId,
+          service: selectedServices.map(s => s.name).join(' + '),
+          worker: selectedWorker,
+          date: selectedDate, time: selectedTime,
+          price: res.data.final_price
+        }));
+        setTimeout(() => { window.location.href = pay.payment_url; }, 600);
+        return;
+      } catch (e) {
+        showToast('❌ خطا در اتصال به درگاه: ' + e.message);
+        btn.disabled = false; btn.textContent = 'پرداخت و تأیید ✓';
+        return;
+      }
+    }
+
+    // wallet / combined payment → already paid server-side, show success immediately
+    showBookingSuccess(res.data);
+  } catch (e) {
+    showToast('❌ ' + e.message);
+    btn.disabled = false; btn.textContent = 'پرداخت و تأیید ✓';
+  }
+};
+
+function showBookingSuccess(appt) {
+  document.getElementById('rc-service').textContent = selectedServices.map(s => s.name).join(' + ') || appt.services;
+  document.getElementById('rc-worker').textContent = selectedWorker || '—';
+  document.getElementById('rc-datetime').textContent = (selectedDate ? selectedDate + ' · ' : '') + (selectedTime || appt.start_time);
+  document.getElementById('rc-price').textContent = BarberAPI.utils.formatPrice(appt.final_price || appt.price) + ' تومان';
+  document.getElementById('rc-code').textContent = (appt.id || '').slice(0, 8).toUpperCase();
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('pageSuccess').classList.add('active');
+  document.getElementById('bottomCta').style.display = 'none';
+  document.getElementById('stepsBar').style.display = 'none';
+}
+
+// ── HANDLE RETURN FROM PAYMENT GATEWAY ──
+function checkPaymentReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const paymentStatus = params.get('payment');
+  if (!paymentStatus) return;
+
+  const pending = JSON.parse(localStorage.getItem('gbs_pending_booking') || 'null');
+  if (paymentStatus === 'success') {
+    if (pending) {
+      showBookingSuccess(pending);
+      localStorage.removeItem('gbs_pending_booking');
+    } else {
+      showToast('✅ پرداخت با موفقیت انجام شد!');
+    }
+  } else if (paymentStatus === 'failed') {
+    showToast('❌ پرداخت ناموفق بود یا لغو شد');
+    localStorage.removeItem('gbs_pending_booking');
+  }
+  // clean URL
+  window.history.replaceState({}, '', window.location.pathname);
+}
+
+// ── KICK OFF LIVE MODE ──
+initLiveData();
+checkPaymentReturn();
+</script>
+</body>
+</html>

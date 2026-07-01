@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل مدیریت | General Barber Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A84C;--gold-light:#E8C97A;--gold-dim:#8B6914;
+  --black:#0A0A0A;--dark:#111111;--dark2:#1A1A1A;--dark3:#222222;--dark4:#2A2A2A;
+  --gray:#888888;--gray-light:#BBBBBB;--white:#F5F0E8;--white-pure:#FFFFFF;
+  --green:#4CAF50;--red:#E53935;--blue:#2196F3;--orange:#FF9800;--sidebar-w:240px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Vazirmatn',sans-serif;background:var(--black);color:var(--white);min-height:100vh;}
+
+/* LOGIN */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse 80% 80% at 50% 50%,rgba(201,168,76,0.05) 0%,transparent 70%);}
+.login-card{background:var(--dark2);border:1px solid rgba(201,168,76,0.2);border-radius:1.5rem;
+  padding:3rem 2.5rem;width:100%;max-width:400px;text-align:center;}
+.login-logo{font-size:2.5rem;margin-bottom:0.5rem;}
+.login-title{font-size:1.4rem;font-weight:800;margin-bottom:0.25rem;}
+.login-title span{color:var(--gold);}
+.login-sub{font-size:0.82rem;color:var(--gray);margin-bottom:2rem;}
+.login-role-tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem;background:var(--dark3);border-radius:0.75rem;padding:0.3rem;}
+.role-tab{flex:1;padding:0.5rem;border-radius:0.5rem;border:none;background:transparent;color:var(--gray);
+  font-family:'Vazirmatn',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.role-tab.active{background:var(--dark2);color:var(--gold);border:1px solid rgba(201,168,76,0.2);}
+.input-group{margin-bottom:1rem;text-align:right;}
+.input-group label{font-size:0.78rem;color:var(--gray-light);display:block;margin-bottom:0.4rem;}
+.input-group input{width:100%;padding:0.75rem 1rem;background:var(--dark3);border:1px solid rgba(255,255,255,0.08);
+  border-radius:0.75rem;color:var(--white);font-family:'Vazirmatn',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;}
+.input-group input:focus{border-color:rgba(201,168,76,0.4);}
+.pin-inputs{display:flex;gap:0.75rem;justify-content:center;margin:1rem 0;}
+.pin-input{width:52px;height:56px;text-align:center;font-size:1.4rem;font-weight:700;
+  background:var(--dark3);border:1px solid rgba(255,255,255,0.1);border-radius:0.75rem;
+  color:var(--gold);font-family:'Vazirmatn',sans-serif;outline:none;transition:border-color 0.2s;}
+.pin-input:focus{border-color:var(--gold);}
+.btn-login{width:100%;padding:0.875rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));
+  color:var(--black);font-weight:800;font-size:1rem;border:none;border-radius:0.75rem;
+  cursor:pointer;font-family:'Vazirmatn',sans-serif;transition:opacity 0.2s;margin-top:0.5rem;}
+.btn-login:hover{opacity:0.88;}
+.login-error{color:var(--red);font-size:0.78rem;margin-top:0.75rem;display:none;}
+.login-hint{font-size:0.72rem;color:var(--gray);margin-top:1rem;opacity:0.6;}
+
+/* LAYOUT */
+#appScreen{display:none;min-height:100vh;}
+.sidebar{position:fixed;top:0;right:0;bottom:0;width:var(--sidebar-w);
+  background:var(--dark);border-left:1px solid rgba(255,255,255,0.05);
+  display:flex;flex-direction:column;z-index:50;transition:transform 0.3s;}
+.sidebar-header{padding:1.25rem 1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,0.05);}
+.sidebar-brand{font-size:0.95rem;font-weight:800;}
+.sidebar-brand span{color:var(--gold);}
+.sidebar-role{display:inline-block;margin-top:0.4rem;background:rgba(201,168,76,0.1);color:var(--gold);
+  font-size:0.68rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:2rem;border:1px solid rgba(201,168,76,0.2);}
+.sidebar-nav{flex:1;padding:1rem 0.75rem;overflow-y:auto;}
+.nav-section-label{font-size:0.65rem;font-weight:700;color:var(--gray);letter-spacing:0.12em;
+  text-transform:uppercase;padding:0.75rem 0.5rem 0.4rem;}
+.nav-item{display:flex;align-items:center;gap:0.7rem;padding:0.65rem 0.75rem;border-radius:0.6rem;
+  cursor:pointer;transition:all 0.2s;margin-bottom:0.15rem;font-size:0.85rem;
+  color:var(--gray-light);font-weight:500;border:1px solid transparent;}
+.nav-item:hover{background:var(--dark2);color:var(--white);}
+.nav-item.active{background:rgba(201,168,76,0.1);color:var(--gold);border-color:rgba(201,168,76,0.2);}
+.nav-icon{font-size:1rem;width:20px;text-align:center;}
+.nav-badge{margin-right:auto;background:var(--red);color:#fff;font-size:0.62rem;font-weight:700;
+  padding:0.1rem 0.45rem;border-radius:2rem;min-width:18px;text-align:center;}
+.sidebar-footer{padding:0.875rem 1rem;border-top:1px solid rgba(255,255,255,0.05);}
+.sidebar-user{display:flex;align-items:center;gap:0.75rem;}
+.sidebar-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--dark3),var(--gold-dim));
+  display:flex;align-items:center;justify-content:center;font-size:0.9rem;border:1px solid rgba(201,168,76,0.2);}
+.sidebar-user-name{font-size:0.82rem;font-weight:600;}
+.sidebar-user-role{font-size:0.7rem;color:var(--gray);}
+.btn-logout{margin-right:auto;background:none;border:none;color:var(--gray);cursor:pointer;font-size:0.9rem;transition:color 0.2s;}
+.btn-logout:hover{color:var(--red);}
+
+/* MAIN */
+.main{margin-right:var(--sidebar-w);min-height:100vh;}
+.topbar{position:sticky;top:0;z-index:40;background:rgba(10,10,10,0.9);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,0.05);padding:0.875rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;}
+.topbar-title{font-size:1rem;font-weight:700;}
+.topbar-sub{font-size:0.75rem;color:var(--gray);margin-top:0.1rem;}
+.topbar-actions{display:flex;align-items:center;gap:0.75rem;}
+.topbar-date{font-size:0.78rem;color:var(--gray);background:var(--dark2);
+  padding:0.4rem 0.75rem;border-radius:0.5rem;border:1px solid rgba(255,255,255,0.06);}
+.btn-sm{padding:0.45rem 1rem;border-radius:0.5rem;border:none;font-family:'Vazirmatn',sans-serif;
+  font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);}
+.btn-ghost{background:var(--dark2);color:var(--gray-light);border:1px solid rgba(255,255,255,0.08);}
+.btn-ghost:hover{border-color:rgba(201,168,76,0.3);color:var(--gold);}
+.hamburger-btn{display:none;background:none;border:none;color:var(--white);font-size:1.2rem;cursor:pointer;}
+.page-content{padding:1.5rem 2rem;display:none;}
+.page-content.active{display:block;}
+
+/* CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.stat-card{background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:1rem;
+  padding:1.25rem;position:relative;overflow:hidden;transition:border-color 0.3s;}
+.stat-card:hover{border-color:rgba(201,168,76,0.2);}
+.stat-card-icon{width:40px;height:40px;border-radius:0.6rem;display:flex;align-items:center;
+  justify-content:center;font-size:1.1rem;margin-bottom:0.875rem;}
+.stat-card-label{font-size:0.75rem;color:var(--gray);margin-bottom:0.3rem;}
+.stat-card-value{font-size:1.6rem;font-weight:900;line-height:1;}
+.stat-card-change{font-size:0.72rem;margin-top:0.4rem;}
+.change-up{color:var(--green);}
+.change-down{color:var(--red);}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.grid-7-5{display:grid;grid-template-columns:1.4fr 1fr;gap:1rem;margin-bottom:1rem;}
+.card{background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:1rem;padding:1.25rem;}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;}
+.card-title{font-size:0.9rem;font-weight:700;}
+.card-action{font-size:0.75rem;color:var(--gold);cursor:pointer;background:none;border:none;font-family:'Vazirmatn',sans-serif;}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{font-size:0.72rem;color:var(--gray);font-weight:600;padding:0.5rem 0.75rem;
+  text-align:right;border-bottom:1px solid rgba(255,255,255,0.05);}
+td{padding:0.7rem 0.75rem;font-size:0.82rem;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:0.25rem;font-size:0.68rem;font-weight:700;
+  padding:0.2rem 0.6rem;border-radius:2rem;}
+.badge-green{background:rgba(76,175,80,0.12);color:var(--green);border:1px solid rgba(76,175,80,0.2);}
+.badge-red{background:rgba(229,57,53,0.12);color:var(--red);border:1px solid rgba(229,57,53,0.2);}
+.badge-gold{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.2);}
+.badge-gray{background:rgba(255,255,255,0.06);color:var(--gray-light);border:1px solid rgba(255,255,255,0.1);}
+.badge-blue{background:rgba(33,150,243,0.12);color:var(--blue);border:1px solid rgba(33,150,243,0.2);}
+
+/* CHART */
+.chart-bars{display:flex;align-items:flex-end;gap:0.4rem;height:120px;}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:0.4rem;}
+.chart-bar{width:100%;border-radius:0.3rem 0.3rem 0 0;background:linear-gradient(to top,var(--gold-dim),var(--gold));min-height:4px;}
+.chart-bar-label{font-size:0.62rem;color:var(--gray);}
+.chart-bar-val{font-size:0.65rem;color:var(--gold);font-weight:600;}
+
+/* APPOINTMENTS */
+.appt-item{display:flex;align-items:center;gap:0.875rem;padding:0.75rem 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.appt-item:last-child{border-bottom:none;}
+.appt-time{font-size:0.78rem;font-weight:700;color:var(--gold);min-width:50px;text-align:center;
+  background:rgba(201,168,76,0.08);padding:0.3rem 0.5rem;border-radius:0.4rem;}
+.appt-name{font-size:0.85rem;font-weight:600;}
+.appt-service{font-size:0.72rem;color:var(--gray);margin-top:0.1rem;}
+.appt-worker{font-size:0.7rem;color:var(--gray-light);}
+
+/* PROGRESS */
+.progress-item{margin-bottom:1rem;}
+.progress-item:last-child{margin-bottom:0;}
+.progress-header{display:flex;justify-content:space-between;margin-bottom:0.4rem;}
+.progress-label{font-size:0.78rem;color:var(--gray-light);}
+.progress-val{font-size:0.78rem;font-weight:700;color:var(--gold);}
+.progress-track{height:6px;background:var(--dark3);border-radius:3px;}
+.progress-fill{height:100%;border-radius:3px;background:linear-gradient(to left,var(--gold),var(--gold-dim));}
+
+/* WORKER CARD */
+.worker-card{background:var(--dark3);border-radius:0.75rem;padding:1rem;display:flex;
+  align-items:center;gap:0.875rem;border:1px solid rgba(255,255,255,0.05);margin-bottom:0.75rem;}
+.worker-card:last-child{margin-bottom:0;}
+.worker-avatar{width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--dark2),var(--gold-dim));
+  border:2px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.worker-name{font-size:0.88rem;font-weight:700;}
+.worker-role{font-size:0.7rem;color:var(--gray);}
+.worker-stats{margin-right:auto;text-align:left;}
+.worker-income{font-size:0.9rem;font-weight:800;color:var(--gold);}
+.worker-appts{font-size:0.7rem;color:var(--gray);}
+
+/* ALERT */
+.alert{display:flex;align-items:flex-start;gap:0.75rem;padding:0.875rem 1rem;
+  border-radius:0.75rem;margin-bottom:0.75rem;font-size:0.8rem;}
+.alert-icon{font-size:1rem;flex-shrink:0;}
+.alert-title{font-weight:700;margin-bottom:0.15rem;}
+.alert-text{line-height:1.6;}
+.alert-warn{background:rgba(255,152,0,0.08);border:1px solid rgba(255,152,0,0.2);color:#FFB74D;}
+.alert-info{background:rgba(33,150,243,0.08);border:1px solid rgba(33,150,243,0.2);color:#64B5F6;}
+
+/* HEATMAP */
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.heat-cell{height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--gray);}
+.heat-0{background:var(--dark3);}
+.heat-1{background:rgba(201,168,76,0.15);color:var(--gold-light);}
+.heat-2{background:rgba(201,168,76,0.35);color:var(--gold-light);}
+.heat-3{background:rgba(201,168,76,0.6);color:var(--black);}
+.heat-4{background:var(--gold);color:var(--black);font-weight:700;}
+.heatmap-days{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px;}
+.heatmap-day{text-align:center;font-size:0.62rem;color:var(--gray);}
+
+/* FORM */
+.form-group{margin-bottom:1rem;}
+.form-label{font-size:0.78rem;color:var(--gray-light);display:block;margin-bottom:0.4rem;font-weight:500;}
+.form-input,.form-select{width:100%;padding:0.65rem 0.875rem;background:var(--dark3);
+  border:1px solid rgba(255,255,255,0.08);border-radius:0.6rem;color:var(--white);
+  font-family:'Vazirmatn',sans-serif;font-size:0.85rem;outline:none;transition:border-color 0.2s;}
+.form-input:focus,.form-select:focus{border-color:rgba(201,168,76,0.4);}
+.form-select option{background:var(--dark2);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.875rem;}
+.toggle-switch{display:flex;align-items:center;gap:0.75rem;cursor:pointer;}
+.toggle{width:40px;height:22px;background:var(--dark3);border-radius:11px;position:relative;
+  transition:background 0.3s;flex-shrink:0;border:1px solid rgba(255,255,255,0.1);}
+.toggle.on{background:var(--gold);border-color:var(--gold);}
+.toggle::after{content:'';position:absolute;top:2px;right:2px;width:16px;height:16px;
+  background:#fff;border-radius:50%;transition:transform 0.3s;}
+.toggle.on::after{transform:translateX(-18px);}
+.toggle-label{font-size:0.82rem;color:var(--gray-light);}
+
+/* CUSTOMER */
+.customer-avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--dark3),var(--gold-dim));
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;font-weight:700;color:var(--gold);border:1px solid rgba(201,168,76,0.2);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  :root{--sidebar-w:0px;}
+  .sidebar{transform:translateX(100%);width:260px;}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-right:0;}
+  .hamburger-btn{display:block;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .grid-2,.grid-7-5{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .page-content{padding:1rem;}
+  .topbar{padding:0.75rem 1rem;}
+}
+@media(max-width:500px){.stats-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">✂️</div>
+    <div class="login-title">General <span>Barber</span></div>
+    <div class="login-sub">پنل مدیریت اختصاصی — فقط برای مدیر و کارمندان</div>
+    <div class="login-role-tabs">
+      <button class="role-tab active" onclick="setRole('admin',this)">👑 مدیر</button>
+      <button class="role-tab" onclick="setRole('worker',this)">✂️ کارمند</button>
+    </div>
+    <div id="adminLogin">
+      <p style="font-size:0.8rem;color:var(--gray);margin-bottom:1rem;">کد PIN 4 رقمی مدیر را وارد کنید</p>
+      <div class="pin-inputs">
+        <input class="pin-input" type="password" maxlength="1" id="p1" oninput="pinNext(this,'p2')">
+        <input class="pin-input" type="password" maxlength="1" id="p2" oninput="pinNext(this,'p3')">
+        <input class="pin-input" type="password" maxlength="1" id="p3" oninput="pinNext(this,'p4')">
+        <input class="pin-input" type="password" maxlength="1" id="p4" oninput="pinNext(this,null)">
+      </div>
+    </div>
+    <div id="workerLogin" style="display:none">
+      <div class="input-group"><label>شماره موبایل</label><input type="tel" placeholder="۰۹۱۲۰۰۰۰۰۰۰"></div>
+      <div class="input-group"><label>رمز عبور</label><input type="password" placeholder="••••••"></div>
+    </div>
+    <button class="btn-login" onclick="doLogin()">ورود به پنل</button>
+    <div class="login-error" id="loginError">❌ کد PIN اشتباه است</div>
+    <div class="login-hint">دمو: PIN مدیر = 1234</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appScreen">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">General <span>Barber</span></div>
+      <div class="sidebar-role" id="sidebarRole">👑 مدیر ارشد</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">اصلی</div>
+      <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="nav-icon">📊</span>داشبورد</div>
+      <div class="nav-item" onclick="showPage('appointments',this)"><span class="nav-icon">📅</span>نوبت‌ها<span class="nav-badge">۲</span></div>
+      <div class="nav-item" onclick="showPage('calendar',this)"><span class="nav-icon">🗓️</span>تقویم</div>
+      <div class="nav-section-label">مدیریت</div>
+      <div class="nav-item" onclick="showPage('customers',this)"><span class="nav-icon">👥</span>مشتریان</div>
+      <div class="nav-item" onclick="showPage('workers',this)"><span class="nav-icon">✂️</span>کارمندان</div>
+      <div class="nav-item" onclick="showPage('services',this)"><span class="nav-icon">💈</span>سرویس‌ها</div>
+      <div class="nav-section-label">مالی</div>
+      <div class="nav-item" onclick="showPage('finance',this)"><span class="nav-icon">💰</span>حسابداری</div>
+      <div class="nav-item" onclick="showPage('reports',this)"><span class="nav-icon">📈</span>گزارش‌ها</div>
+      <div class="nav-section-label">بازاریابی</div>
+      <div class="nav-item" onclick="showPage('campaigns',this)"><span class="nav-icon">📣</span>کمپین‌ها</div>
+      <div class="nav-item" onclick="showPage('reviews',this)"><span class="nav-icon">⭐</span>نظرات<span class="nav-badge" style="background:var(--gold);color:var(--black)">۵</span></div>
+      <div class="nav-section-label">تنظیمات</div>
+      <div class="nav-item" onclick="showPage('settings',this)"><span class="nav-icon">⚙️</span>تنظیمات</div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">👑</div>
+        <div><div class="sidebar-user-name" id="sidebarName">مدیر</div><div class="sidebar-user-role">General Barber Shop</div></div>
+        <button class="btn-logout" onclick="doLogout()" title="خروج">🚪</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title" id="topbarTitle">داشبورد</div>
+        <div class="topbar-sub" id="topbarSub">خوش اومدی — امروز ۵ نوبت داری</div>
+      </div>
+      <div class="topbar-actions">
+        <div class="topbar-date">📅 ۱۷ آذر ۱۴۰۳</div>
+        <button class="btn-sm btn-gold">+ نوبت جدید</button>
+        <button class="hamburger-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="page-content active" id="page-dashboard">
+      <div style="margin-bottom:1rem">
+        <div class="alert alert-warn"><span class="alert-icon">⚠️</span><div class="alert-text"><div class="alert-title">هشدار هوشمند</div>درآمد این هفته ۱۸٪ کمتر از هفته قبله. پیشنهاد: کمپین تخفیف برای روزهای خلوت بفرست.</div></div>
+        <div class="alert alert-info"><span class="alert-icon">💡</span><div class="alert-text"><div class="alert-title">پیشنهاد هوشمند</div>۱۲ مشتری بیش از ۲ ماهه نیومدن — کمپین بازگشت بفرست.</div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-card-icon" style="background:rgba(201,168,76,0.1)">💰</div><div class="stat-card-label">درآمد امروز</div><div class="stat-card-value" style="color:var(--gold)">۳.۲M</div><div class="stat-card-change change-up">▲ ۱۲٪ نسبت به دیروز</div></div>
+        <div class="stat-card"><div class="stat-card-icon" style="background:rgba(33,150,243,0.1)">📅</div><div class="stat-card-label">نوبت‌های امروز</div><div class="stat-card-value" style="color:var(--blue)">۵</div><div class="stat-card-change" style="color:var(--gray)">۳ انجام‌شده · ۲ باقی</div></div>
+        <div class="stat-card"><div class="stat-card-icon" style="background:rgba(76,175,80,0.1)">👥</div><div class="stat-card-label">مشتری جدید این ماه</div><div class="stat-card-value" style="color:var(--green)">۲۸</div><div class="stat-card-change change-up">▲ ۸٪ نسبت به ماه قبل</div></div>
+        <div class="stat-card"><div class="stat-card-icon" style="background:rgba(255,152,0,0.1)">⭐</div><div class="stat-card-label">میانگین امتیاز</div><div class="stat-card-value" style="color:var(--orange)">۴.۹</div><div class="stat-card-change" style="color:var(--gray)">از ۲۸۰+ نظر</div></div>
+      </div>
+      <div class="grid-7-5">
+        <div class="card">
+          <div class="card-header"><span class="card-title">درآمد ۷ روز اخیر</span><span style="font-size:0.75rem;color:var(--gray)">هدف ماه: ۸۰M</span></div>
+          <div style="margin-bottom:0.5rem"><span style="font-size:1.4rem;font-weight:900;color:var(--gold)">۴۸.۶M</span><span style="font-size:0.75rem;color:var(--gray);margin-right:0.5rem">این ماه تا الان (۶۱٪)</span></div>
+          <div class="progress-item" style="margin-bottom:1rem"><div class="progress-track"><div class="progress-fill" style="width:61%"></div></div></div>
+          <div class="chart-bars">
+            <div class="chart-bar-wrap"><div class="chart-bar-val">۵.۲M</div><div class="chart-bar" style="height:65%"></div><div class="chart-bar-label">ش</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar-val">۷.۸M</div><div class="chart-bar" style="height:98%"></div><div class="chart-bar-label">ی</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar-val">۴.۱M</div><div class="chart-bar" style="height:51%"></div><div class="chart-bar-label">د</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar-val">۶.۵M</div><div class="chart-bar" style="height:81%"></div><div class="chart-bar-label">س</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar-val">۸.۹M</div><div class="chart-bar" style="height:100%"></div><div class="chart-bar-label">چ</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar-val">۹.۱M</div><div class="chart-bar" style="height:100%"></div><div class="chart-bar-label">پ</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar-val">۳.۲M</div><div class="chart-bar" style="height:40%"></div><div class="chart-bar-label">ج</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">نوبت‌های امروز</span><button class="card-action" onclick="showPage('appointments',null)">همه ←</button></div>
+          <div class="appt-item"><div class="appt-time">۱۰:۰۰</div><div><div class="appt-name">—</div><div class="appt-service">کوتاهی + ریش</div></div><span class="badge badge-green" style="margin-right:auto">✓ انجام شد</span></div>
+          <div class="appt-item"><div class="appt-time">۱۱:۳۰</div><div><div class="appt-name">—</div><div class="appt-service">رنگ مو</div></div><span class="badge badge-green" style="margin-right:auto">✓ انجام شد</span></div>
+          <div class="appt-item"><div class="appt-time">۱۴:۰۰</div><div><div class="appt-name">—</div><div class="appt-service">پکیج VIP</div></div><span class="badge badge-green" style="margin-right:auto">✓ انجام شد</span></div>
+          <div class="appt-item"><div class="appt-time">۱۶:۳۰</div><div><div class="appt-name">—</div><div class="appt-service">کوتاهی مو</div></div><span class="badge badge-gold" style="margin-right:auto">⏳ در انتظار</span></div>
+          <div class="appt-item"><div class="appt-time">۱۸:۰۰</div><div><div class="appt-name">—</div><div class="appt-service">اصلاح ریش</div></div><span class="badge badge-gold" style="margin-right:auto">⏳ در انتظار</span></div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><span class="card-title">ساعات اوج مراجعه</span><span style="font-size:0.72rem;color:var(--gray)">این هفته</span></div>
+          <div class="heatmap-days"><div class="heatmap-day">ش</div><div class="heatmap-day">ی</div><div class="heatmap-day">د</div><div class="heatmap-day">س</div><div class="heatmap-day">چ</div><div class="heatmap-day">پ</div><div class="heatmap-day">ج</div></div>
+          <div style="font-size:0.7rem;color:var(--gray);margin-bottom:4px">صبح ۹–۱۲</div>
+          <div class="heatmap" style="margin-bottom:6px"><div class="heat-cell heat-2">۴</div><div class="heat-cell heat-3">۷</div><div class="heat-cell heat-1">۲</div><div class="heat-cell heat-3">۶</div><div class="heat-cell heat-4">۹</div><div class="heat-cell heat-4">۱۰</div><div class="heat-cell heat-1">۲</div></div>
+          <div style="font-size:0.7rem;color:var(--gray);margin-bottom:4px">بعدازظهر ۱۲–۱۷</div>
+          <div class="heatmap" style="margin-bottom:6px"><div class="heat-cell heat-3">۶</div><div class="heat-cell heat-4">۸</div><div class="heat-cell heat-2">۴</div><div class="heat-cell heat-4">۸</div><div class="heat-cell heat-3">۷</div><div class="heat-cell heat-4">۹</div><div class="heat-cell heat-0">۰</div></div>
+          <div style="font-size:0.7rem;color:var(--gray);margin-bottom:4px">عصر ۱۷–۲۲</div>
+          <div class="heatmap"><div class="heat-cell heat-2">۵</div><div class="heat-cell heat-2">۴</div><div class="heat-cell heat-1">۲</div><div class="heat-cell heat-3">۶</div><div class="heat-cell heat-4">۸</div><div class="heat-cell heat-4">۱۰</div><div class="heat-cell heat-0">۰</div></div>
+        </div>
+        <div class="card" id="leaderboardCard">
+          <div class="card-header"><span class="card-title">🏆 لیدربرد کارمندان</span><button class="card-action" onclick="showPage('workers',null)">جزئیات ←</button></div>
+          <div id="leaderboardList">
+            <div class="worker-card"><div class="worker-avatar">👤</div><div><div class="worker-name">کارمند اول</div><div class="worker-role">ارشد · کوتاهی و رنگ</div><div style="font-size:0.7rem;color:var(--gold);margin-top:0.3rem">★★★★★ ۴.۹</div></div><div class="worker-stats"><div class="worker-income">۲۲.۴M</div><div class="worker-appts">۳۸ نوبت این ماه</div></div></div>
+            <div class="worker-card"><div class="worker-avatar">👤</div><div><div class="worker-name">کارمند دوم</div><div class="worker-role">ریش و پوست</div><div style="font-size:0.7rem;color:var(--gold);margin-top:0.3rem">★★★★★ ۴.۸</div></div><div class="worker-stats"><div class="worker-income">۱۸.۱M</div><div class="worker-appts">۳۱ نوبت این ماه</div></div></div>
+          </div>
+          <div style="margin-top:1rem" id="topServicesWrap">
+            <div style="font-size:0.82rem;font-weight:700;margin-bottom:0.75rem">پرفروش‌ترین سرویس‌ها</div>
+            <div class="progress-item"><div class="progress-header"><span class="progress-label">کوتاهی مو</span><span class="progress-val">۴۲٪</span></div><div class="progress-track"><div class="progress-fill" style="width:42%"></div></div></div>
+            <div class="progress-item"><div class="progress-header"><span class="progress-label">اصلاح ریش</span><span class="progress-val">۲۸٪</span></div><div class="progress-track"><div class="progress-fill" style="width:28%"></div></div></div>
+            <div class="progress-item"><div class="progress-header"><span class="progress-label">پکیج VIP</span><span class="progress-val">۱۸٪</span></div><div class="progress-track"><div class="progress-fill" style="width:18%"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APPOINTMENTS -->
+    <div class="page-content" id="page-appointments">
+      <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap">
+        <input class="form-input" placeholder="🔍 جستجو..." style="max-width:220px">
+        <select class="form-select" style="max-width:160px"><option>همه وضعیت‌ها</option><option>در انتظار</option><option>انجام شده</option><option>لغو شده</option></select>
+        <select class="form-select" style="max-width:160px"><option>همه کارمندان</option><option>کارمند اول</option><option>کارمند دوم</option></select>
+        <button class="btn-sm btn-gold" style="margin-right:auto">+ نوبت دستی</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table><thead><tr><th>ساعت</th><th>مشتری</th><th>سرویس</th><th>کارمند</th><th>مبلغ</th><th>پرداخت</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-blue">۱۰:۰۰</span></td><td>—</td><td>کوتاهی + اصلاح ریش</td><td>کارمند اول</td><td style="color:var(--gold);font-weight:700">۶۵۰,۰۰۰</td><td><span class="badge badge-green">✓ آنلاین</span></td><td><span class="badge badge-green">✓ انجام شد</span></td><td><button class="btn-sm btn-ghost">جزئیات</button></td></tr>
+            <tr><td><span class="badge badge-blue">۱۴:۰۰</span></td><td>—</td><td>پکیج VIP کامل</td><td>کارمند دوم</td><td style="color:var(--gold);font-weight:700">۱,۲۰۰,۰۰۰</td><td><span class="badge badge-green">✓ آنلاین</span></td><td><span class="badge badge-green">✓ انجام شد</span></td><td><button class="btn-sm btn-ghost">جزئیات</button></td></tr>
+            <tr><td><span class="badge badge-blue">۱۶:۳۰</span></td><td>—</td><td>کوتاهی مو</td><td>کارمند دوم</td><td style="color:var(--gold);font-weight:700">۳۵۰,۰۰۰</td><td><span class="badge badge-green">✓ آنلاین</span></td><td><span class="badge badge-gold">⏳ در انتظار</span></td><td><div style="display:flex;gap:0.4rem"><button class="btn-sm btn-ghost">انتقال</button><button class="btn-sm" style="background:rgba(229,57,53,0.1);color:var(--red);border:1px solid rgba(229,57,53,0.2);border-radius:0.5rem;padding:0.35rem 0.7rem;font-size:0.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif">لغو</button></div></td></tr>
+            <tr><td><span class="badge badge-blue">۱۸:۰۰</span></td><td>—</td><td>اصلاح ریش</td><td>کارمند اول</td><td style="color:var(--gold);font-weight:700">۳۰۰,۰۰۰</td><td><span class="badge badge-green">✓ آنلاین</span></td><td><span class="badge badge-gold">⏳ در انتظار</span></td><td><div style="display:flex;gap:0.4rem"><button class="btn-sm btn-ghost">انتقال</button><button class="btn-sm" style="background:rgba(229,57,53,0.1);color:var(--red);border:1px solid rgba(229,57,53,0.2);border-radius:0.5rem;padding:0.35rem 0.7rem;font-size:0.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif">لغو</button></div></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUSTOMERS -->
+    <div class="page-content" id="page-customers">
+      <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap">
+        <input class="form-input" placeholder="🔍 جستجو نام یا تلفن..." style="max-width:240px">
+        <select class="form-select" style="max-width:150px"><option>همه سطوح</option><option>🥇 طلا</option><option>🥈 نقره</option><option>🥉 برنز</option></select>
+        <button class="btn-sm btn-gold" style="margin-right:auto">📣 پیام گروهی</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table><thead><tr><th>مشتری</th><th>سطح</th><th>مراجعه</th><th>آخرین مراجعه</th><th>امتیاز</th><th>کیف پول</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+          <tbody>
+            <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div class="customer-avatar">م</div><div><div style="font-size:0.85rem;font-weight:600">—</div><div style="font-size:0.7rem;color:var(--gray)">—</div></div></div></td><td><span class="badge badge-gold">🥇 طلا</span></td><td style="font-weight:700">۲۴</td><td style="color:var(--gray);font-size:0.78rem">۳ روز پیش</td><td style="color:var(--gold);font-weight:700">۲,۴۰۰</td><td style="color:var(--green);font-weight:600">۵۰۰,۰۰۰</td><td><span class="badge badge-green">فعال</span></td><td><button class="btn-sm btn-ghost">پروفایل</button></td></tr>
+            <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div class="customer-avatar">ا</div><div><div style="font-size:0.85rem;font-weight:600">—</div><div style="font-size:0.7rem;color:var(--gray)">—</div></div></div></td><td><span class="badge badge-gray">🥈 نقره</span></td><td style="font-weight:700">۱۲</td><td style="color:var(--gray);font-size:0.78rem">۱ هفته پیش</td><td style="color:var(--gold);font-weight:700">۱,۲۰۰</td><td style="color:var(--green);font-weight:600">۱۲۰,۰۰۰</td><td><span class="badge badge-green">فعال</span></td><td><button class="btn-sm btn-ghost">پروفایل</button></td></tr>
+            <tr><td><div style="display:flex;align-items:center;gap:0.6rem"><div class="customer-avatar">س</div><div><div style="font-size:0.85rem;font-weight:600">—</div><div style="font-size:0.7rem;color:var(--gray)">—</div></div></div></td><td><span class="badge" style="background:rgba(176,141,87,0.1);color:#CD7F32;border:1px solid rgba(176,141,87,0.2)">🥉 برنز</span></td><td style="font-weight:700">۵</td><td style="color:var(--red);font-size:0.78rem">۶۵ روز پیش ⚠️</td><td style="color:var(--gold);font-weight:700">۵۰۰</td><td style="color:var(--gray)">۰</td><td><span class="badge badge-red">غیرفعال</span></td><td><button class="btn-sm btn-ghost">ارسال پیام</button></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="page-content" id="page-services">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
+        <span style="font-size:0.85rem;color:var(--gray)">۶ سرویس (۵ فعال)</span>
+        <button class="btn-sm btn-gold">+ سرویس جدید</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table><thead><tr><th>سرویس</th><th>دسته</th><th>مدت (دقیقه)</th><th>قیمت</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+          <tbody>
+            <tr><td><strong>کوتاهی مو</strong></td><td>کوتاهی</td><td>۳۰–۴۵</td><td style="color:var(--gold);font-weight:700">از ۳۵۰,۰۰۰</td><td><span class="badge badge-green">فعال</span></td><td><button class="btn-sm btn-ghost">ویرایش</button></td></tr>
+            <tr><td><strong>اصلاح ریش</strong></td><td>ریش</td><td>۲۰–۳۰</td><td style="color:var(--gold);font-weight:700">از ۳۰۰,۰۰۰</td><td><span class="badge badge-green">فعال</span></td><td><button class="btn-sm btn-ghost">ویرایش</button></td></tr>
+            <tr><td><strong>رنگ مو</strong></td><td>رنگ</td><td>۶۰–۱۲۰</td><td style="color:var(--gold);font-weight:700">از ۵۵۰,۰۰۰</td><td><span class="badge badge-green">فعال</span></td><td><button class="btn-sm btn-ghost">ویرایش</button></td></tr>
+            <tr><td><strong>فر مو</strong></td><td>فر</td><td>۹۰–۱۵۰</td><td style="color:var(--gold);font-weight:700">از ۸۰۰,۰۰۰</td><td><span class="badge badge-red">غیرفعال</span></td><td><button class="btn-sm btn-ghost">ویرایش</button></td></tr>
+            <tr><td><strong>خدمات پوست</strong></td><td>پوست</td><td>۴۵–۶۰</td><td style="color:var(--gold);font-weight:700">از ۴۵۰,۰۰۰</td><td><span class="badge badge-green">فعال</span></td><td><button class="btn-sm btn-ghost">ویرایش</button></td></tr>
+            <tr><td><strong>پکیج VIP کامل</strong></td><td>پکیج</td><td>۱۲۰</td><td style="color:var(--gold);font-weight:700">از ۱,۲۰۰,۰۰۰</td><td><span class="badge badge-green">فعال</span></td><td><button class="btn-sm btn-ghost">ویرایش</button></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINANCE -->
+    <div class="page-content" id="page-finance">
+      <div class="stats-grid" style="margin-bottom:1.25rem">
+        <div class="stat-card"><div class="stat-card-icon" style="background:rgba(201,168,76,0.1)">💰</div><div class="stat-card-label">درآمد این ماه</div><div class="stat-card-value" style="color:var(--gold)">۴۸.۶M</div><div class="stat-card-change change-up">▲ ۱۵٪ vs ماه قبل</div></div>
+        <div class="stat-card"><div class="stat-card-icon" style="background:rgba(229,57,53,0.1)">🏷️</div><div class="stat-card-label">تخفیف‌های داده شده</div><div class="stat-card-value" style="color:var(--red)">۳.۲M</div><div class="stat-card-change" style="color:var(--gray)">۶.۶٪ از کل درآمد</div></div>
+        <div class="stat-card"><div class="stat-card-icon" style="background:rgba(76,175,80,0.1)">💎</div><div class="stat-card-label">درآمد خالص</div><div class="stat-card-value" style="color:var(--green)">۴۵.۴M</div><div class="stat-card-change change-up">▲ پس از تخفیف</div></div>
+        <div class="stat-card"><div class="stat-card-icon" style="background:rgba(33,150,243,0.1)">👛</div><div class="stat-card-label">موجودی کیف پول‌ها</div><div class="stat-card-value" style="color:var(--blue)">۸.۱M</div><div class="stat-card-change" style="color:var(--gray)">مجموع مشتریان</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">تراکنش‌های اخیر</span><button class="btn-sm btn-ghost">📥 خروجی PDF</button></div>
+        <div class="table-wrap">
+          <table><thead><tr><th>تاریخ</th><th>نوع سرویس</th><th>مبلغ</th><th>تخفیف</th><th>خالص</th><th>روش پرداخت</th><th>کارمند</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--gray);font-size:0.78rem">۱۷ آذر</td><td>پکیج VIP کامل</td><td style="color:var(--gold);font-weight:700">۱,۲۰۰,۰۰۰</td><td style="color:var(--gray)">—</td><td style="color:var(--green);font-weight:700">۱,۲۰۰,۰۰۰</td><td><span class="badge badge-blue">آنلاین</span></td><td>کارمند دوم</td></tr>
+            <tr><td style="color:var(--gray);font-size:0.78rem">۱۷ آذر</td><td>رنگ مو</td><td style="color:var(--gold);font-weight:700">۵۵۰,۰۰۰</td><td style="color:var(--red)">-۵۵,۰۰۰</td><td style="color:var(--green);font-weight:700">۴۹۵,۰۰۰</td><td><span class="badge badge-gold">کیف پول</span></td><td>کارمند اول</td></tr>
+            <tr><td style="color:var(--gray);font-size:0.78rem">۱۶ آذر</td><td>کوتاهی + اصلاح ریش</td><td style="color:var(--gold);font-weight:700">۶۵۰,۰۰۰</td><td style="color:var(--gray)">—</td><td style="color:var(--green);font-weight:700">۶۵۰,۰۰۰</td><td><span class="badge badge-blue">آنلاین</span></td><td>کارمند اول</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="page-content" id="page-reviews">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><span class="card-title">⭐ نظرات در انتظار تایید</span><span class="badge badge-red">۵</span></div>
+          <div style="display:flex;flex-direction:column;gap:0.875rem">
+            <div style="background:var(--dark3);border-radius:0.75rem;padding:0.875rem">
+              <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem"><span style="font-size:0.85rem;font-weight:600">مشتری —</span><span style="color:var(--gold);font-size:0.8rem">★★★★★</span></div>
+              <p style="font-size:0.8rem;color:var(--gray-light);line-height:1.6;margin-bottom:0.75rem">خیلی راضی بودم. کارمند اول واقعاً حرفه‌ای کار می‌کنه.</p>
+              <div style="display:flex;gap:0.5rem"><button class="btn-sm btn-gold">✓ تایید</button><button class="btn-sm btn-ghost">✕ رد</button></div>
+            </div>
+            <div style="background:var(--dark3);border-radius:0.75rem;padding:0.875rem">
+              <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem"><span style="font-size:0.85rem;font-weight:600">مشتری —</span><span style="color:var(--gold);font-size:0.8rem">★★★★☆</span></div>
+              <p style="font-size:0.8rem;color:var(--gray-light);line-height:1.6;margin-bottom:0.75rem">محیط عالیه ولی کمی منتظر موندم.</p>
+              <div style="display:flex;gap:0.5rem"><button class="btn-sm btn-gold">✓ تایید</button><button class="btn-sm btn-ghost">✕ رد</button></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">📊 آمار نظرات</span></div>
+          <div style="text-align:center;padding:1rem 0"><div style="font-size:3rem;font-weight:900;color:var(--gold)">۴.۹</div><div style="color:var(--gold);font-size:1.3rem;margin:0.25rem 0">★★★★★</div><div style="font-size:0.8rem;color:var(--gray)">از ۲۸۰ نظر</div></div>
+          <div class="progress-item"><div class="progress-header"><span class="progress-label">۵ ستاره</span><span class="progress-val">۸۸٪</span></div><div class="progress-track"><div class="progress-fill" style="width:88%"></div></div></div>
+          <div class="progress-item"><div class="progress-header"><span class="progress-label">۴ ستاره</span><span class="progress-val">۹٪</span></div><div class="progress-track"><div class="progress-fill" style="width:9%"></div></div></div>
+          <div class="progress-item"><div class="progress-header"><span class="progress-label">۳ ستاره</span><span class="progress-val">۲٪</span></div><div class="progress-track"><div class="progress-fill" style="width:2%"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAMPAIGNS -->
+    <div class="page-content" id="page-campaigns">
+      <div style="display:flex;justify-content:space-between;margin-bottom:1.25rem"><span style="font-size:0.85rem;color:var(--gray)">مدیریت کمپین‌های تخفیف و پیام</span><button class="btn-sm btn-gold">+ کمپین جدید</button></div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><span class="card-title">📣 ارسال پیام گروهی</span></div>
+          <div class="form-group"><label class="form-label">گروه هدف</label><select class="form-select"><option>همه مشتریان</option><option>مشتریان طلا</option><option>مشتریانی که ۲ ماهه نیومدن</option><option>مشتریان جدید</option></select></div>
+          <div class="form-group"><label class="form-label">متن پیام</label><textarea class="form-input" rows="3" placeholder="پیام خود را بنویسید..." style="resize:vertical"></textarea></div>
+          <div class="form-group"><label class="form-label">روش ارسال</label><div style="display:flex;gap:1rem;flex-wrap:wrap"><label class="toggle-switch" onclick="this.querySelector('.toggle').classList.toggle('on')"><div class="toggle on"></div><span class="toggle-label">SMS</span></label><label class="toggle-switch" onclick="this.querySelector('.toggle').classList.toggle('on')"><div class="toggle on"></div><span class="toggle-label">واتساپ</span></label></div></div>
+          <button class="btn-sm btn-gold" style="width:100%;justify-content:center">📤 ارسال کمپین</button>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🏷️ کدهای تخفیف</span><button class="btn-sm btn-gold">+ کد جدید</button></div>
+          <div style="display:flex;flex-direction:column;gap:0.75rem">
+            <div style="background:var(--dark3);border-radius:0.75rem;padding:0.875rem;display:flex;align-items:center;gap:0.75rem"><div style="font-size:1rem;font-weight:800;color:var(--gold);font-family:monospace;background:rgba(201,168,76,0.1);padding:0.3rem 0.75rem;border-radius:0.4rem;border:1px dashed rgba(201,168,76,0.3)">WELCOME20</div><div style="flex:1"><div style="font-size:0.8rem;font-weight:600">۲۰٪ تخفیف خوش‌آمد</div><div style="font-size:0.7rem;color:var(--gray)">۴۵ بار استفاده</div></div><span class="badge badge-green">فعال</span></div>
+            <div style="background:var(--dark3);border-radius:0.75rem;padding:0.875rem;display:flex;align-items:center;gap:0.75rem"><div style="font-size:1rem;font-weight:800;color:var(--gold);font-family:monospace;background:rgba(201,168,76,0.1);padding:0.3rem 0.75rem;border-radius:0.4rem;border:1px dashed rgba(201,168,76,0.3)">VIP50</div><div style="flex:1"><div style="font-size:0.8rem;font-weight:600">۵۰,۰۰۰ تخفیف VIP</div><div style="font-size:0.7rem;color:var(--gray)">۱۲ بار استفاده</div></div><span class="badge badge-red">غیرفعال</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1rem">
+        <div class="card-header"><span class="card-title">📋 فرم‌های نظرسنجی</span><button class="btn-sm btn-gold" onclick="createSurveyPrompt()">+ فرم جدید</button></div>
+        <div id="surveysList" style="display:flex;flex-direction:column;gap:0.75rem">
+          <p style="color:var(--gray);font-size:0.8rem;text-align:center;padding:1rem">در حال بارگذاری...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="page-content" id="page-settings">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><span class="card-title">⚙️ اطلاعات آرایشگاه</span></div>
+          <div class="form-group"><label class="form-label">نام آرایشگاه</label><input class="form-input" value="General Barber Shop"></div>
+          <div class="form-row"><div class="form-group"><label class="form-label">شماره تماس</label><input class="form-input" placeholder="۰۹۱۲..."></div><div class="form-group"><label class="form-label">آدرس</label><input class="form-input" placeholder="کرج، ..."></div></div>
+          <div class="form-row"><div class="form-group"><label class="form-label">ساعت شروع</label><input class="form-input" value="۰۹:۰۰"></div><div class="form-group"><label class="form-label">ساعت پایان</label><input class="form-input" value="۲۲:۰۰"></div></div>
+          <button class="btn-sm btn-gold" style="width:100%;justify-content:center">ذخیره تغییرات</button>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🔔 تنظیمات نوبت‌دهی</span></div>
+          <div class="form-row"><div class="form-group"><label class="form-label">فاصله بین نوبت‌ها (دقیقه)</label><input class="form-input" value="۵"></div><div class="form-group"><label class="form-label">حداکثر رزرو پیشین (روز)</label><input class="form-input" value="۷"></div></div>
+          <div class="form-row"><div class="form-group"><label class="form-label">مهلت کنسلی بدون جریمه (ساعت)</label><input class="form-input" value="۴"></div><div class="form-group"><label class="form-label">درصد جریمه کنسلی</label><input class="form-input" value="۳۰"></div></div>
+          <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1rem">
+            <label class="toggle-switch" onclick="this.querySelector('.toggle').classList.toggle('on')"><div class="toggle on"></div><span class="toggle-label">یادآوری SMS</span></label>
+            <label class="toggle-switch" onclick="this.querySelector('.toggle').classList.toggle('on')"><div class="toggle on"></div><span class="toggle-label">یادآوری واتساپ</span></label>
+            <label class="toggle-switch" onclick="this.querySelector('.toggle').classList.toggle('on')"><div class="toggle on"></div><span class="toggle-label">پرداخت اجباری قبل از رزرو</span></label>
+          </div>
+          <button class="btn-sm btn-gold" style="width:100%;justify-content:center">ذخیره</button>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🗓️ تعطیلات و روزهای خاص</span></div>
+          <div class="alert alert-info" style="margin-bottom:1rem"><span class="alert-icon">📅</span><div class="alert-text">تعطیلات نوروز ۱۴۰۴ را از الان تنظیم کنید</div></div>
+          <div class="form-row"><div class="form-group"><label class="form-label">از تاریخ</label><input class="form-input" placeholder="۱۴۰۴/۰۱/۰۱"></div><div class="form-group"><label class="form-label">تا تاریخ</label><input class="form-input" placeholder="۱۴۰۴/۰۱/۱۳"></div></div>
+          <div class="form-group"><label class="form-label">دلیل (نمایش به مشتری)</label><input class="form-input" placeholder="تعطیلات نوروز"></div>
+          <button class="btn-sm btn-gold">+ افزودن تعطیلی</button>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🔒 امنیت</span></div>
+          <div class="form-group"><label class="form-label">تغییر PIN مدیر (4 رقم)</label><div class="pin-inputs" style="justify-content:flex-start"><input class="pin-input" type="password" maxlength="1"><input class="pin-input" type="password" maxlength="1"><input class="pin-input" type="password" maxlength="1"><input class="pin-input" type="password" maxlength="1"></div></div>
+          <div class="alert alert-warn" style="margin:1rem 0"><span class="alert-icon">⚠️</span><div class="alert-text">PIN پیش‌فرض را حتماً تغییر دهید</div></div>
+          <button class="btn-sm btn-gold">ذخیره PIN جدید</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLACEHOLDER PAGES -->
+    <div class="page-content" id="page-workers"><div class="alert alert-info"><span class="alert-icon">✂️</span><div class="alert-text"><div class="alert-title">پنل کارمندان</div>مدیریت کارمندان، شیفت‌ها، مرخصی و عملکرد — در نسخه بعدی تکمیل می‌شه</div></div></div>
+    <div class="page-content" id="page-calendar"><div class="alert alert-info"><span class="alert-icon">🗓️</span><div class="alert-text"><div class="alert-title">تقویم نوبت‌ها</div>نمای تقویمی شمسی — در نسخه بعدی تکمیل می‌شه</div></div></div>
+    <div class="page-content" id="page-reports"><div class="alert alert-info"><span class="alert-icon">📈</span><div class="alert-text"><div class="alert-title">گزارش‌های کامل</div>گزارش‌های روزانه، ماهانه و سالانه با خروجی PDF — در نسخه بعدی تکمیل می‌شه</div></div></div>
+  </main>
+</div>
+
+<script src="api.js"></script>
+<script>
+let currentRole='admin';
+function setRole(role,btn){
+  currentRole=role;
+  document.querySelectorAll('.role-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('adminLogin').style.display=role==='admin'?'block':'none';
+  document.getElementById('workerLogin').style.display=role==='worker'?'block':'none';
+}
+function pinNext(el,nextId){
+  if(el.value&&nextId)document.getElementById(nextId).focus();
+  if(!nextId)doLogin();
+}
+function doLogin(){
+  if(currentRole==='admin'){
+    const pin=['p1','p2','p3','p4'].map(id=>document.getElementById(id).value).join('');
+    BarberAPI.auth.adminLogin(pin).then(()=>{
+      document.getElementById('loginScreen').style.display='none';
+      document.getElementById('appScreen').style.display='block';
+      document.getElementById('sidebarRole').textContent='👑 مدیر ارشد';
+      document.getElementById('sidebarName').textContent='مدیر';
+      loadDashboard();
+    }).catch(()=>{
+      const err=document.getElementById('loginError');
+      err.style.display='block';
+      ['p1','p2','p3','p4'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('p1').focus();
+      setTimeout(()=>err.style.display='none',3000);
+    });
+  }else{
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('appScreen').style.display='block';
+    document.getElementById('sidebarRole').textContent='✂️ کارمند';
+    document.getElementById('sidebarName').textContent='کارمند';
+  }
+}
+
+async function loadDashboard(){
+  try{
+    const res = await BarberAPI.admin.dashboard();
+    const d = res.data;
+    // Today / month stat cards (matches order in DOM)
+    const cards = document.querySelectorAll('.stat-card-value');
+    if(cards[0]) cards[0].textContent = (d.today.income/1000000).toFixed(1)+'M';
+    if(cards[1]) cards[1].textContent = BarberAPI.utils.toPersianDigits(d.today.appointments);
+    if(cards[2]) cards[2].textContent = BarberAPI.utils.toPersianDigits(d.month.newCustomers);
+    if(cards[3]) cards[3].textContent = d.avgRating || '—';
+
+    // Alerts
+    const alertsWrap = document.querySelector('.page-content#page-dashboard > div:first-child');
+    if(alertsWrap && d.alerts?.length){
+      alertsWrap.innerHTML = d.alerts.map(a=>`
+        <div class="alert ${a.type==='warning'?'alert-warn':'alert-info'}">
+          <span class="alert-icon">${a.type==='warning'?'⚠️':'💡'}</span>
+          <div class="alert-text"><div class="alert-title">${a.type==='warning'?'هشدار هوشمند':'پیشنهاد هوشمند'}</div>${a.message}</div>
+        </div>`).join('');
+    }
+
+    // Leaderboard
+    const lbList = document.getElementById('leaderboardList');
+    if (lbList && d.leaderboard?.length) {
+      const medals = ['🥇','🥈','🥉'];
+      lbList.innerHTML = d.leaderboard.map((w, i) => `
+        <div class="worker-card">
+          <div class="worker-avatar">${medals[i] || '✂️'}</div>
+          <div>
+            <div class="worker-name">${w.name}</div>
+            <div class="worker-role">رتبه ${BarberAPI.utils.toPersianDigits(w.rank)} این ماه</div>
+            <div style="font-size:0.7rem;color:var(--gold);margin-top:0.3rem">★★★★★ ${w.rating || 0}</div>
+          </div>
+          <div class="worker-stats">
+            <div class="worker-income">${(w.income_this_month/1000000).toFixed(1)}M</div>
+            <div class="worker-appts">${BarberAPI.utils.toPersianDigits(w.services_this_month)} نوبت این ماه</div>
+          </div>
+        </div>`).join('');
+    }
+
+    // Top services
+    const topWrap = document.getElementById('topServicesWrap');
+    if (topWrap && d.topServices?.length) {
+      const maxCount = Math.max(...d.topServices.map(s => s.count), 1);
+      const totalCount = d.topServices.reduce((a, s) => a + s.count, 0) || 1;
+      const items = d.topServices.map(s => {
+        const pct = Math.round(s.count / totalCount * 100);
+        return `<div class="progress-item"><div class="progress-header"><span class="progress-label">${s.name}</span><span class="progress-val">${BarberAPI.utils.toPersianDigits(pct)}٪</span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+      }).join('');
+      topWrap.innerHTML = '<div style="font-size:0.82rem;font-weight:700;margin-bottom:0.75rem">پرفروش‌ترین سرویس‌ها</div>' + items;
+    }
+  }catch(e){ console.warn('خطا در بارگذاری داشبورد:', e.message); }
+}
+function doLogout(){
+  document.getElementById('appScreen').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+  ['p1','p2','p3','p4'].forEach(id=>document.getElementById(id).value='');
+}
+const pageTitles={dashboard:['داشبورد','خلاصه عملکرد امروز'],appointments:['نوبت‌ها','مدیریت و پیگیری نوبت‌ها'],calendar:['تقویم','نمای تقویمی نوبت‌ها'],customers:['مشتریان','مدیریت پایگاه مشتریان'],workers:['کارمندان','مدیریت تیم و عملکرد'],services:['سرویس‌ها','مدیریت خدمات و قیمت‌ها'],finance:['حسابداری','درآمد و تراکنش‌ها'],reports:['گزارش‌ها','گزارش‌های تحلیلی'],campaigns:['کمپین‌ها','بازاریابی و تخفیف'],reviews:['نظرات','مدیریت بازخورد مشتریان'],settings:['تنظیمات','پیکربندی سیستم']};
+function showPage(pageId,navEl){
+  document.querySelectorAll('.page-content').forEach(p=>p.classList.remove('active'));
+  const page=document.getElementById('page-'+pageId);
+  if(page)page.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(navEl)navEl.classList.add('active');
+  if(pageTitles[pageId]){
+    document.getElementById('topbarTitle').textContent=pageTitles[pageId][0];
+    document.getElementById('topbarSub').textContent=pageTitles[pageId][1];
+  }
+  document.getElementById('sidebar').classList.remove('open');
+}
+document.getElementById('p1')?.focus();
+
+// ── AUTO LOGIN IF TOKEN EXISTS ──
+if (BarberAPI.isLoggedIn('admin')) {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appScreen').style.display = 'block';
+  loadDashboard();
+}
+
+// ── LIVE APPOINTMENTS TABLE ──
+async function loadLiveAppointments(filters = {}) {
+  try {
+    const res = await BarberAPI.admin.appointments(filters);
+    const tbody = document.querySelector('#page-appointments tbody');
+    if (!tbody) return;
+    if (!res.data?.length) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--gray);padding:1.5rem">نوبتی یافت نشد</td></tr>'; return; }
+    const statusBadge = { pending:'<span class="badge badge-gold">⏳ در انتظار</span>', confirmed:'<span class="badge badge-blue">تأیید شده</span>', done:'<span class="badge badge-green">✓ انجام شد</span>', cancelled:'<span class="badge badge-red">✕ لغو شد</span>' };
+    tbody.innerHTML = res.data.map(a => `
+      <tr>
+        <td><span class="badge badge-blue">${a.start_time}</span></td>
+        <td>${a.customer_name || a.customer_phone}</td>
+        <td>${a.worker_name}</td>
+        <td>${a.worker_name}</td>
+        <td style="color:var(--gold);font-weight:700">${BarberAPI.utils.formatPrice(a.final_price)}</td>
+        <td><span class="badge ${a.payment_status==='paid'?'badge-green':'badge-gold'}">${a.payment_status==='paid'?'✓ پرداخت شد':'در انتظار'}</span></td>
+        <td>${statusBadge[a.status] || a.status}</td>
+        <td><button class="btn-sm btn-ghost" onclick="markAppointmentDone('${a.id}')">تکمیل</button></td>
+      </tr>`).join('');
+  } catch (e) { console.warn('خطا در دریافت نوبت‌ها:', e.message); }
+}
+
+async function markAppointmentDone(id) {
+  try {
+    await BarberAPI.request('PATCH', `/appointments/${id}/done`, {}, 'admin');
+    showToast?.('✅ نوبت تکمیل شد') || alert('نوبت تکمیل شد');
+    loadLiveAppointments();
+  } catch (e) { alert('خطا: ' + e.message); }
+}
+
+// ── CUSTOMERS TAB ──
+async function loadLiveCustomers() {
+  try {
+    const res = await BarberAPI.admin.customers();
+    const tbody = document.querySelector('#page-customers tbody');
+    if (!tbody) return;
+    if (!res.data?.length) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--gray);padding:1.5rem">مشتری‌ای ثبت نشده</td></tr>'; return; }
+    const tierBadge = { gold: '<span class="badge badge-gold">🥇 طلا</span>', silver: '<span class="badge badge-gray">🥈 نقره</span>', bronze: '<span class="badge" style="background:rgba(176,141,87,0.1);color:#CD7F32;border:1px solid rgba(176,141,87,0.2)">🥉 برنز</span>' };
+    tbody.innerHTML = res.data.map(c => `
+      <tr>
+        <td><div style="display:flex;align-items:center;gap:0.6rem"><div class="customer-avatar">${(c.name||c.phone)[0]}</div><div><div style="font-size:0.85rem;font-weight:600">${c.name||'—'}</div><div style="font-size:0.7rem;color:var(--gray)">${c.phone}</div></div></div></td>
+        <td>${tierBadge[c.tier] || tierBadge.bronze}</td>
+        <td style="font-weight:700">${BarberAPI.utils.toPersianDigits(c.total_visits)}</td>
+        <td style="color:var(--gray);font-size:0.78rem">${c.last_visit || 'هنوز نیومده'}</td>
+        <td style="color:var(--gold);font-weight:700">${BarberAPI.utils.formatPrice(c.points)}</td>
+        <td style="color:var(--green);font-weight:600">${BarberAPI.utils.formatPrice(c.wallet)}</td>
+        <td><span class="badge ${c.is_blacklisted ? 'badge-red' : 'badge-green'}">${c.is_blacklisted ? 'مسدود' : 'فعال'}</span></td>
+        <td><button class="btn-sm btn-ghost" onclick="toggleBlacklist('${c.id}', ${c.is_blacklisted ? 0 : 1})">${c.is_blacklisted ? 'رفع مسدودی' : 'مسدود کن'}</button></td>
+      </tr>`).join('');
+  } catch (e) { console.warn('خطا در دریافت مشتریان:', e.message); }
+}
+async function toggleBlacklist(id, val) {
+  try { await BarberAPI.admin.blacklistCustomer(id, !!val); loadLiveCustomers(); }
+  catch (e) { alert('خطا: ' + e.message); }
+}
+
+// ── SERVICES TAB ──
+async function loadLiveServicesAdmin() {
+  try {
+    const res = await BarberAPI.services.list();
+    const tbody = document.querySelector('#page-services tbody');
+    if (!tbody) return;
+    const catMap = { cutting:'کوتاهی', beard:'ریش', color:'رنگ', perm:'فر', skin:'پوست', package:'پکیج' };
+    if (!res.data?.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--gray);padding:1.5rem">سرویسی ثبت نشده</td></tr>'; return; }
+    tbody.innerHTML = res.data.map(s => `
+      <tr>
+        <td><strong>${s.name}</strong></td>
+        <td>${catMap[s.category] || s.category}</td>
+        <td>${BarberAPI.utils.toPersianDigits(s.duration_min)}</td>
+        <td style="color:var(--gold);font-weight:700">از ${BarberAPI.utils.formatPrice(s.base_price)}</td>
+        <td><span class="badge ${s.is_active ? 'badge-green' : 'badge-red'}">${s.is_active ? 'فعال' : 'غیرفعال'}</span></td>
+        <td><button class="btn-sm btn-ghost" onclick="toggleServiceActive('${s.id}', ${s.is_active ? 0 : 1})">${s.is_active ? 'غیرفعال کن' : 'فعال کن'}</button></td>
+      </tr>`).join('');
+  } catch (e) { console.warn('خطا در دریافت سرویس‌ها:', e.message); }
+}
+async function toggleServiceActive(id, val) {
+  try { await BarberAPI.admin.updateService(id, { is_active: val }); loadLiveServicesAdmin(); }
+  catch (e) { alert('خطا: ' + e.message); }
+}
+
+// ── FINANCE TAB ──
+async function loadLiveFinance() {
+  try {
+    const today = new Date();
+    const monthStart = today.toISOString().slice(0, 8) + '01';
+    const todayIso = today.toISOString().split('T')[0];
+    const res = await BarberAPI.admin.report(monthStart, todayIso);
+    const s = res.data.summary;
+
+    const cards = document.querySelectorAll('#page-finance .stat-card-value');
+    if (cards[0]) cards[0].textContent = (s.income/1000000).toFixed(1)+'M';
+    if (cards[1]) cards[1].textContent = (s.discounts/1000000).toFixed(1)+'M';
+    if (cards[2]) cards[2].textContent = ((s.income-s.discounts)/1000000).toFixed(1)+'M';
+
+    const tbody = document.querySelector('#page-finance tbody');
+    if (tbody && res.data.appointments) {
+      const done = res.data.appointments.filter(a => a.status === 'done').slice(0, 10);
+      if (!done.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--gray);padding:1.5rem">تراکنشی ثبت نشده</td></tr>'; return; }
+      tbody.innerHTML = done.map(a => `
+        <tr>
+          <td style="color:var(--gray);font-size:0.78rem">${a.date}</td>
+          <td>سرویس‌های رزروشده</td>
+          <td style="color:var(--gold);font-weight:700">${BarberAPI.utils.formatPrice(a.total_price)}</td>
+          <td style="color:${a.discount?'var(--red)':'var(--gray)'}">${a.discount ? '-'+BarberAPI.utils.formatPrice(a.discount) : '—'}</td>
+          <td style="color:var(--green);font-weight:700">${BarberAPI.utils.formatPrice(a.final_price)}</td>
+          <td><span class="badge ${a.payment_method==='wallet'?'badge-gold':'badge-blue'}">${a.payment_method==='wallet'?'کیف پول':'آنلاین'}</span></td>
+          <td>${a.worker_name}</td>
+        </tr>`).join('');
+    }
+  } catch (e) { console.warn('خطا در دریافت گزارش مالی:', e.message); }
+}
+
+// ── REVIEWS TAB (pending) ──
+async function loadPendingReviews() {
+  try {
+    const res = await BarberAPI.admin.pendingReviews();
+    const wrap = document.querySelector('#page-reviews .card:first-child');
+    if (!wrap) return;
+    const header = wrap.querySelector('.card-header');
+    const existingItems = wrap.querySelectorAll('div[style*="background:var(--dark3)"]');
+    existingItems.forEach(el => el.remove());
+    const badge = wrap.querySelector('.badge-red');
+    if (badge) badge.textContent = BarberAPI.utils.toPersianDigits(res.data?.length || 0);
+    if (!res.data?.length) {
+      wrap.insertAdjacentHTML('beforeend', '<p style="color:var(--gray);font-size:0.82rem;text-align:center;padding:1rem">نظر در انتظاری نیست</p>');
+      return;
+    }
+    res.data.forEach(r => {
+      wrap.insertAdjacentHTML('beforeend', `
+        <div style="background:var(--dark3);border-radius:0.75rem;padding:0.875rem;margin-top:0.875rem">
+          <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem">
+            <span style="font-size:0.85rem;font-weight:600">${r.customer_name||'مشتری'} → ${r.worker_name}</span>
+            <span style="color:var(--gold);font-size:0.8rem">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+          </div>
+          <p style="font-size:0.8rem;color:var(--gray-light);line-height:1.6;margin-bottom:0.75rem">${r.comment||'بدون متن'}</p>
+          <div style="display:flex;gap:0.5rem">
+            <button class="btn-sm btn-gold" onclick="reviewAction('${r.id}','approved')">✓ تایید</button>
+            <button class="btn-sm btn-ghost" onclick="reviewAction('${r.id}','rejected')">✕ رد</button>
+          </div>
+        </div>`);
+    });
+  } catch (e) { console.warn('خطا در دریافت نظرات:', e.message); }
+}
+async function reviewAction(id, status) {
+  try { await BarberAPI.admin.reviewStatus(id, status); loadPendingReviews(); }
+  catch (e) { alert('خطا: ' + e.message); }
+}
+
+// ── CAMPAIGNS TAB ──
+async function loadLiveCoupons() {
+  try {
+    const res = await BarberAPI.admin.coupons();
+    const wrap = document.querySelector('#page-campaigns .card:last-child');
+    if (!wrap || !res.data) return;
+    const header = wrap.querySelector('.card-header');
+    wrap.innerHTML = ''; wrap.appendChild(header);
+    const listDiv = document.createElement('div');
+    listDiv.style.cssText = 'display:flex;flex-direction:column;gap:0.75rem';
+    res.data.forEach(c => {
+      listDiv.insertAdjacentHTML('beforeend', `
+        <div style="background:var(--dark3);border-radius:0.75rem;padding:0.875rem;display:flex;align-items:center;gap:0.75rem">
+          <div style="font-size:1rem;font-weight:800;color:var(--gold);font-family:monospace;background:rgba(201,168,76,0.1);padding:0.3rem 0.75rem;border-radius:0.4rem;border:1px dashed rgba(201,168,76,0.3)">${c.code}</div>
+          <div style="flex:1"><div style="font-size:0.8rem;font-weight:600">${c.type==='percent'?c.value+'٪':BarberAPI.utils.formatPrice(c.value)+' ت'} تخفیف</div><div style="font-size:0.7rem;color:var(--gray)">${BarberAPI.utils.toPersianDigits(c.used_count)} بار استفاده شده</div></div>
+          <span class="badge ${c.is_active?'badge-green':'badge-red'}" style="cursor:pointer" onclick="toggleCouponActive('${c.id}')">${c.is_active?'فعال':'غیرفعال'}</span>
+        </div>`);
+    });
+    wrap.appendChild(listDiv);
+  } catch (e) { console.warn('خطا در دریافت کوپن‌ها:', e.message); }
+}
+async function toggleCouponActive(id) {
+  try { await BarberAPI.admin.toggleCoupon(id); loadLiveCoupons(); }
+  catch (e) {}
+}
+
+// Hook campaign send button
+document.addEventListener('DOMContentLoaded', () => {
+  const sendBtn = document.querySelector('#page-campaigns .card:first-child .btn-gold');
+  if (sendBtn) sendBtn.onclick = async () => {
+    const card = sendBtn.closest('.card');
+    const target = card.querySelector('select').value;
+    const message = card.querySelector('textarea').value;
+    const targetMap = { 'همه مشتریان':'all', 'مشتریان طلا':'gold', 'مشتریانی که ۲ ماهه نیومدن':'inactive', 'مشتریان جدید':'all' };
+    try {
+      const created = await BarberAPI.admin.createCampaign({ title: 'پیام مدیر', message, target: targetMap[target] || 'all', channel: 'sms' });
+      await BarberAPI.admin.sendCampaign(created.id);
+      alert('✅ پیام ارسال شد');
+    } catch (e) { alert('خطا: ' + e.message); }
+  };
+
+  // Coupon create button
+  const couponBtn = document.querySelector('#page-campaigns .card:last-child .btn-gold');
+  if (couponBtn) couponBtn.onclick = async () => {
+    const code = prompt('کد تخفیف (مثلاً SUMMER20):');
+    if (!code) return;
+    const value = prompt('مقدار تخفیف (درصد یا تومان):');
+    if (!value) return;
+    const type = confirm('درصدی هست؟ (Cancel = مبلغ ثابت)') ? 'percent' : 'fixed';
+    try {
+      await BarberAPI.admin.createCoupon({ code, type, value: parseInt(value) });
+      loadLiveCoupons();
+    } catch (e) { alert('خطا: ' + e.message); }
+  };
+
+  // Settings save buttons
+  const settingsBtns = document.querySelectorAll('#page-settings .btn-gold');
+  settingsBtns.forEach(btn => {
+    if (btn.textContent.includes('ذخیره')) {
+      btn.addEventListener('click', saveLiveSettings);
+    }
+  });
+
+  // Worker leave approve buttons (placeholder section) — handled in workers tab if added later
+});
+
+// ── SETTINGS TAB ──
+async function loadLiveSettings() {
+  try {
+    const res = await BarberAPI.admin.settings();
+    const s = res.data;
+    const inputs = document.querySelectorAll('#page-settings input');
+    if (inputs[0] && s.shop_name) inputs[0].value = s.shop_name;
+    if (inputs[1] && s.shop_phone) inputs[1].value = s.shop_phone;
+    if (inputs[2] && s.shop_address) inputs[2].value = s.shop_address;
+    if (inputs[3] && s.shop_open) inputs[3].value = s.shop_open;
+    if (inputs[4] && s.shop_close) inputs[4].value = s.shop_close;
+    if (inputs[5] && s.buffer_minutes) inputs[5].value = s.buffer_minutes;
+    if (inputs[6] && s.booking_days_ahead) inputs[6].value = s.booking_days_ahead;
+    if (inputs[7] && s.cancel_hours_free) inputs[7].value = s.cancel_hours_free;
+    if (inputs[8] && s.cancel_fee_percent) inputs[8].value = s.cancel_fee_percent;
+  } catch (e) { console.warn('خطا در دریافت تنظیمات:', e.message); }
+}
+async function saveLiveSettings() {
+  try {
+    const inputs = document.querySelectorAll('#page-settings input');
+    const payload = {
+      shop_name: inputs[0]?.value,
+      shop_phone: inputs[1]?.value,
+      shop_address: inputs[2]?.value,
+      shop_open: inputs[3]?.value,
+      shop_close: inputs[4]?.value,
+    };
+    await BarberAPI.admin.updateSettings(payload);
+    showToast?.('✅ تنظیمات ذخیره شد') || alert('ذخیره شد');
+  } catch (e) { alert('خطا: ' + e.message); }
+}
+
+// ── SURVEYS ──
+async function loadSurveys() {
+  try {
+    const res = await BarberAPI.admin.surveys();
+    const wrap = document.getElementById('surveysList');
+    if (!wrap) return;
+    if (!res.data?.length) { wrap.innerHTML = '<p style="color:var(--gray);font-size:0.8rem;text-align:center;padding:1rem">فرمی ساخته نشده</p>'; return; }
+    wrap.innerHTML = res.data.map(s => `
+      <div style="background:var(--dark3);border-radius:0.75rem;padding:0.875rem;display:flex;align-items:center;gap:0.75rem">
+        <div style="flex:1">
+          <div style="font-size:0.85rem;font-weight:700">${s.title}</div>
+          <div style="font-size:0.7rem;color:var(--gray)">${BarberAPI.utils.toPersianDigits(s.questions.length)} سوال · ${BarberAPI.utils.toPersianDigits(s.response_count)} پاسخ</div>
+        </div>
+        <span class="badge ${s.is_active?'badge-green':'badge-red'}" style="cursor:pointer" onclick="toggleSurveyActive('${s.id}')">${s.is_active?'فعال':'غیرفعال'}</span>
+        <button class="btn-sm btn-ghost" onclick="viewSurveyResults('${s.id}')">نتایج</button>
+      </div>`).join('');
+  } catch (e) { console.warn('خطا در دریافت فرم‌ها:', e.message); }
+}
+async function toggleSurveyActive(id) {
+  try { await BarberAPI.admin.toggleSurvey(id); loadSurveys(); } catch (e) {}
+}
+async function viewSurveyResults(id) {
+  try {
+    const res = await BarberAPI.admin.surveyResults(id);
+    const r = res.data;
+    let msg = `نتایج فرم: ${r.survey.title}\n\nتعداد پاسخ: ${r.responses.length}\n\n`;
+    r.responses.slice(0, 5).forEach((resp, i) => {
+      msg += `پاسخ ${i+1} (${resp.customer_name || resp.phone || 'ناشناس'}):\n`;
+      r.survey.questions.forEach(q => { msg += `  ${q.label}: ${resp.answers[q.id] || '-'}\n`; });
+      msg += '\n';
+    });
+    alert(msg);
+  } catch (e) { alert('خطا: ' + e.message); }
+}
+function createSurveyPrompt() {
+  const title = prompt('عنوان فرم نظرسنجی:');
+  if (!title) return;
+  const q1 = prompt('سوال اول:');
+  if (!q1) return;
+  const q2 = prompt('سوال دوم (اختیاری - خالی بذار برای رد شدن):');
+  const questions = [{ id: 'q1', type: 'text', label: q1 }];
+  if (q2) questions.push({ id: 'q2', type: 'text', label: q2 });
+  BarberAPI.admin.createSurvey({ title, questions })
+    .then(() => loadSurveys())
+    .catch(e => alert('خطا: ' + e.message));
+}
+
+// Hook into nav: load live data per tab
+const _origShowPage = showPage;
+showPage = function(pageId, navEl) {
+  _origShowPage(pageId, navEl);
+  if (pageId === 'appointments') loadLiveAppointments();
+  if (pageId === 'customers') loadLiveCustomers();
+  if (pageId === 'services') loadLiveServicesAdmin();
+  if (pageId === 'finance') loadLiveFinance();
+  if (pageId === 'reviews') loadPendingReviews();
+  if (pageId === 'campaigns') { loadLiveCoupons(); loadSurveys(); }
+  if (pageId === 'settings') loadLiveSettings();
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پروفایل من | General Barber Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--gold-light:#E8C97A;--gold-dim:#8B6914;--black:#0A0A0A;--dark:#111111;--dark2:#1A1A1A;--dark3:#222222;--gray:#888888;--gray-light:#BBBBBB;--white:#F5F0E8;--green:#4CAF50;--red:#E53935;--blue:#2196F3;--orange:#FF9800;--bronze:#CD7F32;--silver:#A8A9AD;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Vazirmatn',sans-serif;background:var(--black);color:var(--white);min-height:100vh;}
+
+/* TOPBAR */
+.topbar{background:rgba(10,10,10,0.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,0.1);padding:0.875rem 1.25rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.topbar-title{font-size:1rem;font-weight:800;}
+.topbar-title span{color:var(--gold);}
+.topbar-actions{display:flex;gap:0.5rem;}
+.icon-btn{width:36px;height:36px;background:var(--dark2);border:1px solid rgba(255,255,255,0.07);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;border:none;transition:all 0.2s;}
+.icon-btn:hover{border-color:rgba(201,168,76,0.3);}
+
+/* CONTENT */
+.content{padding:0 0 90px;}
+
+/* HERO */
+.profile-hero{
+  background:linear-gradient(160deg,#0D0A00,#1A1200,#0A0A0A);
+  padding:2rem 1.25rem 1.5rem;
+  position:relative;overflow:hidden;
+  border-bottom:1px solid rgba(201,168,76,0.1);
+}
+.profile-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(201,168,76,0.12) 0%,transparent 70%);pointer-events:none;}
+.profile-hero::after{content:'';position:absolute;bottom:-20px;left:-20px;width:150px;height:150px;background:radial-gradient(circle,rgba(201,168,76,0.06) 0%,transparent 70%);pointer-events:none;}
+
+.avatar-section{display:flex;align-items:flex-end;gap:1rem;margin-bottom:1.25rem;position:relative;z-index:1;}
+.avatar-wrap{position:relative;}
+.avatar{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#2A1A00,var(--gold-dim));border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0;box-shadow:0 0 24px rgba(201,168,76,0.25);}
+.avatar-edit{position:absolute;bottom:0;left:0;width:26px;height:26px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;cursor:pointer;border:2px solid var(--black);}
+.tier-badge{display:inline-flex;align-items:center;gap:0.35rem;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);border-radius:2rem;padding:0.3rem 0.75rem;font-size:0.72rem;font-weight:700;color:var(--gold);}
+.profile-name{font-size:1.4rem;font-weight:900;margin-bottom:0.2rem;position:relative;z-index:1;}
+.profile-phone{font-size:0.8rem;color:var(--gray);margin-bottom:0.5rem;position:relative;z-index:1;}
+.profile-since{font-size:0.72rem;color:var(--gray);position:relative;z-index:1;}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid rgba(255,255,255,0.05);background:var(--dark);}
+.stat-box{padding:1rem 0.5rem;text-align:center;border-left:1px solid rgba(255,255,255,0.05);}
+.stat-box:last-child{border-left:none;}
+.stat-val{font-size:1.1rem;font-weight:900;color:var(--gold);}
+.stat-lbl{font-size:0.6rem;color:var(--gray);margin-top:0.2rem;line-height:1.3;}
+
+/* TABS */
+.tab-bar{display:flex;padding:0.75rem 1.25rem 0;gap:0;background:var(--dark);border-bottom:1px solid rgba(255,255,255,0.05);overflow-x:auto;scrollbar-width:none;}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab-btn{padding:0.5rem 1rem;border:none;background:transparent;color:var(--gray);font-family:'Vazirmatn',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.2s;}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* SECTION */
+.section{padding:1.25rem;}
+.sec-title{font-size:0.92rem;font-weight:700;margin-bottom:0.875rem;display:flex;align-items:center;justify-content:space-between;}
+.sec-more{font-size:0.72rem;color:var(--gold);background:none;border:none;font-family:'Vazirmatn',sans-serif;cursor:pointer;}
+
+/* LOYALTY CARD */
+.loyalty-card{background:linear-gradient(135deg,#1A1400,#2A2000);border:1px solid rgba(201,168,76,0.3);border-radius:1.25rem;padding:1.25rem;margin-bottom:1rem;position:relative;overflow:hidden;}
+.loyalty-card::before{content:'👑';position:absolute;left:-10px;top:-10px;font-size:5rem;opacity:0.06;}
+.lc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;}
+.lc-points{font-size:2rem;font-weight:900;color:var(--gold);line-height:1;}
+.lc-pts-label{font-size:0.7rem;color:var(--gray);margin-top:0.2rem;}
+.lc-equiv{background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.2);color:var(--green);font-size:0.72rem;font-weight:700;padding:0.3rem 0.75rem;border-radius:2rem;}
+.lc-tier{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:0.25rem;}
+.lc-tier-name{font-size:1rem;font-weight:800;color:var(--gold-light);}
+.prog-label-row{display:flex;justify-content:space-between;font-size:0.7rem;margin-bottom:0.35rem;}
+.prog-label-row span:first-child{color:var(--gray-light);}
+.prog-label-row span:last-child{color:var(--gold);font-weight:700;}
+.prog-track{height:7px;background:rgba(255,255,255,0.07);border-radius:4px;}
+.prog-fill{height:100%;border-radius:4px;background:linear-gradient(to left,var(--gold-light),var(--gold));}
+.lc-note{font-size:0.7rem;color:var(--gray);margin-top:0.625rem;}
+
+/* QUICK ACTIONS */
+.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:0.625rem;margin-bottom:1.25rem;}
+.qa-btn{background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:0.875rem;padding:0.875rem 0.5rem;text-align:center;cursor:pointer;transition:all 0.2s;}
+.qa-btn:hover{border-color:rgba(201,168,76,0.25);}
+.qa-icon{font-size:1.3rem;margin-bottom:0.35rem;}
+.qa-label{font-size:0.62rem;color:var(--gray-light);line-height:1.3;}
+
+/* WALLET */
+.wallet-card{background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:1.1rem;padding:1.1rem;margin-bottom:1rem;}
+.wallet-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.875rem;}
+.wallet-balance{font-size:1.4rem;font-weight:900;color:var(--white);}
+.wallet-lbl{font-size:0.7rem;color:var(--gray);}
+.btn-charge{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:700;font-size:0.78rem;padding:0.45rem 1rem;border-radius:2rem;border:none;cursor:pointer;font-family:'Vazirmatn',sans-serif;}
+.wallet-tx{display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.wallet-tx:last-child{border-bottom:none;}
+.wallet-tx-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0;}
+.wallet-tx-title{font-size:0.8rem;font-weight:600;}
+.wallet-tx-date{font-size:0.68rem;color:var(--gray);}
+.wallet-tx-amt{font-size:0.85rem;font-weight:800;margin-right:auto;flex-shrink:0;}
+
+/* HISTORY */
+.appt-history{display:flex;flex-direction:column;gap:0.625rem;margin-bottom:1rem;}
+.appt-card{background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;padding:1rem;transition:border-color 0.2s;cursor:pointer;}
+.appt-card:hover{border-color:rgba(201,168,76,0.2);}
+.appt-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0.625rem;}
+.appt-service{font-size:0.88rem;font-weight:700;}
+.appt-date{font-size:0.7rem;color:var(--gray);margin-top:0.15rem;}
+.badge{display:inline-flex;align-items:center;font-size:0.65rem;font-weight:700;padding:0.2rem 0.55rem;border-radius:2rem;}
+.badge-green{background:rgba(76,175,80,0.12);color:var(--green);border:1px solid rgba(76,175,80,0.2);}
+.badge-red{background:rgba(229,57,53,0.1);color:var(--red);border:1px solid rgba(229,57,53,0.2);}
+.badge-gray{background:rgba(255,255,255,0.06);color:var(--gray-light);border:1px solid rgba(255,255,255,0.1);}
+.badge-gold{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.2);}
+.appt-card-bottom{display:flex;align-items:center;justify-content:space-between;}
+.appt-worker{display:flex;align-items:center;gap:0.4rem;font-size:0.72rem;color:var(--gray-light);}
+.appt-worker-av{width:20px;height:20px;border-radius:50%;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:0.6rem;}
+.appt-price{font-size:0.85rem;font-weight:800;color:var(--gold);}
+.appt-pts{font-size:0.68rem;color:var(--green);}
+.appt-rate-btn{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);color:var(--gold);font-size:0.68rem;font-weight:600;padding:0.2rem 0.6rem;border-radius:2rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;}
+
+/* SAVED SERVICES */
+.saved-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;}
+.saved-card{background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;padding:0.875rem;transition:border-color 0.2s;position:relative;}
+.saved-card:hover{border-color:rgba(201,168,76,0.2);}
+.saved-icon{font-size:1.4rem;margin-bottom:0.5rem;}
+.saved-name{font-size:0.82rem;font-weight:700;margin-bottom:0.2rem;}
+.saved-price{font-size:0.75rem;color:var(--gold);font-weight:700;}
+.saved-unsave{position:absolute;top:0.625rem;left:0.625rem;background:none;border:none;color:var(--gray);cursor:pointer;font-size:0.85rem;transition:color 0.2s;}
+.saved-unsave:hover{color:var(--red);}
+.btn-book-saved{width:100%;margin-top:0.625rem;padding:0.45rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:700;font-size:0.72rem;border:none;border-radius:0.5rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;}
+
+/* REFERRAL */
+.ref-card{background:linear-gradient(135deg,var(--dark2),var(--dark3));border:1px solid rgba(201,168,76,0.2);border-radius:1.25rem;padding:1.25rem;margin-bottom:1rem;text-align:center;position:relative;overflow:hidden;}
+.ref-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,168,76,0.07) 0%,transparent 60%);}
+.ref-card>*{position:relative;z-index:1;}
+.ref-title{font-size:0.95rem;font-weight:800;margin-bottom:0.3rem;}
+.ref-sub{font-size:0.75rem;color:var(--gray);line-height:1.7;margin-bottom:1rem;}
+.ref-code-box{background:var(--dark3);border:1.5px dashed rgba(201,168,76,0.4);border-radius:0.75rem;padding:0.75rem 1rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:0.875rem;}
+.ref-code{font-size:1.1rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;font-family:monospace;}
+.btn-copy{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.3);border-radius:0.5rem;padding:0.35rem 0.75rem;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Vazirmatn',sans-serif;}
+.ref-stats{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.875rem;}
+.ref-stat-box{background:var(--dark3);border-radius:0.75rem;padding:0.75rem;text-align:center;}
+.ref-stat-val{font-size:1.1rem;font-weight:900;color:var(--gold);}
+.ref-stat-lbl{font-size:0.65rem;color:var(--gray);margin-top:0.15rem;}
+.btn-share-ref{width:100%;padding:0.7rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:800;font-size:0.88rem;border:none;border-radius:0.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;}
+
+/* SETTINGS */
+.settings-group{background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;overflow:hidden;margin-bottom:1rem;}
+.settings-item{display:flex;align-items:center;gap:0.875rem;padding:0.875rem 1rem;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:background 0.2s;}
+.settings-item:hover{background:rgba(255,255,255,0.02);}
+.settings-item:last-child{border-bottom:none;}
+.settings-icon{width:34px;height:34px;border-radius:0.6rem;display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0;}
+.settings-label{font-size:0.85rem;font-weight:600;}
+.settings-sub{font-size:0.7rem;color:var(--gray);margin-top:0.1rem;}
+.settings-arrow{margin-right:auto;color:var(--gray);font-size:0.85rem;}
+.toggle-sw{width:38px;height:21px;background:var(--dark3);border-radius:11px;position:relative;transition:background 0.3s;flex-shrink:0;cursor:pointer;border:1px solid rgba(255,255,255,0.1);margin-right:auto;}
+.toggle-sw.on{background:var(--gold);border-color:var(--gold);}
+.toggle-sw::after{content:'';position:absolute;top:2px;right:2px;width:15px;height:15px;background:#fff;border-radius:50%;transition:transform 0.3s;}
+.toggle-sw.on::after{transform:translateX(-17px);}
+
+/* FORM */
+.form-card{background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;padding:1.1rem;margin-bottom:1rem;}
+.form-group{margin-bottom:0.875rem;}
+.form-label{font-size:0.75rem;color:var(--gray-light);display:block;margin-bottom:0.35rem;font-weight:500;}
+.form-input{width:100%;padding:0.65rem 0.875rem;background:var(--dark3);border:1px solid rgba(255,255,255,0.08);border-radius:0.625rem;color:var(--white);font-family:'Vazirmatn',sans-serif;font-size:0.85rem;outline:none;transition:border-color 0.2s;}
+.form-input:focus{border-color:rgba(201,168,76,0.4);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+.btn-save{width:100%;padding:0.75rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:800;font-size:0.9rem;border:none;border-radius:0.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;}
+
+/* RATING MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--dark2);border:1px solid rgba(201,168,76,0.2);border-radius:1.5rem 1.5rem 0 0;width:100%;max-width:480px;padding:1.5rem;padding-bottom:calc(1.5rem + env(safe-area-inset-bottom));}
+.modal-drag{width:40px;height:4px;background:rgba(255,255,255,0.12);border-radius:2px;margin:0 auto 1.25rem;}
+.modal-title{font-size:1rem;font-weight:800;margin-bottom:0.3rem;text-align:center;}
+.modal-sub{font-size:0.78rem;color:var(--gray);text-align:center;margin-bottom:1.25rem;}
+.star-row{display:flex;justify-content:center;gap:0.5rem;margin-bottom:1.25rem;}
+.star-btn{font-size:2rem;cursor:pointer;transition:transform 0.15s;filter:grayscale(1);}
+.star-btn.active{filter:none;transform:scale(1.1);}
+.review-textarea{width:100%;padding:0.75rem;background:var(--dark3);border:1px solid rgba(255,255,255,0.08);border-radius:0.75rem;color:var(--white);font-family:'Vazirmatn',sans-serif;font-size:0.85rem;outline:none;resize:none;margin-bottom:1rem;}
+.review-textarea:focus{border-color:rgba(201,168,76,0.4);}
+.modal-actions{display:flex;gap:0.75rem;}
+.btn-submit-review{flex:1;padding:0.75rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:800;font-size:0.9rem;border:none;border-radius:0.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;}
+.btn-cancel{padding:0.75rem 1rem;background:var(--dark3);border:1px solid rgba(255,255,255,0.1);color:var(--gray-light);border-radius:0.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(17,17,17,0.97);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,0.06);display:flex;padding:0.5rem 0 calc(0.5rem + env(safe-area-inset-bottom));}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:0.2rem;padding:0.4rem;background:none;border:none;cursor:pointer;color:var(--gray);font-family:'Vazirmatn',sans-serif;transition:color 0.2s;}
+.nav-btn.active{color:var(--gold);}
+.nav-btn-icon{font-size:1.2rem;}
+.nav-btn-label{font-size:0.58rem;font-weight:600;}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--dark2);border:1px solid rgba(201,168,76,0.3);border-radius:2rem;padding:0.55rem 1.1rem;font-size:0.8rem;font-weight:600;color:var(--gold);opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:300;white-space:nowrap;}
+.toast.show{opacity:1;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp 0.4s ease both;}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <button style="background:none;border:none;color:var(--gray);font-size:0.85rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;" onclick="history.back()">← بازگشت</button>
+  <div class="topbar-title">General <span>Barber</span></div>
+  <div class="topbar-actions">
+    <button class="icon-btn" onclick="switchTab('settings')" title="تنظیمات">⚙️</button>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- HERO -->
+  <div class="profile-hero fade-up">
+    <div class="avatar-section">
+      <div class="avatar-wrap">
+        <div class="avatar">👤</div>
+        <div class="avatar-edit" onclick="document.getElementById('avatarInput').click()">✏️</div>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="uploadAvatar(this.files[0])">
+      </div>
+      <div>
+        <div class="tier-badge">🥇 سطح طلایی</div>
+      </div>
+    </div>
+    <div class="profile-name">مشتری عزیز</div>
+    <div class="profile-phone">۰۹۱۲ *** ****</div>
+    <div class="profile-since">عضو از فروردین ۱۴۰۲ · ۲ سال همراه ما</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row fade-up">
+    <div class="stat-box"><div class="stat-val">۲۴</div><div class="stat-lbl">مراجعه</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--green)">۲,۴۰۰</div><div class="stat-lbl">امتیاز</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--blue)">۱۲</div><div class="stat-lbl">معرفی دوست</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--orange)">۱۲۰K</div><div class="stat-lbl">کیف پول</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('overview',this)">خلاصه</button>
+    <button class="tab-btn" onclick="showTab('history',this)">تاریخچه</button>
+    <button class="tab-btn" onclick="showTab('saved',this)">ذخیره‌شده ❤️</button>
+    <button class="tab-btn" onclick="showTab('referral',this)">معرفی</button>
+    <button class="tab-btn" onclick="showTab('settings',this)">تنظیمات</button>
+  </div>
+
+  <!-- TAB: OVERVIEW -->
+  <div id="tab-overview" class="section fade-up">
+
+    <!-- LOYALTY CARD -->
+    <div class="loyalty-card">
+      <div class="lc-top">
+        <div>
+          <div class="lc-points">۲,۴۰۰</div>
+          <div class="lc-pts-label">امتیاز فعلی</div>
+        </div>
+        <div style="text-align:left">
+          <div class="lc-tier">سطح فعلی</div>
+          <div class="lc-tier-name">🥇 طلایی</div>
+          <div class="lc-equiv" style="margin-top:0.4rem">= ۲۴۰,۰۰۰ تومان</div>
+        </div>
+      </div>
+      <div class="prog-label-row"><span>پیشرفت تمدید سطح طلا</span><span>۲,۴۰۰ / ۳,۰۰۰</span></div>
+      <div class="prog-track"><div class="prog-fill" style="width:80%"></div></div>
+      <div class="lc-note">۶۰۰ امتیاز دیگه تا تمدید سطح طلا برای ماه آینده · بدون انقضا</div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="quick-actions">
+      <div class="qa-btn" onclick="showToast('رزرو نوبت')">
+        <div class="qa-icon">✂️</div>
+        <div class="qa-label">رزرو نوبت</div>
+      </div>
+      <div class="qa-btn" onclick="showTab('history',document.querySelectorAll('.tab-btn')[1])">
+        <div class="qa-icon">📅</div>
+        <div class="qa-label">نوبت‌هام</div>
+      </div>
+      <div class="qa-btn" onclick="showToast('صفحه امتیاز')">
+        <div class="qa-icon">⭐</div>
+        <div class="qa-label">امتیازهام</div>
+      </div>
+      <div class="qa-btn" onclick="showTab('referral',document.querySelectorAll('.tab-btn')[3])">
+        <div class="qa-icon">🎁</div>
+        <div class="qa-label">معرفی دوست</div>
+      </div>
+    </div>
+
+    <!-- WALLET -->
+    <div class="sec-title">👛 کیف پول</div>
+    <div class="wallet-card">
+      <div class="wallet-top">
+        <div>
+          <div class="wallet-lbl">موجودی فعلی</div>
+          <div class="wallet-balance">۱۲۰,۰۰۰ <span style="font-size:0.8rem;font-weight:400;color:var(--gray)">تومان</span></div>
+        </div>
+        <button class="btn-charge" onclick="chargeWallet()">+ شارژ</button>
+      </div>
+      <div class="wallet-tx">
+        <div class="wallet-tx-icon" style="background:rgba(76,175,80,0.12)">⬆️</div>
+        <div><div class="wallet-tx-title">شارژ کیف پول</div><div class="wallet-tx-date">۱۵ آذر ۱۴۰۳</div></div>
+        <div class="wallet-tx-amt" style="color:var(--green)">+۲۰۰,۰۰۰</div>
+      </div>
+      <div class="wallet-tx">
+        <div class="wallet-tx-icon" style="background:rgba(229,57,53,0.1)">⬇️</div>
+        <div><div class="wallet-tx-title">پرداخت رنگ مو</div><div class="wallet-tx-date">۱۰ آذر ۱۴۰۳</div></div>
+        <div class="wallet-tx-amt" style="color:var(--red)">-۵۵۰,۰۰۰</div>
+      </div>
+      <div class="wallet-tx">
+        <div class="wallet-tx-icon" style="background:rgba(201,168,76,0.1)">🎁</div>
+        <div><div class="wallet-tx-title">هدیه معرفی دوست</div><div class="wallet-tx-date">۵ آذر ۱۴۰۳</div></div>
+        <div class="wallet-tx-amt" style="color:var(--gold)">+۵۰,۰۰۰</div>
+      </div>
+    </div>
+
+    <!-- NEXT APPOINTMENT -->
+    <div class="sec-title">📅 نوبت بعدی</div>
+    <div style="background:linear-gradient(135deg,var(--dark2),var(--dark3));border:1px solid rgba(201,168,76,0.2);border-radius:1rem;padding:1rem;margin-bottom:1rem;">
+      <div style="display:flex;align-items:center;gap:0.875rem">
+        <div style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:0.75rem;padding:0.75rem;text-align:center;flex-shrink:0">
+          <div style="font-size:1.2rem;font-weight:900;color:var(--gold);line-height:1">۲۵</div>
+          <div style="font-size:0.65rem;color:var(--gray)">آذر</div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:0.9rem;font-weight:700;margin-bottom:0.2rem">کوتاهی + اصلاح ریش</div>
+          <div style="font-size:0.72rem;color:var(--gray)">ساعت ۱۴:۰۰ · کارمند اول · ۴۵ دقیقه</div>
+        </div>
+        <button style="background:rgba(229,57,53,0.1);border:1px solid rgba(229,57,53,0.2);color:var(--red);font-size:0.7rem;font-weight:700;padding:0.35rem 0.75rem;border-radius:2rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;" onclick="showToast('لغو نوبت با جریمه ۳۰٪')">لغو</button>
+      </div>
+      <div style="margin-top:0.875rem;padding-top:0.875rem;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:0.75rem">
+        <div style="font-size:0.7rem;color:var(--gray-light)">⏱ ۷ روز دیگه</div>
+        <div style="font-size:0.7rem;color:var(--green)">✓ پرداخت شده</div>
+        <div style="font-size:0.7rem;color:var(--blue)">🔔 یادآوری فعال</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: HISTORY -->
+  <div id="tab-history" class="section fade-up" style="display:none">
+    <div class="sec-title">📋 تاریخچه نوبت‌ها <span style="font-size:0.72rem;color:var(--gray);font-weight:400">۲۴ مراجعه</span></div>
+
+    <div class="appt-history">
+      <!-- نوبت انجام شده -->
+      <div class="appt-card">
+        <div class="appt-card-top">
+          <div>
+            <div class="appt-service">کوتاهی + اصلاح ریش</div>
+            <div class="appt-date">۱۵ آذر ۱۴۰۳ · ساعت ۱۰:۰۰</div>
+          </div>
+          <span class="badge badge-green">✓ انجام شد</span>
+        </div>
+        <div class="appt-card-bottom">
+          <div class="appt-worker">
+            <div class="appt-worker-av">✂️</div>
+            کارمند اول
+          </div>
+          <div style="text-align:left">
+            <div class="appt-price">۶۵۰,۰۰۰ ت</div>
+            <div class="appt-pts">+۱۰۰ امتیاز</div>
+          </div>
+          <button class="appt-rate-btn" onclick="openRatingModal('کوتاهی + اصلاح ریش')">⭐ امتیاز بده</button>
+        </div>
+      </div>
+
+      <div class="appt-card">
+        <div class="appt-card-top">
+          <div>
+            <div class="appt-service">رنگ مو · هایلایت</div>
+            <div class="appt-date">۱۰ آذر ۱۴۰۳ · ساعت ۱۱:۳۰</div>
+          </div>
+          <span class="badge badge-green">✓ انجام شد</span>
+        </div>
+        <div class="appt-card-bottom">
+          <div class="appt-worker"><div class="appt-worker-av">✂️</div>کارمند اول</div>
+          <div style="text-align:left"><div class="appt-price">۵۵۰,۰۰۰ ت</div><div class="appt-pts">+۱۰۰ امتیاز</div></div>
+          <div style="font-size:0.72rem;color:var(--gold)">★★★★★ امتیاز داده شد</div>
+        </div>
+      </div>
+
+      <div class="appt-card">
+        <div class="appt-card-top">
+          <div>
+            <div class="appt-service">پکیج VIP کامل</div>
+            <div class="appt-date">۱ آذر ۱۴۰۳ · ساعت ۱۴:۰۰</div>
+          </div>
+          <span class="badge badge-green">✓ انجام شد</span>
+        </div>
+        <div class="appt-card-bottom">
+          <div class="appt-worker"><div class="appt-worker-av">✂️</div>کارمند دوم</div>
+          <div style="text-align:left"><div class="appt-price">۱,۲۰۰,۰۰۰ ت</div><div class="appt-pts">+۱۰۰ امتیاز</div></div>
+          <div style="font-size:0.72rem;color:var(--gold)">★★★★★ امتیاز داده شد</div>
+        </div>
+      </div>
+
+      <!-- نوبت لغو شده -->
+      <div class="appt-card">
+        <div class="appt-card-top">
+          <div>
+            <div class="appt-service">کوتاهی مو</div>
+            <div class="appt-date">۲۰ آبان ۱۴۰۳ · ساعت ۱۶:۰۰</div>
+          </div>
+          <span class="badge badge-red">✕ لغو شد</span>
+        </div>
+        <div class="appt-card-bottom">
+          <div class="appt-worker"><div class="appt-worker-av">✂️</div>کارمند اول</div>
+          <div style="text-align:left"><div class="appt-price" style="color:var(--red)">جریمه: ۱۰۵K</div><div class="appt-pts" style="color:var(--red)">کنسلی دیر</div></div>
+          <button style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);color:var(--gold);font-size:0.68rem;padding:0.2rem 0.6rem;border-radius:2rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;" onclick="showToast('رزرو مجدد')">رزرو مجدد</button>
+        </div>
+      </div>
+
+      <div class="appt-card">
+        <div class="appt-card-top">
+          <div>
+            <div class="appt-service">اصلاح ریش</div>
+            <div class="appt-date">۱۰ آبان ۱۴۰۳ · ساعت ۱۸:۰۰</div>
+          </div>
+          <span class="badge badge-green">✓ انجام شد</span>
+        </div>
+        <div class="appt-card-bottom">
+          <div class="appt-worker"><div class="appt-worker-av">✂️</div>کارمند دوم</div>
+          <div style="text-align:left"><div class="appt-price">۳۰۰,۰۰۰ ت</div><div class="appt-pts">+۱۰۰ امتیاز</div></div>
+          <div style="font-size:0.72rem;color:var(--gold)">★★★★☆ امتیاز داده شد</div>
+        </div>
+      </div>
+    </div>
+
+    <button style="width:100%;padding:0.75rem;background:var(--dark2);border:1px solid rgba(255,255,255,0.08);color:var(--gray-light);border-radius:0.875rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:0.85rem;" onclick="showToast('بارگذاری بیشتر...')">نمایش همه ۲۴ نوبت</button>
+  </div>
+
+  <!-- TAB: SAVED -->
+  <div id="tab-saved" class="section fade-up" style="display:none">
+    <div class="sec-title">❤️ سرویس‌های ذخیره‌شده</div>
+    <div class="saved-grid">
+      <div class="saved-card">
+        <button class="saved-unsave" onclick="showToast('از لیست حذف شد')">🗑️</button>
+        <div class="saved-icon">✂️</div>
+        <div class="saved-name">کوتاهی مو</div>
+        <div class="saved-price">از ۳۵۰,۰۰۰ ت</div>
+        <button class="btn-book-saved" onclick="showToast('رزرو کوتاهی مو')">رزرو ←</button>
+      </div>
+      <div class="saved-card">
+        <button class="saved-unsave" onclick="showToast('از لیست حذف شد')">🗑️</button>
+        <div class="saved-icon">👑</div>
+        <div class="saved-name">پکیج VIP کامل</div>
+        <div class="saved-price">از ۱,۲۰۰,۰۰۰ ت</div>
+        <button class="btn-book-saved" onclick="showToast('رزرو پکیج VIP')">رزرو ←</button>
+      </div>
+      <div class="saved-card">
+        <button class="saved-unsave" onclick="showToast('از لیست حذف شد')">🗑️</button>
+        <div class="saved-icon">🪒</div>
+        <div class="saved-name">اصلاح ریش</div>
+        <div class="saved-price">از ۳۰۰,۰۰۰ ت</div>
+        <button class="btn-book-saved" onclick="showToast('رزرو اصلاح ریش')">رزرو ←</button>
+      </div>
+      <div class="saved-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;border-style:dashed;cursor:pointer;" onclick="showToast('افزودن سرویس به علاقه‌مندی‌ها')">
+        <div style="font-size:1.8rem;margin-bottom:0.4rem;color:var(--gray)">+</div>
+        <div style="font-size:0.72rem;color:var(--gray)">افزودن سرویس</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: REFERRAL -->
+  <div id="tab-referral" class="section fade-up" style="display:none">
+    <div class="ref-card">
+      <div style="font-size:2rem;margin-bottom:0.5rem">🎁</div>
+      <div class="ref-title">دوستات رو دعوت کن!</div>
+      <div class="ref-sub">با هر معرفی موفق، <strong style="color:var(--gold)">تو ۲۰۰ امتیاز</strong> و <strong style="color:var(--green)">دوستت ۱۰۰ امتیاز</strong> هدیه می‌گیرید</div>
+      <div class="ref-code-box">
+        <div class="ref-code">GEN-M48X</div>
+        <button class="btn-copy" onclick="copyCode()">📋 کپی</button>
+      </div>
+      <div class="ref-stats">
+        <div class="ref-stat-box"><div class="ref-stat-val">۱۲</div><div class="ref-stat-lbl">دوست معرفی‌شده</div></div>
+        <div class="ref-stat-box"><div class="ref-stat-val" style="color:var(--green)">۲,۴۰۰</div><div class="ref-stat-lbl">امتیاز از معرفی</div></div>
+      </div>
+      <button class="btn-share-ref" onclick="showToast('📤 لینک کپی شد!')">📤 اشتراک‌گذاری لینک</button>
+    </div>
+
+    <!-- تاریخچه معرفی‌ها -->
+    <div class="sec-title">📋 تاریخچه معرفی‌ها</div>
+    <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;overflow:hidden;">
+      <div class="wallet-tx" style="padding:0.75rem 1rem"><div class="wallet-tx-icon" style="background:rgba(76,175,80,0.12)">👤</div><div><div class="wallet-tx-title">دوست جدید ثبت‌نام کرد</div><div class="wallet-tx-date">۱۲ آذر ۱۴۰۳</div></div><div class="wallet-tx-amt" style="color:var(--green)">+۲۰۰ امتیاز</div></div>
+      <div class="wallet-tx" style="padding:0.75rem 1rem"><div class="wallet-tx-icon" style="background:rgba(76,175,80,0.12)">👤</div><div><div class="wallet-tx-title">دوست جدید ثبت‌نام کرد</div><div class="wallet-tx-date">۵ آذر ۱۴۰۳</div></div><div class="wallet-tx-amt" style="color:var(--green)">+۲۰۰ امتیاز</div></div>
+      <div class="wallet-tx" style="padding:0.75rem 1rem;border-bottom:none"><div class="wallet-tx-icon" style="background:rgba(76,175,80,0.12)">👤</div><div><div class="wallet-tx-title">دوست جدید ثبت‌نام کرد</div><div class="wallet-tx-date">۲۸ آبان ۱۴۰۳</div></div><div class="wallet-tx-amt" style="color:var(--green)">+۲۰۰ امتیاز</div></div>
+    </div>
+  </div>
+
+  <!-- TAB: SETTINGS -->
+  <div id="tab-settings" class="section fade-up" style="display:none">
+
+    <!-- اطلاعات شخصی -->
+    <div class="sec-title">👤 اطلاعات شخصی</div>
+    <div class="form-card">
+      <div class="form-group"><label class="form-label">نام و نام خانوادگی</label><input class="form-input" placeholder="نام خود را وارد کنید"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">شماره موبایل</label><input class="form-input" value="۰۹۱۲ *** ****" readonly style="opacity:0.6"></div>
+        <div class="form-group"><label class="form-label">تاریخ تولد</label><input class="form-input" placeholder="۱۳۷۰/۰۱/۰۱"></div>
+      </div>
+      <button class="btn-save" onclick="showToast('✅ اطلاعات ذخیره شد!')">ذخیره اطلاعات</button>
+    </div>
+
+    <!-- اعلان‌ها -->
+    <div class="sec-title">🔔 اعلان‌ها</div>
+    <div class="settings-group">
+      <div class="settings-item">
+        <div class="settings-icon" style="background:rgba(33,150,243,0.12)">📱</div>
+        <div><div class="settings-label">یادآوری SMS</div><div class="settings-sub">۲ ساعت قبل از نوبت</div></div>
+        <div class="toggle-sw on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="settings-item">
+        <div class="settings-icon" style="background:rgba(76,175,80,0.12)">💬</div>
+        <div><div class="settings-label">یادآوری واتساپ</div><div class="settings-sub">۲ ساعت قبل از نوبت</div></div>
+        <div class="toggle-sw on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="settings-item">
+        <div class="settings-icon" style="background:rgba(255,152,0,0.12)">🔔</div>
+        <div><div class="settings-label">نوتیفیکیشن اپ</div><div class="settings-sub">پیام‌های مدیر و تخفیف‌ها</div></div>
+        <div class="toggle-sw on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="settings-item">
+        <div class="settings-icon" style="background:rgba(201,168,76,0.12)">🎁</div>
+        <div><div class="settings-label">پیام‌های تبلیغاتی</div><div class="settings-sub">کمپین‌ها و تخفیف‌های ویژه</div></div>
+        <div class="toggle-sw" onclick="this.classList.toggle('on')"></div>
+      </div>
+    </div>
+
+    <!-- حریم خصوصی -->
+    <div class="sec-title">🔒 حریم خصوصی و امنیت</div>
+    <div class="settings-group">
+      <div class="settings-item" onclick="showToast('تغییر شماره موبایل')">
+        <div class="settings-icon" style="background:rgba(229,57,53,0.1)">📞</div>
+        <div><div class="settings-label">تغییر شماره موبایل</div><div class="settings-sub">نیاز به تأیید OTP دارد</div></div>
+        <div class="settings-arrow">←</div>
+      </div>
+      <div class="settings-item" onclick="showToast('حذف حساب کاربری')">
+        <div class="settings-icon" style="background:rgba(229,57,53,0.1)">🗑️</div>
+        <div><div class="settings-label" style="color:var(--red)">حذف حساب کاربری</div><div class="settings-sub">این عمل برگشت‌پذیر نیست</div></div>
+        <div class="settings-arrow">←</div>
+      </div>
+    </div>
+
+    <!-- خروج -->
+    <button style="width:100%;padding:0.875rem;background:rgba(229,57,53,0.08);border:1px solid rgba(229,57,53,0.2);color:var(--red);font-weight:700;font-size:0.9rem;border-radius:0.875rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;" onclick="showToast('👋 خروج از حساب')">🚪 خروج از حساب</button>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn" onclick="showToast('خانه')"><div class="nav-btn-icon">🏠</div><div class="nav-btn-label">خانه</div></button>
+  <button class="nav-btn" onclick="showToast('رزرو نوبت')"><div class="nav-btn-icon">✂️</div><div class="nav-btn-label">رزرو</div></button>
+  <button class="nav-btn" onclick="showToast('امتیاز')"><div class="nav-btn-icon">⭐</div><div class="nav-btn-label">امتیاز</div></button>
+  <button class="nav-btn active"><div class="nav-btn-icon">👤</div><div class="nav-btn-label">پروفایل</div></button>
+</nav>
+
+<!-- RATING MODAL -->
+<div class="modal-overlay" id="ratingModal">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <div class="modal-title">امتیازدهی به سرویس</div>
+    <div class="modal-sub" id="ratingServiceName">—</div>
+    <div class="star-row" id="starRow">
+      <span class="star-btn" onclick="rateStar(1)">⭐</span>
+      <span class="star-btn" onclick="rateStar(2)">⭐</span>
+      <span class="star-btn" onclick="rateStar(3)">⭐</span>
+      <span class="star-btn" onclick="rateStar(4)">⭐</span>
+      <span class="star-btn" onclick="rateStar(5)">⭐</span>
+    </div>
+    <textarea class="review-textarea" rows="3" placeholder="نظر خود را بنویسید (اختیاری)..."></textarea>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">انصراف</button>
+      <button class="btn-submit-review" onclick="submitReview()">ارسال نظر ✓</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="api.js"></script>
+<script src="chatbot-widget.js"></script>
+<script>
+// ── AUTH GATE ──
+let currentAppointmentForReview = null;
+
+if (!BarberAPI.isLoggedIn('customer')) {
+  document.body.innerHTML = `
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem;background:var(--black)">
+      <div style="background:var(--dark2);border:1px solid rgba(201,168,76,0.2);border-radius:1.5rem;padding:2rem;max-width:360px;text-align:center">
+        <div style="font-size:2rem;margin-bottom:0.875rem">🔒</div>
+        <div style="font-size:1rem;font-weight:700;margin-bottom:0.5rem">برای دیدن پروفایل وارد شو</div>
+        <a href="booking.html" style="display:inline-block;margin-top:0.875rem;padding:0.7rem 1.5rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-weight:800;border-radius:0.75rem;text-decoration:none;font-size:0.85rem">رفتن به صفحه ورود</a>
+      </div>
+    </div>`;
+} else {
+  loadProfile();
+}
+
+async function loadProfile() {
+  try {
+    const res = await BarberAPI.customer.me();
+    const c = res.data;
+    document.querySelector('.profile-name').textContent = c.name || 'مشتری عزیز';
+    document.querySelector('.profile-phone').textContent = c.phone.replace(/(\d{4})(\d{3})(\d{4})/, '$1 *** $3');
+    const tierIcons = { bronze: '🥉 سطح برنزی', silver: '🥈 سطح نقره‌ای', gold: '🥇 سطح طلایی' };
+    document.querySelector('.tier-badge').textContent = tierIcons[c.tier] || tierIcons.bronze;
+
+    const statVals = document.querySelectorAll('.stat-val');
+    if (statVals[0]) statVals[0].textContent = BarberAPI.utils.toPersianDigits(c.total_visits || 0);
+    if (statVals[1]) statVals[1].textContent = BarberAPI.utils.formatPrice(c.points || 0);
+    if (statVals[2]) statVals[2].textContent = BarberAPI.utils.toPersianDigits(c.referrals || 0);
+    if (statVals[3]) statVals[3].textContent = (c.wallet >= 1000 ? (c.wallet/1000).toFixed(0)+'K' : c.wallet);
+
+    // loyalty card
+    document.querySelector('.lc-points').textContent = BarberAPI.utils.formatPrice(c.points);
+    document.querySelector('.lc-equiv').textContent = `= ${BarberAPI.utils.formatPrice(c.points * 100)} تومان`;
+
+    // wallet
+    document.querySelector('.wallet-balance').innerHTML = `${BarberAPI.utils.formatPrice(c.wallet)} <span style="font-size:0.8rem;font-weight:400;color:var(--gray)">تومان</span>`;
+
+    // referral code
+    const codeEl = document.querySelector('.ref-code');
+    if (codeEl) codeEl.textContent = c.referral_code;
+    window._referralCode = c.referral_code;
+
+    loadAppointmentHistory();
+    loadWalletTx();
+    loadSavedServices();
+  } catch (e) { console.warn('خطا در بارگذاری پروفایل:', e.message); }
+}
+
+async function loadAppointmentHistory() {
+  try {
+    const res = await BarberAPI.appointments.myList(null, 1);
+    const wrap = document.querySelector('.appt-history');
+    if (!wrap) return;
+    if (!res.data?.length) { wrap.innerHTML = '<p style="color:var(--gray);font-size:0.82rem;text-align:center;padding:1rem">هنوز نوبتی ثبت نکردی</p>'; return; }
+    const statusBadge = { done: '<span class="badge badge-green">✓ انجام شد</span>', cancelled: '<span class="badge badge-red">✕ لغو شد</span>', pending: '<span class="badge badge-gray">در انتظار</span>', confirmed: '<span class="badge badge-gray">تأیید شده</span>' };
+    wrap.innerHTML = res.data.map(a => `
+      <div class="appt-card">
+        <div class="appt-card-top">
+          <div><div class="appt-service">${a.worker_name} · ${a.date}</div><div class="appt-date">ساعت ${a.start_time}</div></div>
+          ${statusBadge[a.status] || ''}
+        </div>
+        <div class="appt-card-bottom">
+          <div class="appt-worker"><div class="appt-worker-av">✂️</div>${a.worker_name}</div>
+          <div style="text-align:left"><div class="appt-price">${BarberAPI.utils.formatPrice(a.final_price)} ت</div>${a.status==='done'?`<div class="appt-pts">+${a.points_earned} امتیاز</div>`:''}</div>
+          ${a.status === 'done' ? `<button class="appt-rate-btn" onclick="openRatingModal('${a.id}','${a.worker_name}')">⭐ امتیاز بده</button>` : a.status === 'pending' || a.status === 'confirmed' ? `<button class="appt-rate-btn" style="background:rgba(229,57,53,0.08);border-color:rgba(229,57,53,0.2);color:var(--red)" onclick="cancelAppointment('${a.id}')">لغو</button>` : ''}
+        </div>
+      </div>`).join('');
+  } catch (e) { console.warn(e.message); }
+}
+
+async function cancelAppointment(id) {
+  if (!confirm('مطمئنی می‌خوای این نوبت رو لغو کنی؟')) return;
+  try {
+    const res = await BarberAPI.appointments.cancel(id, 'درخواست مشتری');
+    showToast(res.cancelFee ? `⚠️ لغو شد — جریمه ${BarberAPI.utils.formatPrice(res.cancelFee)} تومان` : '✅ نوبت لغو شد');
+    loadAppointmentHistory();
+  } catch (e) { showToast('❌ ' + e.message); }
+}
+
+async function loadWalletTx() {
+  try {
+    const res = await BarberAPI.customer.wallet();
+    const wrap = document.querySelector('.wallet-card');
+    if (!wrap || !res.data) return;
+    const existing = wrap.querySelectorAll('.wallet-tx');
+    existing.forEach(e => e.remove());
+    const typeIcon = { charge: ['⬆️','rgba(76,175,80,0.12)','var(--green)'], spend: ['⬇️','rgba(229,57,53,0.1)','var(--red)'], refund: ['↩️','rgba(33,150,243,0.1)','var(--blue)'], gift: ['🎁','rgba(201,168,76,0.1)','var(--gold)'] };
+    res.data.slice(0, 5).forEach(tx => {
+      const [icon, bg, color] = typeIcon[tx.type] || typeIcon.charge;
+      wrap.insertAdjacentHTML('beforeend', `
+        <div class="wallet-tx">
+          <div class="wallet-tx-icon" style="background:${bg}">${icon}</div>
+          <div><div class="wallet-tx-title">${tx.description||tx.type}</div><div class="wallet-tx-date">${tx.created_at?.split(' ')[0]||''}</div></div>
+          <div class="wallet-tx-amt" style="color:${color}">${tx.amount>0?'+':''}${BarberAPI.utils.formatPrice(tx.amount)}</div>
+        </div>`);
+    });
+  } catch (e) {}
+}
+
+async function loadSavedServices() {
+  try {
+    const res = await BarberAPI.customer.saved();
+    const grid = document.querySelector('.saved-grid');
+    if (!grid || !res.data) return;
+    const addBtn = grid.lastElementChild;
+    grid.querySelectorAll('.saved-card').forEach(c => c.remove());
+    res.data.forEach(s => {
+      const div = document.createElement('div');
+      div.className = 'saved-card';
+      div.innerHTML = `
+        <button class="saved-unsave" onclick="unsaveService('${s.id}')">🗑️</button>
+        <div class="saved-icon">${({cutting:'✂️',beard:'🪒',color:'🎨',perm:'〰️',skin:'💆',package:'👑'})[s.category]||'💈'}</div>
+        <div class="saved-name">${s.name}</div>
+        <div class="saved-price">از ${BarberAPI.utils.formatPrice(s.base_price)} ت</div>
+        <a href="booking.html" class="btn-book-saved" style="display:block;text-align:center;text-decoration:none">رزرو ←</a>`;
+      grid.insertBefore(div, addBtn);
+    });
+  } catch (e) {}
+}
+
+async function unsaveService(id) {
+  try { await BarberAPI.customer.toggleSave(id); showToast('از علاقه‌مندی‌ها حذف شد'); loadSavedServices(); }
+  catch (e) {}
+}
+
+// TABS
+function showTab(tab, btn) {
+  ['overview','history','saved','referral','settings'].forEach(t => {
+    const el = document.getElementById('tab-' + t);
+    if(el) el.style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  else {
+    const tabs = {'overview':0,'history':1,'saved':2,'referral':3,'settings':4};
+    const btns = document.querySelectorAll('.tab-btn');
+    if(btns[tabs[tab]]) btns[tabs[tab]].classList.add('active');
+  }
+}
+
+async function uploadAvatar(file) {
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { showToast('⚠️ حجم عکس باید کمتر از ۵ مگابایت باشه'); return; }
+  try {
+    showToast('⏳ در حال آپلود...');
+    const res = await BarberAPI.gallery.upload(file, 'عکس پروفایل');
+    showToast('✅ عکس آپلود شد');
+  } catch (e) { showToast('❌ ' + e.message); }
+}
+
+async function chargeWallet() {
+  const amountStr = prompt('چقدر می‌خوای شارژ کنی؟ (حداقل ۱۰,۰۰۰ تومان)', '100000');
+  if (!amountStr) return;
+  const amount = parseInt(amountStr.replace(/[^\d]/g, ''));
+  if (!amount || amount < 10000) { showToast('⚠️ حداقل ۱۰,۰۰۰ تومان'); return; }
+  try {
+    const res = await BarberAPI.payments.chargeWallet(amount);
+    showToast('🔗 در حال انتقال به درگاه پرداخت...');
+    setTimeout(() => { window.location.href = res.payment_url; }, 600);
+  } catch (e) { showToast('❌ ' + e.message); }
+}
+
+function checkWalletReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get('wallet');
+  if (status === 'success') { showToast('✅ کیف پول شارژ شد!'); loadProfile(); }
+  else if (status === 'failed') { showToast('❌ شارژ ناموفق بود'); }
+  if (status) window.history.replaceState({}, '', window.location.pathname);
+}
+checkWalletReturn();
+
+// REFERRAL
+function copyCode() {
+  const code = window._referralCode || 'GEN-M48X';
+  navigator.clipboard?.writeText(code).catch(()=>{});
+  showToast('✅ کد معرفی کپی شد: ' + code);
+}
+
+// RATING MODAL
+let currentRating = 0;
+function openRatingModal(appointmentId, workerName) {
+  currentAppointmentForReview = appointmentId;
+  document.getElementById('ratingServiceName').textContent = workerName;
+  document.getElementById('ratingModal').classList.add('open');
+  currentRating = 0;
+  document.querySelectorAll('.star-btn').forEach(s => s.classList.remove('active'));
+}
+function closeModal() {
+  document.getElementById('ratingModal').classList.remove('open');
+}
+function rateStar(n) {
+  currentRating = n;
+  document.querySelectorAll('.star-btn').forEach((s, i) => {
+    s.classList.toggle('active', i < n);
+  });
+}
+async function submitReview() {
+  if(!currentRating) { showToast('⚠️ لطفاً امتیاز بده'); return; }
+  const comment = document.querySelector('.review-textarea')?.value || '';
+  try {
+    await BarberAPI.reviews.submit({ appointment_id: currentAppointmentForReview, rating: currentRating, comment });
+    closeModal();
+    showToast('✅ نظرت ثبت شد! ۱۰ امتیاز دریافت کردی 🎉');
+    loadProfile();
+  } catch (e) {
+    showToast('❌ ' + e.message);
+  }
+}
+
+// TOAST
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Progress bars animation on load
+window.addEventListener('load', () => {
+  document.querySelectorAll('.prog-fill').forEach(f => {
+    const w = f.style.width;
+    f.style.width = '0%';
+    setTimeout(() => { f.style.transition = 'width 1s ease'; f.style.width = w; }, 400);
+  });
+});
+</script>
+</body>
+</html>
